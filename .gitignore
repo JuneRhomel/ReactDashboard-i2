@@ -1,3 +1,6 @@
+# php config files
+**/php*/config.php
+
 # Logs
 logs
 *.log
