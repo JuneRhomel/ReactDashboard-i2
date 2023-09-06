@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="149.86" height="130.532" viewBox="0 0 149.86 130.532">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_3289" data-name="Rectangle 3289" width="19.632" height="9.816" transform="translate(0)" fill="#fff"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="-0.138" y1="0.745" x2="0.947" y2="-0.069" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#e3ce0a"/>
+      <stop offset="0.498" stop-color="#fffad1"/>
+      <stop offset="1" stop-color="#e3ce0a"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_1907" data-name="Group 1907" transform="translate(3.933 -111.71)">
+    <g id="Mask_Group_42" data-name="Mask Group 42" transform="translate(145.927 123.99) rotate(-180)" clip-path="url(#clip-path)">
+      <g id="Group_1906" data-name="Group 1906" transform="translate(0.429 -154.086)">
+        <path id="Path_1924" data-name="Path 1924" d="M0,16.465a21.617,21.617,0,0,0,6.277-1.152,42.469,42.469,0,0,0,12.36-6.719L11.8,0a74.976,74.976,0,0,0-8.55,9.979A25.8,25.8,0,0,0,0,16.465Z" transform="translate(0 147.046)" fill="#ffed48"/>
+        <path id="Path_1925" data-name="Path 1925" d="M10.138,3.166A78.61,78.61,0,0,0,0,11.548L8.565,18.54a42.471,42.471,0,0,0,6.87-12.277A21.573,21.573,0,0,0,16.663,0,25.8,25.8,0,0,0,10.138,3.166Z" transform="translate(147.395)" fill="#ffed48"/>
+      </g>
+    </g>
+    <g id="Group_1905" data-name="Group 1905" transform="translate(-0.887 114.717)">
+      <g id="Group_1895" data-name="Group 1895" transform="translate(0 0)">
+        <path id="Path_1918" data-name="Path 1918" d="M268.489,182.713V310.238l68.566-60.594,77.495-66.931Z" transform="translate(-268.489 -182.713)" fill="url(#linear-gradient)"/>
+      </g>
+    </g>
+    <text id="_90" data-name="90" transform="matrix(0.719, -0.695, 0.695, 0.719, 37.644, 153.559)" fill="#1c5196" font-size="36" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan x="-23" y="0">90</tspan></text>
+    <text id="days" transform="matrix(0.719, -0.695, 0.695, 0.719, 45.642, 163.314)" fill="#1c5196" font-size="12" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan x="-14" y="0">days</tspan></text>
+    <text id="Free_trial" data-name="Free trial" transform="matrix(0.719, -0.695, 0.695, 0.719, 55.479, 174.836)" fill="#1c5196" font-size="13" font-family="Montserrat-SemiBold, Montserrat" font-weight="600"><tspan x="-29" y="0">Free trial</tspan></text>
+  </g>
+</svg>

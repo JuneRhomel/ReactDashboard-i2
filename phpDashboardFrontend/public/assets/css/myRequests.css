@@ -1,0 +1,104 @@
+.my-requests {
+    display: flex;
+    flex-direction: column;
+    gap: 27px;
+}
+
+.requests-card {
+    display: flex;
+    padding: 22px 10px;
+    gap: 10px;
+    justify-content: space-between;
+    position: relative;
+    background-color: #FFFFFF;
+    border-radius: 10px 10px 10px 10px;
+}
+
+.requests-card .status {
+    font-size: 8px;
+    padding: 4px;
+}
+
+.requests-card img {
+    height: 100%;
+    width: 95px;
+    max-height: 170px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.acknowledged-status {
+    background-color: #ff9839;
+    color: #ffffff;
+    border-radius: 3px;
+    inline-size: fit-content;
+}
+
+.requests-card .label {
+    font-size: 14px;
+    margin-bottom: 9px;
+
+}
+
+.requests-card .description {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 9px;
+}
+
+.requests-card button {
+    width: 173px;
+    height: 50px;
+    font-size: 14px;
+    padding: 16px, 12px, 16px, 12px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1C5196;
+    color: #FFFFFF;
+}
+
+.requests-card .date {
+    top: 5px;
+    font-size: 12px;
+    position: absolute;
+    right: 10px;
+}
+
+.request-filter {
+    margin: 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.request-filter select {
+    appearance: auto ;
+    border-radius: 3px;
+    height: 25px;
+    border: none;
+    font-size: 12px;
+}
+
+.request-filter .fillter-btn {
+    height: 25px;
+    border: none;
+    background-color: #FFFFFF;
+    border-radius: 3px;
+}
+.request-filter .add-btn-sr{
+    background-color: #1C5196;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+}
+.request-filter .add-btn-sr span {
+    font-size: 17px;
+}

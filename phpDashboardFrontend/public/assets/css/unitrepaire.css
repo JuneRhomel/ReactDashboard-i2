@@ -1,0 +1,95 @@
+.repair-status {
+    padding: 10px 11px;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+}
+
+.repair-status-bar {
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.repair-status-bar .status-container {
+    width: 91px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+
+}
+
+.repair-status-bar .status-container p {
+    font-size: 12px;
+    margin: 0;
+    color: #B4B4B4;
+}
+
+.repair-status-bar .status-container img {
+    object-fit: contain;
+    height: 45px;
+}
+
+.repair-status-bar .status-icon {
+    background-color: transparent;
+    border: none;
+    display: grid;
+    place-items: center;
+}
+
+.repair-status-update-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.update-card {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 14px 20px;
+    position: relative;
+}
+
+.update-card span {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-size: 8px;
+    padding: 4px;
+    display: grid;
+    place-items: center;
+}
+
+.update-card label {
+    display: block;
+    line-height: 14.63px;
+}
+
+.update-card p {
+    margin: 0;
+    color: #000000;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.update-repair-status {
+    margin-top: 24px;
+}
+
+.follow-up-modal textarea {
+    border-radius: 5px;
+    width: 100% !important;
+    min-height: 100px !important;
+}
+
+.follow-up-modal button {
+    margin-top: 24px;
+    height: 50px;
+    font-size: 14px;
+}
+
+.modal {
+    padding: 0 24px;
+}

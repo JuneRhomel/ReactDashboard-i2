@@ -1,0 +1,99 @@
+.card-history {
+    background-color: #FFFFFF;
+    position: relative;
+    /* height: 85px; */
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 5px;
+}
+.card-history .head {
+    left: 0;
+    top: 10px;
+    font-size: 12px;
+    width: 100%;
+    /* position: absolute; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card-history .head  span {
+    background-color: #1C5196;
+    color: #FFFFFF;
+    font-weight: 700;
+    margin: 0;
+    height: 20px;
+    padding: 0 4px;
+    border-radius: 3px;
+    font-size: 10px;
+    display: grid;
+    place-items: center;
+}
+.card-history .head label {
+    font-size: 12px;
+}
+.card-history p{
+    margin: 0;
+    font-size: 12px;
+}
+.history-container {
+    margin-top: 27px;
+    display: flex;
+    flex-direction: column;
+    gap: 27px;
+}
+
+.btn-tab-service {
+    border: 1px solid #A8B5C2 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: #6A7682 !important;
+    font-size: 12px !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    width: 30% !important;
+  }
+  .first-tab{
+    border-radius: 4px 0px 0px 4px !important;
+  }
+  .btn-tab-service:hover {
+    background-color: #1C5196 !important;
+    color: #ffffff !important;
+  }
+  
+  .btn-tab-service:active {
+    background-color: #1C5196 !important;
+    color: #ffffff !important;
+  }
+  
+  .btn-check:checked+.btn-outline-primary  {
+    background-color: #1C5196;
+    color: #ffffff !important;
+  }
+  .btn-group {
+    width: 100%;
+    height: 40px;
+  }
+
+  .tab-service span {
+    background-color: #FFFFFF;
+    color: #1C5196;
+    display: block;
+    /* width: 15px; */
+    padding: 0 4px;
+    border-radius: 4px;
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    border: 1px solid #1C5196;
+    
+  }
+
+#add-ons {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

@@ -1,0 +1,38 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	
+	RewriteCond %{REQUEST_URI} fonts/(.+)$
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule fonts/(.+)$ fonts/$1 [L,PT]
+	
+	RewriteCond %{REQUEST_URI} images/(.+)\.(gif|png|jpg|jpeg)$
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule images/(.+)$ images/$1 [L,PT]
+
+	RewriteCond %{REQUEST_URI} css/(.+)\.(css|map|less)$
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule css/(.+)$ css/$1 [L,PT]
+	
+	RewriteCond %{REQUEST_URI} modules/(.+)$
+	RewriteRule modules/(.+)$ modules/$1 [L,PT]
+	
+	RewriteCond %{REQUEST_URI} js/(.+)\.(js|map|less)$
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule js/(.+)$ js/$1 [L,PT]
+
+	RewriteCond %{REQUEST_URI} uploads/(.+)$
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule uploads/(.+)$ uploads/$1 [L,PT]	
+
+	RewriteCond %{REQUEST_URI} config/(.*)$
+	RewriteRule ^(.*)$ index.php [L,QSA]
+	
+	RewriteCond %{REQUEST_URI} favicon\.ico
+	RewriteRule ^(.*)$ favicon.ico [L,PT] 
+	
+	RewriteCond %{REQUEST_URI} !/(css|images|js)/
+	RewriteCond ^([^/]+)/?$ !^favicon\.ico
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php?url=$1 [L,QSA] 
+</IfModule>

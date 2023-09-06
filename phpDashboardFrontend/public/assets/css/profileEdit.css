@@ -1,0 +1,43 @@
+.user-details {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.user-details p {
+    margin: 0;
+    font-weight: 700; 
+    color: black;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+.user-details label {
+    font-weight: 400;
+    font-size: 14px;
+}
+.lease-text {
+    font-weight: 600;
+font-size: 22px;
+color: #1C5196;
+}
+.lease-history {
+    padding: 24px; 
+    background-color: #FFFFFF; 
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.lease-history p {
+    font-weight: 700;
+font-size: 14px;
+margin: 0;
+}
+.lease-history span {
+    font-weight: 400;
+font-size: 14px;
+}
+.lease-history a {
+    color: #C0392B;
+    text-decoration-line: underline !important; 
+}

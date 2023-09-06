@@ -1,0 +1,93 @@
+
+/* step-1  */
+.signup-image {
+    height: 100vh;
+    width: 30%;
+    padding: 24px;
+  }
+  
+  .img-container {
+    border-radius: 25px;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .img-container img {
+    height: 100%;
+    width: 100%;
+    object-position: left;
+    object-fit: cover;
+  }
+  
+  .back {
+    margin-top: 15px;
+    font-size: 16px;
+  }
+  
+  .form-signup {
+    max-width: 1355px;
+    margin: auto;
+    height: 100vh;
+    width: 70%;
+    padding: 24px;
+  }
+  
+  /* Style the checkbox container */
+  .c1 {
+    filter: hue-rotate(313deg);
+  }
+  
+  input[type=checkbox] {
+    transform: scale(1.7);
+    margin: 10px;
+    cursor: pointer;
+    accent-color: #20A17F;
+  }
+  
+  
+  .input-h input,
+  .input-h select {
+    height: 56px !important;
+  }
+  
+  .heading-signup {
+    font-weight: 700;
+    font-size: 22px;
+    text-align: center;
+  }
+  .heading-2-signup {
+    font-weight: 700;
+    font-size: 16px;
+    text-align: center;
+  }
+  
+  .card-sub {
+    width: 266px;
+  
+    background: rgba(235, 246, 255, 0.51);
+    /* inventi blue */
+    padding: 19px;
+    border: 1px solid #1C5196;
+    box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  .card-sub p {
+    font-weight: 400;
+  font-size: 14px;
+  }
+  .disable-card {
+    pointer-events: none;
+    background: #F4F7FA;
+    border: none;
+    box-shadow: none;
+  } 
+  .disable-card p,
+  .disable-card h2,
+  .disable-card .main-btn {
+    color: #C3CCD6;
+  }
+  .disable-card .main-btn  {
+    background-color: transparent;
+  }
+  

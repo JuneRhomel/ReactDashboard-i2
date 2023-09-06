@@ -1,0 +1,58 @@
+.main-btn {
+    font-family: 'Manrope', sans-serif;
+    background: var(--inventi-blue);
+    border: none;
+    border-radius: 3px;
+    width: 89px;
+    height: 45px;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--inventi-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.main-btn:disabled {
+    background-color: #1c5196b2;
+}
+
+.main-cancel {
+    font-family: 'Manrope', sans-serif;
+    background: var(--inventi-lighter-gray);
+    border: none;
+    border-radius: 3px;
+    width: 89px;
+    height: 45px;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--inventi-gray);
+}
+.main-btn-outline {
+    border: 1px solid var(--inventi-blue);
+    border-radius: 3px;
+    width: 89px;
+    height: 45px;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--inventi-blue);
+  }
+
+.req-text {
+    color: var(--inventi-black);
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 22px;
+}
+
+.heading-text {
+    font-size: 24px !important;
+    font-weight: 700;
+    color: var(--inventi-black) !important;
+}
+
+.required-field {
+    color: #1B1D21;
+    font-weight: 700;
+    font-size: 36px;
+}

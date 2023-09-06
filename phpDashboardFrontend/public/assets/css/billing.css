@@ -1,0 +1,58 @@
+.view-payment {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-weight: 600;
+    color: #1C5196;
+}
+
+.bills-container .payment {
+    height: 70px;
+}
+
+.nav-billing {
+    width: 294px;
+    border-radius: 4px;
+}
+
+.card-transactions .history-date-billing {
+    font-size: 16px;
+}
+
+.card-transactions .billing-price {
+    font-size: 22px;
+}
+.billing-summary-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF; 
+    border-radius: 10px;
+    padding: 15px 18px;
+    gap: 8px;
+}
+.nav-billing span {
+    background-color: #FFFFFF;
+    color: #1C5196;
+    border: 1px solid #1C5196;
+    padding: 0 4px;
+    height: 17px;
+    font-size: 10px;
+    display: grid;
+    border-radius: 5px;
+}
+.nav-billing .billing,.nav-billing .unpaid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
+    background-color: #1C5196 !important;
+}
+.bills-container .history-bill {
+    text-decoration: line-through;
+}
+.bills-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }

@@ -1,0 +1,31 @@
+.contact-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.contact-container .contact-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFFFF; 
+    border-radius: 10px;
+    padding: 28px 34px 28px 12px;
+}
+.contact-container .contact-card  .text {
+    display: flex;
+    flex-direction: column;
+}
+.contact-container .contact-card .title {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.contact-container  .contact-card .num,.contact-container .contact-card .email {
+    color: #000000;
+    font-size: 12px;
+}
+
+.contact-container .contact-icon {
+    display: flex;
+    gap: 32px;
+}

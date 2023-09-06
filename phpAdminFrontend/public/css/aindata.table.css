@@ -1,0 +1,86 @@
+th.sorting {
+  background-image: url("images/sort_both.png");
+  background-repeat: no-repeat;
+  background-position: center right 10px;
+  background-size: 12px;
+  cursor: pointer;
+}
+
+th.sort_asc {
+  background-image: url("images/sort_asc.png");
+  background-repeat: no-repeat;
+  background-size: 12px;
+  background-position: center right 10px;
+}
+
+th.sort_desc {
+  background-image: url("images/sort_desc.png");
+  background-repeat: no-repeat;
+  background-size: 12px;
+  background-position: center right 10px;
+}
+
+.filter-box {
+  z-index: 1;
+  position: fixed;
+  width: 400px;
+  height: 100%;
+  top: 0;
+  background-color: #ffffff;
+  border: 1px solid #efefef;
+  padding: 10px;
+  overflow: auto;
+  -webkit-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+}
+
+.filter-box-hidden {
+  right: -400px;
+}
+
+.filter-box-shown {
+  right: 0px;
+}
+
+.group-header {
+  margin-top: 10px;
+  position: relative;
+  font-size: 1.2em;
+  z-index: 1;
+  overflow: hidden;
+  text-align: center;
+}
+
+.group-header:before,
+.group-header:after {
+  position: absolute;
+  top: 51%;
+  overflow: hidden;
+  width: 50%;
+  height: 1px;
+  content: "\a0";
+  background-color: #c0c0c0;
+}
+
+.group-header:before {
+  margin-left: -50%;
+  text-align: right;
+}
+
+.aindata-footera {
+  border-top: 2px solid #c0c0c0;
+  position: sticky;
+  bottom: 0px;
+}
+
+label {
+  font-weight: 200;
+}
+
+tr.aindata-header {
+  background-color: #ffffff;
+}
+
+tr.aindata-header th {
+  padding: 16px;
+}

@@ -1,0 +1,19 @@
+
+/* setup the color  */
+:root {
+    --inventi-blue: #1C5196;
+    --inventi-white: #FFFFFF;
+    --inventi-fade-white : rgba(255, 255, 255, 0.27);
+    --inventi-black: #0F1108;
+    --inventi-grey: #6D6E72;
+    --inventi-lighter-gray: #DADADA;
+    --inventi-indicator: #FFF59F;
+    --inventi-warning: #FF6B6B;
+    --inventi-semi-warning: #FED0AB;
+    --inventi-semi-warning: #FED0AB;
+    --fade-grey: rgba(235, 246, 255, 0.51);
+    --fade-baby-blue: rgba(235, 246, 255, 0.51);
+    --fade-background: #F6F6F6;
+    --fade-fade-black: #CBCCCD;
+    --fade-open-completed: #3BBB7F;
+}

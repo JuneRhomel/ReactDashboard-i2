@@ -1,0 +1,21 @@
+.service-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: 24px;
+}
+
+.service-container .service-card {
+    max-height: 120px;
+    width: 100%;
+}
+.service-container .service-card img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+/* .service-container .service-card:nth-last-child(1){
+    grid-column: 1 / 3;
+}    */
