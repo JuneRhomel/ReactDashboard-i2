@@ -25,19 +25,21 @@
 }
 
 .loginForm {
-  margin: 1.25rem;
+  margin: 1.25rem auto;
   padding: 1rem;
   border: solid var(--form-border) 2px;
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 280px;
+  height: 350px;
+  max-width: 400px;
 }
 
 .formGreeting {
   font-size: 1.5rem;
   font-weight: 400;
+  margin-bottom: 5px;
 }
 
 .formTitle {
@@ -47,4 +49,63 @@
 
 .faIcon {
   margin-left: 10px;
+}
+
+.formInputGroup {
+  border: solid 1px var(--formGroup-border);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px 16px;
+  gap: 5px;
+  align-items: flex-start;
+  border-radius: 5px;
+}
+
+.formInputGroup:hover {
+  background-color: var(--input-hover);
+}
+
+.formInputGroup:focus-within {
+  border: 3px solid var(--inventi-blue);
+}
+
+.passwordInput {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.inputLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--inventi-blue);
+}
+
+.inputField {
+  background: transparent;
+  color: black;
+  font-size: 1rem;
+  padding: 5px 0;
+  width: 100%;
+  border: none;
+}
+
+.inputField[name="password"]{
+  letter-spacing: 0.25rem;
+}
+
+.inputField:focus {
+  outline: none;
+}
+
+.submitButton {
+  background: var(--inventi-blue);
+  border: 1px solid var(--inventi-blue);
+  border-radius: 5px;
+  color: white;
+  font-size: 1rem;
+  height: 50px;
 }
