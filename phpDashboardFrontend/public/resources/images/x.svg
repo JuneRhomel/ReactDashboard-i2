@@ -1,7 +1,0 @@
-<svg id="Component_7_1" data-name="Component 7 – 1" xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52">
-  <g id="Ellipse_15" data-name="Ellipse 15" fill="none" stroke="#34495e" stroke-width="1" opacity="0.6">
-    <circle cx="26" cy="26" r="26" stroke="none"/>
-    <circle cx="26" cy="26" r="25.5" fill="none"/>
-  </g>
-  <path id="Path_17" data-name="Path 17" d="M4.293,4.293a1,1,0,0,1,1.414,0L10,8.586l4.293-4.293a1,1,0,1,1,1.414,1.414L11.414,10l4.293,4.293a1,1,0,1,1-1.414,1.414L10,11.414,5.707,15.707a1,1,0,1,1-1.414-1.414L8.586,10,4.293,5.707a1,1,0,0,1,0-1.414Z" transform="translate(16 16)" fill="#34495e" fill-rule="evenodd"/>
-</svg>
