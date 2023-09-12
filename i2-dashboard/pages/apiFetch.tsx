@@ -21,7 +21,8 @@ async function apiSend(params = {}) {
       const responseData = await response.text();
       return responseData;
     } catch (error) {
-      return error.message;
+      return
+      // return error.message;
     }
 }
 
