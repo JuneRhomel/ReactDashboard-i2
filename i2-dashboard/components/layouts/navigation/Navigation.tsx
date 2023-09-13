@@ -16,8 +16,8 @@ export default function Navigation() {
         { id: 5, link: 'menu', text: 'Menu', icon: <MdMenu /> },
     ];
 
-    const navigate = (id: string) => {
-        setSelectedTab(id); 
+    const navigate = (link: string) => {
+        setSelectedTab(link); 
         // router.push(`/${id}`);
     };
 
