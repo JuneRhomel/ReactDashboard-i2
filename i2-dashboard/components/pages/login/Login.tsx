@@ -3,7 +3,6 @@ import Layout from '@/components/layouts/layout';
 import {FaExclamationCircle} from 'react-icons/fa';
 import {BsEyeSlash, BsEyeFill} from 'react-icons/bs';
 import { useState, useRef, RefObject } from 'react';
-import apiSend from '@/pages/apiFetch';
 
 
 const pageTitle: string = "Welcome to i2";
@@ -45,13 +44,12 @@ export default function Login() {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const params = {
-        email: "kevin@gmail.com",
-        password: "letmein",
+        email: "admin@mailinator.com",
+        password: "12345",
         acctcode: "adminmailinatorcom",
         acctcode_enc: "NjZMRXpiYncrZy9kL2JCT05vc0RFUko4aXlMZ3lGdG0yMnkxRFRhcVRuWT0.cd0f8dc4608fc0dbde44581398a08e62",
     }
-    const response = await apiSend(params);
-    // console.log(emailRef.current?.validity);
+    console.log(emailRef.current?.validity);
   }
 
   return (
