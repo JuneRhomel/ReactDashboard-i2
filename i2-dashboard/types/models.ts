@@ -7,3 +7,8 @@ export type AuthenticatedUser = {
     db: string,
     tmp?: null | string 
 }
+
+export type LoginSchema = {
+    email: string,
+    password: string
+}
