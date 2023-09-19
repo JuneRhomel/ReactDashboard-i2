@@ -1,8 +1,8 @@
 import styles from './Navigation.module.css';
-import { MdDashboard, MdBallot, MdReceipt, MdInsertChart, MdMenu } from "react-icons/md";
-import React, { useState } from 'react'
-import { useRouter } from 'next/router';
-
+import { MdDashboard, MdBallot, MdReceipt, MdInsertChart, MdMenu } from 'react-icons/md';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router'; // Import useRouter
 
 export default function Navigation() {
     const [selectedTab, setSelectedTab] = useState('dashboard'); 
@@ -16,9 +16,8 @@ export default function Navigation() {
         { id: 5, link: 'menu', text: 'Menu', icon: <MdMenu /> },
     ];
 
-    const navigate = (link: string) => {
+    const navigate = (link:string) => {
         setSelectedTab(link); 
-        // router.push(`/${id}`);
     };
 
     return (
@@ -26,16 +25,18 @@ export default function Navigation() {
             <ul>
                 {navigationItems.map((item) => (
                     <li key={item.id}>
-                        <a
-                            onClick={() => navigate(item.link)}
-                            className={`${styles.tab} ${selectedTab === item.link ? styles.active : ''}`}
-                        >
-                            <div className={styles.icons}>{item.icon}</div>
-                            {item.text}
-                        </a>
+                        <Link href={`/${item.link}`}> 
+                            <a
+                                onClick={() => navigate(item.link)}
+                                className={`${styles.tab} ${selectedTab === item.link ? styles.active : ''}`}
+                            >
+                                <div className={styles.icons}>{item.icon}</div>
+                                {item.text}
+                            </a>
+                        </Link>
                     </li>
                 ))}
             </ul>
         </nav>
-    )
+    );
 }
