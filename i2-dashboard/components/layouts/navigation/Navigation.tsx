@@ -2,37 +2,39 @@ import styles from './Navigation.module.css';
 import { MdDashboard, MdBallot, MdReceipt, MdInsertChart, MdMenu } from 'react-icons/md';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router'; // Import useRouter
 
 export default function Navigation() {
-    const [selectedTab, setSelectedTab] = useState('dashboard'); 
-    const router = useRouter();
-
+    const [selectedTab, setSelectedTab] = useState('/dashboard');
+    console.log(selectedTab)
     const navigationItems = [
-        { id: 1, link: 'dashboard', text: 'Dashboard', icon: <MdDashboard /> },
-        { id: 2, link: 'soa', text: 'SOA', icon: <MdBallot /> },
-        { id: 3, link: 'my-request', text: 'My Request', icon: <MdReceipt /> },
-        { id: 4, link: 'news-announcement', text: 'News & Announcement', icon: <MdInsertChart /> },
-        { id: 5, link: 'menu', text: 'Menu', icon: <MdMenu /> },
+        { id: 1, link: '/dashboard', text: 'Dashboard', icon: <MdDashboard /> },
+        { id: 2, link: '/soa', text: 'SOA', icon: <MdBallot /> },
+        { id: 3, link: '/my-request', text: 'My Request', icon: <MdReceipt /> },
+        { id: 4, link: '/news-announcement', text: 'News & Announcement', icon: <MdInsertChart /> },
+        { id: 5, link: '/menu', text: 'Menu', icon: <MdMenu /> },
     ];
 
     const navigate = (link:string) => {
-        setSelectedTab(link); 
+        setSelectedTab(link);
     };
+
+
+
 
     return (
         <nav className={styles.navigation}>
             <ul>
                 {navigationItems.map((item) => (
-                    <li key={item.id}>
-                        <Link href={`/${item.link}`}> 
-                            <a
-                                onClick={() => navigate(item.link)}
-                                className={`${styles.tab} ${selectedTab === item.link ? styles.active : ''}`}
-                            >
+                    <li
+                        onClick={() => navigate(item.link)} // Pass item.link here
+                        key={item.id}
+                        className={`${selectedTab === item.link ? styles.active : ''}`}
+                    >
+                        <Link href={item.link} className={styles.link} passHref>
+                            <div className={`${styles.tab}`}>
                                 <div className={styles.icons}>{item.icon}</div>
                                 {item.text}
-                            </a>
+                            </div>
                         </Link>
                     </li>
                 ))}
