@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function Navigation() {
-    const [selectedTab, setSelectedTab] = useState('/dashboard');
-    console.log(selectedTab)
+    const [selectedTab, setSelectedTab] = useState('/Dashboard');
+   
     const navigationItems = [
         { id: 1, link: '/dashboard', text: 'Dashboard', icon: <MdDashboard /> },
         { id: 2, link: '/soa', text: 'SOA', icon: <MdBallot /> },
-        { id: 3, link: '/my-request', text: 'My Request', icon: <MdReceipt /> },
-        { id: 4, link: '/news-announcement', text: 'News & Announcement', icon: <MdInsertChart /> },
-        { id: 5, link: '/menu', text: 'Menu', icon: <MdMenu /> },
+        { id: 3, link: '/myrequest', text: 'My Request', icon: <MdReceipt /> },
+        { id: 4, link: '/newsannouncement', text: 'News & Announcement', icon: <MdInsertChart /> },
+        { id: 5, link: '/', text: 'Menu', icon: <MdMenu /> },
     ];
 
     const navigate = (link:string) => {

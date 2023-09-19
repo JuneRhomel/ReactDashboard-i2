@@ -7,9 +7,11 @@ const pageTitle: string = "Welcome to Inventi I2";
 export default function Home() {
   return (
     <>
-    <Login/>
-    <Navigation/>
-    
+      <Layout>
+        <Login />
+        <Navigation />
+      </Layout>
     </>
+
   )
 }
