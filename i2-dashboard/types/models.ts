@@ -10,5 +10,6 @@ export type AuthenticatedUser = {
 
 export type LoginSchema = {
     email: string,
-    password: string
+    password: string,
+    accountcode: string
 }
