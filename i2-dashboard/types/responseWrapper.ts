@@ -3,9 +3,9 @@
 *
 */
 export type ApiResponse<T> = {
-    success?: boolean,
-    description?: string,
-    data?: T
-    status?: number,
-    message?: string,
+    success?: number;
+    description?: string;
+    data?: T;
+    status?: number;
+    message?: string;
 }
