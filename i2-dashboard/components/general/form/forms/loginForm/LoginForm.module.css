@@ -1,0 +1,36 @@
+
+.loginForm {
+    margin: 1.25rem auto;
+    padding: 1rem;
+    border: solid var(--form-border) 2px;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 350px;
+    max-width: 400px;
+  }
+  
+  .formGreeting {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 5px;
+  }
+  
+  .formTitle {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+  
+  .faIcon {
+    margin-left: 10px;
+  }
+  
+  .submitButton {
+    background: var(--inventi-blue);
+    border: 1px solid var(--inventi-blue);
+    border-radius: 5px;
+    color: white;
+    font-size: 1rem;
+    height: 50px;
+  }
