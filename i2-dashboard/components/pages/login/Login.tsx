@@ -2,8 +2,6 @@ import styles from './Login.module.css';
 import Layout from '@/components/layouts/layout';
 
 import Header from "./Header"
-import { useState, useRef, RefObject } from 'react';
-import api from '@/utils/api';
 import Form from '@/components/general/form/Form';
 
 const pageTitle: string = "Welcome to i2";
