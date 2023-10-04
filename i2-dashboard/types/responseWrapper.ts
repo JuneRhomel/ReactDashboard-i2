@@ -5,7 +5,7 @@
 export type ApiResponse<T> = {
     success?: number;
     description?: string;
-    data?: T;
+    data?: T | '';
     status?: number;
     message?: string;
 }

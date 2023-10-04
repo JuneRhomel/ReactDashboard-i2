@@ -1,5 +1,6 @@
 import styles from './Login.module.css';
 import Layout from '@/components/layouts/layout';
+import Image from 'next/image';
 
 import Header from "./Header"
 import Form from '@/components/general/form/Form';
@@ -10,13 +11,13 @@ export default function Login() {
 
   return (
     // The Layout defines the page title and sets the favicon
-    <Layout title={"Welcome to i2"}>
+    <Layout title={pageTitle}>
       <Header />
 
       {/* This is the main body of the login page. */}
       <Form type='login'/>
       
-      <img className={styles.footerLogo} src="/navlogo1.png" alt="Powered by Inventi Logo" />
+      <Image className={styles.footerLogo} height={44} width={113} src="/navlogo1.png" alt="Powered by Inventi Logo"/>
     </Layout>
   )
 }

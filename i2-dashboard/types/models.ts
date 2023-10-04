@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export type AuthenticatedUser = {
+export type User = {
     token: string;
     tenantName: string;
     tenantId: number;
@@ -8,17 +8,13 @@ export type AuthenticatedUser = {
     mobile: number;
     db: string;
     tmp?: null | string;
+    isAuthorized?: boolean
 }
 
-export const AuthenticatedUserSchema = z.object({
-    token: z.string(),
-    tenantName: z.string(),
-    tenantId: z.number(),
-    email: z.string(),
-    mobile: z.number(),
-    db: z.string(),
-    tmp: z.string().nullable().optional()
-});
+export type UserTokenPayload = User & {
+    iat?: number;
+    exp?: number;
+}
 
 export type LoginSchema = {
     email: string;

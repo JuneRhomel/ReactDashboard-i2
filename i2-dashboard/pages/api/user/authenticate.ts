@@ -1,4 +1,4 @@
-import { AuthenticatedUser } from "@/types/models";
+import { User } from "@/types/models";
 import { ApiResponse } from "@/types/responseWrapper";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { Secret } from 'jsonwebtoken';
@@ -20,15 +20,15 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
             headers: headers,
             referrerPolicy: "unsafe-url"
         })
-        const jsonResponse: ApiResponse<AuthenticatedUser|""> = await response.json()
+        const jsonResponse: ApiResponse<User> = await response.json()
         if (jsonResponse.success) {
             // Create a jwt with the user info
-            const payload: AuthenticatedUser = jsonResponse?.data as AuthenticatedUser;
-            const token: string = jwt.sign(payload, jwtSecret, {expiresIn: '10s'})
+            const payload: User = jsonResponse?.data as User;
+            const token: string = jwt.sign(payload, jwtSecret, {expiresIn: '2s'})
             const cookie: string = getCookieString(token);
             res.status(200)
                 .setHeader("Set-Cookie", cookie)
-                .json(jsonResponse.data);
+                .json(payload);
         } else {
             // If success==0 or response.success does not exist
             const errorMessage = jsonResponse.status ? "Invalid account code" : "Invalid username and/or password";

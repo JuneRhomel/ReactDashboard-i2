@@ -1,9 +1,8 @@
 import styles from './LoginForm.module.css';
 import {FaExclamationCircle} from 'react-icons/fa';
 import api from '@/utils/api';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import InputGroup from '../../inputGroup/InputGroup';
-import { AuthenticatedUser } from '@/types/models';
 import { NextRouter, useRouter } from 'next/router';
 
 const iconStyle: object = {
@@ -34,12 +33,12 @@ const LoginForm = () => {
             email: "admin@mailinator.com",
             password: "12345",
             accountcode: "adminmailinatorcom",
+            // accountcode: "UDEya0JuMWcyQjhKOHc3WVNwMWNQT1Rja2ozdkVyNWdjYWwxV21vNzNyWT0.7b6f916e21476e8c401e23b41150cf45",
         }
     
         const response: Response | string = await api.user.authenticate(params);
         console.log(response);
         if (response.ok) {
-            console.log("Response was a success")
             router.push('/dashboard');
         } else {
             setError(response as unknown as string)
