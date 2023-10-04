@@ -32,7 +32,7 @@ export async function authenticate(params?: LoginSchema): Promise<Response>{//<A
             body: body,
             referrerPolicy: "unsafe-url"
         });
-
+        
         if (!response.ok) {
             //Need to fix this error handling here so that I can pass the error message to the screen instead of just here
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${JSON.stringify(await response.json())}`);

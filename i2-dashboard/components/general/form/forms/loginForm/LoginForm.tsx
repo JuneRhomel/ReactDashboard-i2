@@ -37,7 +37,6 @@ const LoginForm = () => {
         }
     
         const response: Response | string = await api.user.authenticate(params);
-        console.log(response);
         if (response.ok) {
             router.push('/dashboard');
         } else {
