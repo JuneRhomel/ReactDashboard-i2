@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Header from "@/components/layouts/header/Header"
 import Navigation from "./navigation/Navigation";
 
 function Layout({
@@ -15,8 +16,11 @@ function Layout({
         <link rel="shortcut icon" href="/Inventi_Icon-Blue.png" type="image/x-icon" />
       </Head>
       <main>
-        <Navigation  />
-        {children}
+        <Header/>
+        <div className="container">
+          {children}
+        </div>
+        <Navigation />
       </main>
     </>
   )

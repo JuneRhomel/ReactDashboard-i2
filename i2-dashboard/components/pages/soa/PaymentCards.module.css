@@ -1,0 +1,86 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+.status {
+    display: flex;
+    padding: 4px 8px;
+    align-items: center;
+    gap: 4px;
+    border-radius: 40px;
+   
+    width: max-content;
+    padding-inline: 10px;
+    font-size: 11px;
+  
+}
+
+.description {
+    font-weight: 600;
+    font-size: 13px;
+    margin: 5px 0;
+}
+
+.label {
+    color: #353B41;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    font-variant: small-caps;
+    letter-spacing: 0.15px;
+}
+
+.amount {
+    margin: 0;
+    font-weight: 700;
+    font-size: 22px;
+}
+.invalid {
+    color: #61220F;
+    background: #FDDDD3;
+}
+.successful
+{
+    background: #E6FAF4;
+}
+.text_red {
+    color: #61220F;
+}
+.text_green {
+    color: #10513F;
+}
+.payments {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.payments a {
+    color:  #A8B5C2;
+    text-align: right;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-decoration: none;
+}
+.title {
+    font-size: 20px;
+    color: black;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+

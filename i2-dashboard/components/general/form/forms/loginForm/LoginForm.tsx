@@ -58,7 +58,7 @@ const LoginForm = () => {
             </div>
             {/* Show the error message if there is one */}
             {error !== "" ? (<div>{error}</div>): null }
-            <InputGroup name='email' label='Email Address' type='email' handleInput={handleInput} formData={formData}/>
+            <InputGroup name='email' label='Email Address'  type='email' handleInput={handleInput} formData={formData}/>
             <InputGroup name='password' label='Password' type='password' handleInput={handleInput} formData={formData}/>
 
             <button className={styles.submitButton} type="submit">Submit</button>
