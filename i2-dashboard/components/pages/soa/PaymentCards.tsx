@@ -1,4 +1,3 @@
-import React from 'react'
 import style from './PaymentCards.module.css'
 import Link from 'next/link'
 const PaymentCards = () => {

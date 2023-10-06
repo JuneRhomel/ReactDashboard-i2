@@ -44,7 +44,7 @@
     font-size: 25px;
 }
 .active {
-    background-color: #1C5196;
+    background-color: var(--inventi-blue);
     color: #ffffff;
 }
 .active .tab {

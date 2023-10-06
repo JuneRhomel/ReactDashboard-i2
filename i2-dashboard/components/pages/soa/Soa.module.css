@@ -14,7 +14,7 @@
 }
 
 .payments a {
-    color:  #A8B5C2;
+    color:  var(--inventi-neutral);
     text-align: right;
     font-size: 15px;
     font-style: normal;

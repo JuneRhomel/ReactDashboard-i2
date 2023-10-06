@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { MdAddCircle,MdOutlineNotifications } from 'react-icons/md';
+import { MdAddCircle, MdOutlineNotifications } from 'react-icons/md';
 import React from 'react'
 import styles from './Header.module.css';
 
@@ -12,14 +12,10 @@ export default function Header() {
         </div>
         <div className={styles.icon_container} >
           <Link href={'/'}>
-            <div className={styles.icon}>
-              {<MdAddCircle/>}
-            </div>
+            {<MdAddCircle className={styles.icon} />}
           </Link>
           <Link href={'/'}>
-            <div className={styles.icon}>
-              {<MdOutlineNotifications/>}
-            </div>
+            {<MdOutlineNotifications className={styles.icon} />}
           </Link>
         </div>
 
