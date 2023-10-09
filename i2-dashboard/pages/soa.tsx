@@ -1,7 +1,3 @@
-import React from 'react'
+import Soa from "@/components/pages/soa/Soa";
 
-export default function soa() {
-  return (
-    <div>Soa</div>
-  )
-}
+export default Soa

@@ -1,0 +1,32 @@
+.header {
+    position: sticky;
+    height: 88px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
+    top: 0;
+    width: 100%;
+    z-index: 99;
+    background-color: #ffffff;
+}
+.logo {
+    height: 55px;
+    width: 88px;
+    object-fit: contain;
+}
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    height: 88px;
+    margin: auto;
+}
+.icon_container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.icon {
+    font-size: 35px;
+    color: var(--inventi-blue);
+    padding: 5px;
+}
