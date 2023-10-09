@@ -1,5 +1,3 @@
-export default function myrequest() {
-  return (
-    <div>my-request</div>
-  )
-}
+import MyRequest from "@/components/pages/myrequest/MyRequest";
+
+export default MyRequest

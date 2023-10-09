@@ -7,7 +7,7 @@ const Soa = () => {
     return (
         <Layout title="SOA">
             <div>
-                <h1 className={style.title}>SOA</h1>
+                <h1 className="title-section">SOA</h1>
                 <SoaCard />
                 <PaymentCards />
             </div>

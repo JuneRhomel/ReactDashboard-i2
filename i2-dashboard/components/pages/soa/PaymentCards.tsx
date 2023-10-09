@@ -4,7 +4,7 @@ const PaymentCards = () => {
     return (
         <>
             <div className={style.payments}>
-                <h1 className={style.title}>Payment Transactions</h1>
+                <h1 className="title-section">Payment Transactions</h1>
                 <Link href={'/'}>Show all {">"} </Link>
             </div>
             <div className={style.container}>
