@@ -7,7 +7,11 @@ import authorizeUser from "@/utils/authorizeUser";
 export function getServerSideProps(context: any) {
   // Do the stuff to check if user is authenticated
   const token: string = context.req.cookies.token;
-  return authorizeUser(token);
+  const user = authorizeUser(token);
+  
+  return user
+    ? {props: {user}}
+    : { redirect: {destination: '/?error=accessDenied', permanent: false} };
 }
 
 export default function Dashboard({ user }: { user: any }) {

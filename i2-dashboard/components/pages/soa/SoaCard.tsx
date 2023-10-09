@@ -1,6 +1,18 @@
+import api from '@/utils/api'
 import styles from './SoaCard.module.css'
 import Link from 'next/link'
 const SoaCard = () => {
+    const fetchSoa = async () => {
+        const response = await api.soa.getSoa(
+            {accountcode:"adminmailinatorcom", userId: 1, limit: 50},
+            "00ceb48bad1faa2c8cb0afe48aca18ac:tenant"
+        );
+        const statements = await response.json();
+
+        console.log(statements)
+    }
+
+
     return (
         <div className={styles.container}>
             <div className={styles.desciption}>
@@ -18,7 +30,7 @@ const SoaCard = () => {
                 <p className={styles.view}>View Details</p>
             </Link>
             <div className={styles.btn_container}>
-                <button className={styles.btn_pdf}>SOA PDF</button>
+                <button onClick={fetchSoa} className={styles.btn_pdf}>SOA PDF</button>
                 <button className={styles.pay_now}>PAY NOW</button>
             </div>
         </div>
