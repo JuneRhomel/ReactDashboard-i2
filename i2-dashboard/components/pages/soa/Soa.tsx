@@ -5,7 +5,7 @@ import style from "./Soa.module.css"
 
 const Soa = () => {
     return (
-        <Layout>
+        <Layout title="SOA">
             <div>
                 <h1 className={style.title}>SOA</h1>
                 <SoaCard />

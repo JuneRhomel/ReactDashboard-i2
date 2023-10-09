@@ -14,7 +14,7 @@ export default function Dashboard({ user }: { user: any }) {
   // if data == authorized return the dashboard
   // else redirect to login
   return (
-    <Layout>
+    <Layout title="Dashboard" >
       <div>{JSON.stringify(user)}</div>
       <h3>SOA</h3>
       <SoaCard/>

@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { MdAddCircle, MdOutlineNotifications } from 'react-icons/md';
-import React from 'react'
 import styles from './Header.module.css';
 
 export default function Header() {
