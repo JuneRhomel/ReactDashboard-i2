@@ -1,20 +1,19 @@
-import { ParamGetSoaType } from "@/types/models";
+import { ParamGetSoaDetailsType } from "@/types/models";
 
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 
 /** 
-* Fetches the user's SOAs.
-* @param {ParamGetSoaType} params - This is a json object that has accountCode, dbTable, queryCondition, and resultLimit
+* Fetches the payment details of the user's current SOA.
+* @param {ParamGetSoaDetailsType} params - This is a json object that has accountCode, dbTable, queryCondition, and resultLimit
 * @return {Promise<Response>} Returns a promise of a Response object.
 */
-export async function getSoa(params: ParamGetSoaType, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<Response>{//<ApiResponse<User>> {
-    // const url: string = '/api/soa/getSoa';
-    const url = "http://localhost:3000/api/soa/getSoa"
+export async function getSoaDetails(params: ParamGetSoaDetailsType, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<Response>{
+    const url = "http://localhost:3000/api/soa/getSoaDetails"
     const method: string = 'POST';
     const body: string = JSON.stringify({
         accountcode: params.accountcode,
-        table: 'vw_soa',
-        condition: `resident_id=${params.userId}`,
+        table: 'soa_payment',
+        condition: `soa_id=${params.soaId}`,
         limit: params.limit,
     });
     const headers = {

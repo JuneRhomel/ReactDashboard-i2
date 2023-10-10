@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ApiResponse } from "./responseWrapper";
 
-export type User = {
+export type UserType = {
     token: string;
     tenantName: string;
     tenantId: number;
@@ -37,14 +37,21 @@ export type ParamGetSoaType = {
     limit?: number,
 }
 
+export type ParamGetSoaDetailsType = {
+    accountcode: string,
+    soaId: number,
+    limit?: number,
+}
+
 interface ChangeHistory {
     createdBy: string,
     createdOn: string,
     deletedBy: string,
     deletedOn: string
+    encId: string,
 }
 
-export interface Soa extends ChangeHistory{
+export interface SoaType extends ChangeHistory{
     id: string,
     residentId: string,
     monthOf: string,
@@ -67,5 +74,17 @@ export interface Soa extends ChangeHistory{
     locationName: string | null,
     floorArea: string | null | number,
     locationType: string | null,
-    encId: string
+}
+
+export interface SoaDetailsType extends ChangeHistory{
+    id: string,
+    soaId: string,
+    paymentType: string,
+    particular: string,
+    amount: string,
+    checkNo: number | string | null,
+    checkDate: string | null,
+    checkAmount: number | string | null,
+    status: string,
+    transactionDate: string,
 }

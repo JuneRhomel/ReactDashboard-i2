@@ -3,13 +3,12 @@ import styles from './SoaCard.module.css'
 import Link from 'next/link'
 const SoaCard = () => {
     const fetchSoa = async () => {
-        const response = await api.soa.getSoa(
-            {accountcode:"adminmailinatorcom", userId: 1, limit: 50},
+        const response = await api.soa.getSoaDetails(
+            {accountcode:"adminmailinatorcom", soaId: 842, limit: 50},
             "00ceb48bad1faa2c8cb0afe48aca18ac:tenant"
         );
         const statements = await response.json();
 
-        console.log(statements)
     }
 
 

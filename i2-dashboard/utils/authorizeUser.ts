@@ -1,13 +1,14 @@
-import { User, UserTokenPayload } from "@/types/models";
+import { UserType, UserTokenPayload } from "@/types/models";
 import jwt, { Secret } from "jsonwebtoken";
 import mapUser from "./mapUser";
+import mapObject from "./mapObject";
 const jwtSecret: Secret = process.env.JWT_SECRET as Secret;
 
 const authorizeUser = (token : string) => {
     try {
         const tokenPayload = jwt.verify(token, jwtSecret) as UserTokenPayload;
         tokenPayload.isAuthorized = true;
-        const user: User = mapUser(tokenPayload);
+        const user: UserType = mapObject(tokenPayload) as UserType;
         return user;
     } catch (error: any){
         //Might not even need this if block here since if the jwt was not verified, we do not return a true isAuthorized property

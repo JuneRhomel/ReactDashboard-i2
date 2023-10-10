@@ -1,4 +1,4 @@
-import { Soa } from "./models";
+import { SoaDetailsType, SoaType } from "./models";
 
 /**
 * This wrapper type is to define an APIResponse
@@ -12,4 +12,6 @@ export type ApiResponse<T = never> = {
     message?: string;
 }
 
-export type GetSoaResponse = Soa[] | ApiResponse;
+export type GetSoaResponse = SoaType[] | ApiResponse;
+
+export type GetSoaDetailsResponse = SoaDetailsType[] | ApiResponse;
