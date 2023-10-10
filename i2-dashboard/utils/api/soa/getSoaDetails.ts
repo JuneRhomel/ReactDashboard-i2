@@ -8,7 +8,7 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 * @return {Promise<Response>} Returns a promise of a Response object.
 */
 export async function getSoaDetails(params: ParamGetSoaDetailsType, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<Response>{
-    const url = "http://localhost:3000/api/soa/getSoaDetails"
+    const url: string = `${process.env.API_URL}/tenant/get-list`;
     const method: string = 'POST';
     const body: string = JSON.stringify({
         accountcode: params.accountcode,

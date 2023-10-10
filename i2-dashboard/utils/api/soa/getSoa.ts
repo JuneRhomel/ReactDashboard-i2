@@ -9,7 +9,7 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 */
 export async function getSoa(params: ParamGetSoaType, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<Response>{//<ApiResponse<User>> {
     // const url: string = '/api/soa/getSoa';
-    const url = "http://localhost:3000/api/soa/getSoa"
+    const url: string = `${process.env.API_URL}/tenant/get-list`;
     const method: string = 'POST';
     const body: string = JSON.stringify({
         accountcode: params.accountcode,

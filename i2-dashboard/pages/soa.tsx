@@ -17,7 +17,7 @@ export async function getServerSideProps(context: any) {
   }
 
   response = await api.soa.getSoa(soaParams, token);
-  const soas = mapObject(await response.json());
+  const soas = mapObject(await response?.json());
   const currentSoa = soas.shift();
   const paidSoas = soas.filter((soa: SoaType) => 
     soa.status === "Paid" && soa.id != currentSoa.id
@@ -31,7 +31,7 @@ export async function getServerSideProps(context: any) {
     soaId: currentSoa.id,
   }
   response = await api.soa.getSoaDetails(soaDetailsParams, token);
-  const soaDetails = mapObject(await response.json());
+  const soaDetails = mapObject(await response?.json());
 
   return {
     props: {
