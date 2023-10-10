@@ -1,9 +1,3 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
 .card {
     display: flex;
     align-items: flex-end;
@@ -61,29 +55,3 @@
 .text_green {
     color: var(--inventi-green);
 }
-
-.payments {
-    margin-top: 25px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.payments a {
-    color:  var(--inventi-neutral);
-    text-align: right;
-    font-size: 15px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-    text-decoration: none;
-}
-
-.title {
-    font-size: 20px;
-    color: black;
-    font-weight: 800;
-    margin-bottom: 10px;
-}
-

@@ -1,4 +1,3 @@
-import api from '@/utils/api'
 import styles from './SoaCard.module.css'
 import Link from 'next/link'
 import getDateString from '@/utils/getDateString';
@@ -9,7 +8,7 @@ const SoaCard = ({props}: {props: any}) => {
     const dueDate = getDateString(props?.dueDate);
     const amountDue = props?.amountDue;
     return (
-        <>
+        <div className={styles.container}>
             <div className={styles.desciption}>
                 <div>
                     <p className={`${styles.status} ${styles.paid}`}>{status}</p>
@@ -28,7 +27,7 @@ const SoaCard = ({props}: {props: any}) => {
                 <button className={styles.btn_pdf}>SOA PDF</button>
                 <button className={styles.pay_now}>PAY NOW</button>
             </div>
-        </>
+        </div>
     )
 }
 

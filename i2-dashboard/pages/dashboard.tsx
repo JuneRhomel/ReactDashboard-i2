@@ -1,9 +1,8 @@
 import Layout from "@/components/layouts/layout";
-import PaymentCards from "@/components/pages/soa/PaymentCards";
-import SoaCard from "@/components/pages/soa/SoaCard";
+import PaymentTransactions from "@/components/general/section/paymentTransactions/PaymentTransactions";
 import { UserType } from "@/types/models";
 import authorizeUser from "@/utils/authorizeUser";
-import Section from "@/components/general/Section";
+import Section from "@/components/general/section/Section";
 
 export function getServerSideProps(context: any) {
   // Do the stuff to check if user is authenticated
@@ -20,11 +19,13 @@ export default function Dashboard({ user }: { user: UserType }) {
   const props = {
     title: 'SOA',
     headerAction: null,
-}
+  }
+
+  const paymentTransactionsProps = {... props, title: 'Payment Transactions'};
   return (
     <Layout title="Dashboard" >
         <Section props={props}></Section>
-        <PaymentCards/>
+        <Section props={paymentTransactionsProps} />
     </Layout>
   )
 }
