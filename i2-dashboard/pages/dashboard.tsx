@@ -1,7 +1,7 @@
 import Layout from "@/components/layouts/layout";
 import PaymentCards from "@/components/pages/soa/PaymentCards";
 import SoaCard from "@/components/pages/soa/SoaCard";
-import { User } from "@/types/models";
+import { UserType } from "@/types/models";
 import authorizeUser from "@/utils/authorizeUser";
 
 export function getServerSideProps(context: any) {
@@ -14,7 +14,7 @@ export function getServerSideProps(context: any) {
     : { redirect: {destination: '/?error=accessDenied', permanent: false} };
 }
 
-export default function Dashboard({ user }: { user: any }) {
+export default function Dashboard({ user }: { user: UserType }) {
   // if data == authorized return the dashboard
   // else redirect to login
   return (

@@ -1,6 +1,4 @@
-import { User, LoginSchema } from "@/types/models";
-import { ApiResponse } from "@/types/responseWrapper";
-import { json } from "stream/consumers";
+import { LoginSchema } from "@/types/models";
 
 const userToken: string = "thisIsASampleUserToken"
 const baseURL: string = "http://apii2-sandbox.inventiproptech.com";
