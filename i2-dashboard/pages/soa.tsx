@@ -5,6 +5,7 @@ import authorizeUser from "@/utils/authorizeUser";
 import mapObject from "@/utils/mapObject";
 
 export async function getServerSideProps(context: any) {
+  // Need to update this function to address cases where the user is not authenticated therefor authorizeUser(jwt) returns null
   //Fetch all the soa objects.
   let response;
   const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
@@ -16,7 +17,7 @@ export async function getServerSideProps(context: any) {
     userId: user?.tenantId as number,
   }
 
-  response = await api.soa.getSoa(soaParams, token);
+  response = await api.soa.getSoa(soaParams, token);  // get all soas
   const soas = mapObject(await response?.json());
   const currentSoa = soas.shift();
   const paidSoas = soas.filter((soa: SoaType) => 
@@ -30,7 +31,7 @@ export async function getServerSideProps(context: any) {
     accountcode: accountCode,
     soaId: currentSoa.id,
   }
-  response = await api.soa.getSoaDetails(soaDetailsParams, token);
+  response = await api.soa.getSoaDetails(soaDetailsParams, token);  // get soa details (transactions for this soa)
   const soaDetails = mapObject(await response?.json());
 
   return {

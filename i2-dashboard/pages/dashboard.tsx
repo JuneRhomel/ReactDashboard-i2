@@ -3,6 +3,7 @@ import PaymentCards from "@/components/pages/soa/PaymentCards";
 import SoaCard from "@/components/pages/soa/SoaCard";
 import { UserType } from "@/types/models";
 import authorizeUser from "@/utils/authorizeUser";
+import Section from "@/components/general/Section";
 
 export function getServerSideProps(context: any) {
   // Do the stuff to check if user is authenticated
@@ -15,14 +16,15 @@ export function getServerSideProps(context: any) {
 }
 
 export default function Dashboard({ user }: { user: UserType }) {
-  // if data == authorized return the dashboard
   // else redirect to login
+  const props = {
+    title: 'SOA',
+    headerAction: null,
+}
   return (
     <Layout title="Dashboard" >
-      <div>{JSON.stringify(user)}</div>
-      <h3>SOA</h3>
-      <SoaCard/>
-      <PaymentCards/>
+        <Section props={props}></Section>
+        <PaymentCards/>
     </Layout>
   )
 }
