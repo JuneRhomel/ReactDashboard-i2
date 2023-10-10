@@ -1,5 +1,5 @@
 import Soa from "@/components/pages/soa/Soa";
-import { ParamGetSoaDetailsType, ParamGetSoaType, SoaType } from "@/types/models";
+import { ParamGetSoaDetailsType, ParamGetSoaType, SoaDetailsType, SoaType } from "@/types/models";
 import api from "@/utils/api";
 import authorizeUser from "@/utils/authorizeUser";
 import mapObject from "@/utils/mapObject";
@@ -32,7 +32,7 @@ export async function getServerSideProps(context: any) {
     soaId: currentSoa.id,
   }
   response = await api.soa.getSoaDetails(soaDetailsParams, token);  // get soa details (transactions for this soa)
-  const soaDetails = mapObject(await response?.json());
+  const soaDetails: SoaDetailsType[] = mapObject(await response?.json()) as SoaDetailsType[];
 
   return {
     props: {

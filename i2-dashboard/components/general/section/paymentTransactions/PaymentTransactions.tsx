@@ -1,10 +1,11 @@
+import { SoaDetailsType } from '@/types/models';
 import style from './PaymentTransactions.module.css'
 import { PaymentCard } from '@/components/general/cards/paymentCard/PaymentCard'
-const PaymentTransactions = () => {
+const PaymentTransactions = ({transactions} : {transactions: SoaDetailsType[]}) => {
     const array: number[] = [1, 2, 3];
     return (
         <div className={style.displayArea}>
-            {array.map((element) => (<PaymentCard key={element} />))}
+            {transactions.map((transaction, index) => (<PaymentCard key={index} transaction={transaction} />))}
 
             {/* <div className={style.card}>
                 <div>
