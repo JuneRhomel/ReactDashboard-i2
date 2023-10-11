@@ -1,6 +1,4 @@
-import { User, LoginSchema } from "@/types/models";
-import { ApiResponse } from "@/types/responseWrapper";
-import { json } from "stream/consumers";
+import { LoginSchema } from "@/types/models";
 
 const userToken: string = "thisIsASampleUserToken"
 const baseURL: string = "http://apii2-sandbox.inventiproptech.com";
@@ -11,7 +9,7 @@ const API_SECRET: string = '8vYW4XyXEsTUsxg8LvKzWcyB54BSFDa2'
 * Authenticates the user, returning an api response and message along with the user's data and authentication token.
 * @summary If no parameters are provided, this function wil use the user's authentication cookie. If parameters are passed, this will use the user's email and password to authenticate.
 * @param {LoginSchema} params - Optional. This is a json object that has the login form data
-* @return {Promise<ApiResponse<User>>} Returns a promise of an API response of type User.
+* @return {Promise<Response>} Returns a promise of a Response Object.
 */
 export async function authenticate(params?: LoginSchema): Promise<Response>{//<ApiResponse<User>> {
     // const url: string = `${baseURL}/tenant/authenticate`;

@@ -1,16 +1,26 @@
 import Layout from "@/components/layouts/layout"
-import SoaCard from "./SoaCard"
-import PaymentCards from "./PaymentCards"
 import style from "./Soa.module.css"
+import { SoaDetailsType, SoaType } from "@/types/models"
+import Section from "@/components/general/section/Section"
 
-const Soa = () => {
+const Soa = ({currentSoa, soaDetails} : {
+    currentSoa: SoaType,
+    soaDetails: SoaDetailsType
+}) => {
+    const soaProps = {
+        title: 'SOA',
+        headerAction: null,
+        data: currentSoa,
+    }
+    const paymentTransactionsProps = {
+        title: 'Payment Transactions',
+        headerAction: 'Show All',
+        data: soaDetails,
+    }
     return (
-        <Layout title="SOA">
-            <div>
-                <h1 className="title-section">SOA</h1>
-                <SoaCard />
-                <PaymentCards />
-            </div>
+        <Layout title="i2 - SOA">
+            <Section props={soaProps}/>
+            <Section props={paymentTransactionsProps}/>
         </Layout>
     )
 }

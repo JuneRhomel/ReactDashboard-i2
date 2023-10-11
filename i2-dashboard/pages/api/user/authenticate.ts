@@ -1,7 +1,8 @@
-import { User } from "@/types/models";
+import { UserType } from "@/types/models";
 import { ApiResponse } from "@/types/responseWrapper";
 import { NextApiRequest, NextApiResponse } from "next";
 import jwt, { Secret } from 'jsonwebtoken';
+import copyHeaders from "@/utils/copyHeaders";
 
 const baseURL: string = "http://apii2-sandbox.inventiproptech.com";
 const url: string = `${baseURL}/tenant/authenticate`;
@@ -9,10 +10,8 @@ const jwtSecret : Secret = process.env.JWT_SECRET as Secret;
 
 const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
     const body = JSON.stringify(req.body);
-    const headers: HeadersInit = {
-        'Content-Type': req.headers['content-type'] as string,
-        'Authorization': req.headers.authorization as string,
-      };
+    const headers: HeadersInit = copyHeaders(req);
+
     try {
         const response = await fetch(url, {
             method: req.method,
@@ -20,11 +19,11 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
             headers: headers,
             referrerPolicy: "unsafe-url"
         })
-        const jsonResponse: ApiResponse<User> = await response.json()
+        const jsonResponse: ApiResponse<UserType> = await response.json()
         if (jsonResponse.success) {
             // Create a jwt with the user info
-            const payload: User = jsonResponse?.data as User;
-            const token: string = jwt.sign(payload, jwtSecret, {expiresIn: '2s'})
+            const payload: UserType = jsonResponse?.data as UserType;
+            const token: string = jwt.sign(payload, jwtSecret, {expiresIn: '1d'})
             const cookie: string = getCookieString(token);
             res.status(200)
                 .setHeader("Set-Cookie", cookie)
