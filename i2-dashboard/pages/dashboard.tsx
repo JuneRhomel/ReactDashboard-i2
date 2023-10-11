@@ -18,13 +18,17 @@ export async function getServerSideProps(context: any) {
     userId: user?.tenantId as number,
     limit: 1,
   }
-  const soa: SoaType = mapObject(await api.soa.getSoa(soaParams, token)) as SoaType;
+  response = await api.soa.getSoa(soaParams, token);
+  const soa: SoaType = mapObject(await response?.json()) as SoaType;
+
+  
   const soaDetailsParams: ParamGetSoaDetailsType = {
     accountcode: accountCode,
-    soaId: parseInt(soa.id),
+    soaId: soa.id,
   }
   response = await api.soa.getSoaDetails(soaDetailsParams, token);  // get soa details (transactions for this soa)
   const soaDetails: SoaDetailsType[] = mapObject(await response?.json()) as SoaDetailsType[];
+  console.log(soaDetails)
 
   return user
     ? {props: {user, soa, soaDetails}}
@@ -39,11 +43,16 @@ export default function Dashboard(props : any) {
     data: props.soa,
   }
 
-  const paymentTransactionsProps = {... soaProps, title: 'Payment Transactions', data: props.soaDetails as SoaDetailsType};
+  const paymentTransactionsProps = {
+    title: 'Payment Transactions',
+    headerAction: null,
+    data: props.soaDetails as SoaDetailsType,
+    };
+
   return (
     <Layout title="Dashboard" >
         <Section props={soaProps}></Section>
-        <Section props={paymentTransactionsProps} />
+        {/* <Section props={paymentTransactionsProps} /> */}
     </Layout>
   )
 }
