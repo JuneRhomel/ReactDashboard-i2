@@ -4,11 +4,13 @@ import SoaCard from '../cards/soaCard/SoaCard';
 import styles from './Section.module.css';
 const Section = ({props}: {props: any}) => {
     const title = props?.title.toLowerCase();
+    
     const cardMap: Record<string, ReactNode> = {
         'soa': <SoaCard props={props.data}/>,
         'payment transactions': <PaymentTransactions transactions={props.data}/>,
     }
     const componentToRender: ReactNode = cardMap[title];
+
     return (
         <>
             <div className={styles.header}>
