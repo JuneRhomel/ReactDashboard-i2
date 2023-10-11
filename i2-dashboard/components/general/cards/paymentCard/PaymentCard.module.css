@@ -39,13 +39,30 @@
     font-size: 22px;
 }
 
-.invalid {
+.invalid .status {
     color: var(--inventi-red);
     background: var(--error-bg);
 }
 
-.successful{
+.invalid + div > .amount {
+    color: var(--inventi-red);
+}
+
+.forVerification .status {
+    background: var(--forVerification-bg);
+    color: var(--fontColour-forVerification);
+}
+
+.forVerification + div > .amount {
+    color: var(--inventi-neutral);
+}
+
+.successful .status {
     background: var(--success-bg);
+}
+
+.successful + div > .amount {
+    color: var(--inventi-green);
 }
 
 .text_red {

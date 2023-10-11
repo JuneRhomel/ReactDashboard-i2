@@ -1,21 +1,26 @@
 import { SoaDetailsType } from '@/types/models';
 import style from './PaymentCard.module.css';
 import getDateTimeString from '@/utils/getDateTimeString';
+import formatCurrency from '@/utils/formatCurrency';
 
 export const PaymentCard = ({transaction} : {transaction: SoaDetailsType}) => {
   console.log(transaction);
   const transactionDate = getDateTimeString(transaction?.transactionDate);
-  const amount = transaction?.amount;
+  const amount = formatCurrency(transaction?.amount);
+  const status = transaction?.status;
+
   return (
     <div className={style.card}>
-        <div>
-            <span className={`${style.status} ${style.invalid} `}>{transaction?.status}</span>
+        <div className={ status === 'Invalid' ? `${style.invalid}` :
+                        status === 'For Verification' ? `${style.forVerification}` :
+                        `${style.successful}`}>
+            <span className={`${style.status} ${style.invalid}`}>{status}</span>
             <p className={style.description}>{transaction.particular}</p>
             <p className={style.label}>{transactionDate}</p>
             <p className={style.label}>{transaction?.paymentType}</p>
         </div>
         <div>
-            <p className={`${style.amount} ${style.text_red}`}>{amount}</p>
+            <p className={`${style.amount}`}>{amount}</p>
         </div>
     </div>
   )

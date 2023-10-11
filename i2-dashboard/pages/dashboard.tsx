@@ -1,30 +1,48 @@
 import Layout from "@/components/layouts/layout";
 import PaymentTransactions from "@/components/general/section/paymentTransactions/PaymentTransactions";
-import { UserType } from "@/types/models";
+import { ParamGetSoaDetailsType, ParamGetSoaType, SoaDetailsType, SoaType, UserType } from "@/types/models";
 import authorizeUser from "@/utils/authorizeUser";
 import Section from "@/components/general/section/Section";
+import api from "@/utils/api";
+import mapObject from "@/utils/mapObject";
 
-export function getServerSideProps(context: any) {
+export async function getServerSideProps(context: any) {
   // Do the stuff to check if user is authenticated
-  const token: string = context.req.cookies.token;
-  const user = authorizeUser(token);
-  
+  let response;
+  const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
+  const jwt = context.req.cookies.token;
+  const user = authorizeUser(jwt);
+  const token = `${user?.token}:tenant`;
+  const soaParams: ParamGetSoaType = {
+    accountcode: accountCode,
+    userId: user?.tenantId as number,
+    limit: 1,
+  }
+  const soa: SoaType = mapObject(await api.soa.getSoa(soaParams, token)) as SoaType;
+  const soaDetailsParams: ParamGetSoaDetailsType = {
+    accountcode: accountCode,
+    soaId: parseInt(soa.id),
+  }
+  response = await api.soa.getSoaDetails(soaDetailsParams, token);  // get soa details (transactions for this soa)
+  const soaDetails: SoaDetailsType[] = mapObject(await response?.json()) as SoaDetailsType[];
+
   return user
-    ? {props: {user}}
+    ? {props: {user, soa, soaDetails}}
     : { redirect: {destination: '/?error=accessDenied', permanent: false} };
 }
 
-export default function Dashboard({ user }: { user: UserType }) {
+export default function Dashboard(props : any) {
   // else redirect to login
-  const props = {
+  const soaProps = {
     title: 'SOA',
     headerAction: null,
+    data: props.soa,
   }
 
-  const paymentTransactionsProps = {... props, title: 'Payment Transactions'};
+  const paymentTransactionsProps = {... soaProps, title: 'Payment Transactions', data: props.soaDetails as SoaDetailsType};
   return (
     <Layout title="Dashboard" >
-        <Section props={props}></Section>
+        <Section props={soaProps}></Section>
         <Section props={paymentTransactionsProps} />
     </Layout>
   )

@@ -2,6 +2,9 @@ import { SoaDetailsType } from '@/types/models';
 import style from './PaymentTransactions.module.css'
 import { PaymentCard } from '@/components/general/cards/paymentCard/PaymentCard'
 const PaymentTransactions = ({transactions} : {transactions: SoaDetailsType[]}) => {
+    if (transactions == undefined) {
+        return (<div>Undefined</div>)
+    }
     const array: number[] = [1, 2, 3];
     return (
         <div className={style.displayArea}>

@@ -22,7 +22,7 @@ const getDateString = (dayOrDateString: string | number | null, month?: number, 
         const day = parseInt(parts[2]);
         return getDateString(day, month, year);
     } else {
-        dateString += `${monthNames[month - 1]} `;
+        dateString += `${monthNames[month as number - 1]} `;
         if (dayOrDateString != null) {
             dateString += `${dayOrDateString}, `
         }
