@@ -73,7 +73,7 @@ $contract = json_decode($result);
                         <div class="">
                             <a style="font-weight: 800;" href="change-password.php">Change Password</a>
                         </div>
-                        <?php if($info[0]->ownership === 'SO') { ?>
+                        <?php if ($info[0]->property_type === 'Commercial') { ?>
                         <div class="">
                             <a style="font-weight: 800;" href="change-master-pass.php">Change Master Password</a>
                         </div>
@@ -186,11 +186,11 @@ $contract = json_decode($result);
         $('#master-pass').modal('hide')
     })
     $('.edit-profile').on('click', function() {
-        window.location.href = 'http://portali2.sandbox.inventiproptech.com/my-profile-edit_new.php';
+        window.location.href = '<?=WEB_ROOT ?>/my-profile-edit_new.php';
     });
 
     $('.back-button-sr').on('click', function() {
-        window.location.href = 'http://portali2.sandbox.inventiproptech.com';
+        window.location.href = '<?=WEB_ROOT ?>';
     });
     const label = $('.password');
     const originalText = label.text();

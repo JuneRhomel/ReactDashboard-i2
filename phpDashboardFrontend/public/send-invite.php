@@ -63,7 +63,7 @@ $user = json_decode($user);
 <script>
     $(document).ready(function() {
         $('.back-button-sr').on('click', function() {
-            window.location.href = 'http://portali2.sandbox.inventiproptech.com/billing.php';
+            window.location.href = '<?=WEB_ROOT ?>/billing.php';
         })
         $("#form-main").off('submit').on('submit', function(e) {
             e.preventDefault();

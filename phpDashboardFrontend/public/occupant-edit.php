@@ -137,7 +137,7 @@ $occupied = json_decode($result);
                             allowEscapeKey: false, // Prevent closing on pressing Esc key
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = 'http://portali2.sandbox.inventiproptech.com/occupant.php';
+                                window.location.href = '<?=WEB_ROOT ?>/occupant.php';
                             }
                         });
                     } else {
@@ -158,6 +158,6 @@ $occupied = json_decode($result);
     })
 
     $('.cancel').on('click', function() {
-        window.location.href = 'http://portali2.sandbox.inventiproptech.com/occupant.php';
+        window.location.href = '<?=WEB_ROOT ?>/occupant.php';
     });
 </script>

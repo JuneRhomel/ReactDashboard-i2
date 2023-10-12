@@ -28,8 +28,6 @@ $info = $records->fetchAll();
 
 $acctcode = ($_GET['acctcode']) ?? "";
 $email = ($_GET['email']) ?? "";
-
-
 ?>
 <style>
 	input#registration,
@@ -151,6 +149,7 @@ $email = ($_GET['email']) ?? "";
 					<form method="post" action="register-save.php" id="form-main">
 						<input id="request-form" name="acctcode" type="hidden" value="<?= $acctcode ?>" required placeholder="text">
 						<input id="request-form" name="ownership" type="hidden" value="<?= $info[0]['ownership'] ?>" required placeholder="text">
+						<input id="request-form" name="property_type" type="hidden" value="<?= $info[0]['property_type'] ?>" required placeholder="text">
 						<?php if ($info[0]['ownership'] === 'HOA') { ?>
 							<?php if (isset($_GET['from'])) { ?>
 								<input id="request-form" name="type" type="hidden" value="Tenant" required placeholder="text">
@@ -183,7 +182,7 @@ $email = ($_GET['email']) ?? "";
 								<input id="request-form" name="address" type="text" required placeholder="text">
 								<label id="request-form">Address <span class="text-danger">*</span></label>
 							</div>
-							<?php if ($info[0]['ownership'] === 'SO') { ?>
+							<?php if ($info[0]['property_type'] === 'Commercial') { ?>
 								<div class="form-group">
 									<input id="request-form" name="company_name" type="text" required placeholder="text">
 									<label id="request-form">Company <span class="text-danger">*</span></label>
@@ -274,7 +273,7 @@ $email = ($_GET['email']) ?? "";
 	});
 
 	$('.confirm-email').on('click', function() {
-		window.location = 'http://portali2.sandbox.inventiproptech.com/?acctcode=<?= $acctcode ?>'
+		window.location = '<?=WEB_ROOT ?>/?acctcode=<?= $acctcode ?>'
 	});
 
 	$('.log-in').on('click', function() {
@@ -286,9 +285,9 @@ $email = ($_GET['email']) ?? "";
 	});
 
 	$('.log-in').on('click', function() {
-		window.location.href = 'http://portali2.sandbox.inventiproptech.com/index.php';
+		window.location.href = '<?=WEB_ROOT ?>/index.php';
 	});
 	$('.back-button-sr').on('click', function() {
-		window.location.href = 'http://portali2.sandbox.inventiproptech.com';
+		window.location.href = '<?=WEB_ROOT ?>';
 	});
 </script>

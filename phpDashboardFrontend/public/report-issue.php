@@ -58,10 +58,10 @@ $closedtotal = count($closed);
                                     <input name="module" type="hidden" value="<?=$module ?>">
                                     <input name="table" type="hidden" value="<?=$table ?>">
                                     <input name="name_id" type="hidden" value="<?=$user->id ?>">
-                                    <input name="unit_id" type="hidden" value="<?=$user->def_unit_id ?>">
+                                    <input name="unit_id" type="hidden" value="<?=$user->unit_id ?>">
                                     <input name="date" type="hidden" value="<?=date('Y-m-d H:i:s') ?> ">
                                     <input name="status_id" type="hidden" value="1">
-                                    <input name="created_by" type="hidden" value="<?=$user->unit_id ?>">                                    
+                                    <input name="created_by" type="hidden" value="<?=$user->id ?>">                                    
 
                                     <div class="w-100">
                                         <div class="w-100 form-group">
@@ -88,7 +88,7 @@ $closedtotal = count($closed);
                                     </div>
                                     <div class="w-100">
                                         <div class="w-100 form-group">
-                                            <input id="request-form" name="unit" type="text" disabled value="<?=$user->default_unit ?>" required placeholder="text">
+                                            <input id="request-form" name="unit" type="text" disabled value="<?=$user->unit_name ?>" required placeholder="text">
                                             <label id="request-form">Unit # <span class="text-danger">*</span></label>
                                         </div>
                                     </div>

@@ -32,57 +32,57 @@ $info = json_decode($result);
 </nav>
 <div class="menu-side-bar">
     <div class="nav-menu  <?= $location_menu === 'dashboard' ? 'active-menu' : '' ?> ">
-        <a class="color-black" href="http://portali2.sandbox.inventiproptech.com/home.php">
+        <a class="color-black" href="<?=WEB_ROOT ?>/home.php">
             <span class="material-icons">dashboard</span> Dashboard
         </a>
     </div>
     <div class="nav-menu  <?= $location_menu === 'billing' ? 'active-menu' : '' ?> ">
-        <a class="color-black" href="http://portali2.sandbox.inventiproptech.com/billing.php"><span class="material-icons">ballot</span>
+        <a class="color-black" href="<?=WEB_ROOT ?>/billing.php"><span class="material-icons">ballot</span>
             SOA
         </a>
     </div>
     <div class="nav-menu  <?= $location_menu === 'my-request' ? 'active-menu' : '' ?> ">
-        <a class="color-black" href="http://portali2.sandbox.inventiproptech.com/my-requests_new.php"><span class="material-icons">receipt</span>
+        <a class="color-black" href="<?=WEB_ROOT ?>/my-requests_new.php"><span class="material-icons">receipt</span>
             My Request
         </a>
     </div>
     <div class="nav-menu  <?= $location_menu === 'news&announcement' ? 'active-menu' : '' ?> ">
-        <a class="color-black" href="http://portali2.sandbox.inventiproptech.com/news-announcement.php"><span class="material-icons">insert_chart</span>
+        <a class="color-black" href="<?=WEB_ROOT ?>/news-announcement.php"><span class="material-icons">insert_chart</span>
             News & Announcement
         </a>
     </div>
 
     <?php if($info[0]->ownership === 'HOA') { if ($user->type === "Owner" || $user->type === "Unit Owner") { ?>
         <div class="nav-menu  <?= $location_menu === 'occupant' ? 'active-menu' : '' ?> ">
-            <a class="color-black" href="http://portali2.sandbox.inventiproptech.com/occupant.php"><span class="material-icons">insert_chart</span>
+            <a class="color-black" href="<?=WEB_ROOT ?>/occupant.php"><span class="material-icons">insert_chart</span>
                 Occupant
             </a>
         </div>
         <div class="nav-menu  <?= $location_menu === 'occupant-reg' ? 'active-menu' : '' ?> ">
-            <a class="color-black" href="http://portali2.sandbox.inventiproptech.com/occupant-reg.php"><span class="material-icons">insert_chart</span>
+            <a class="color-black" href="<?=WEB_ROOT ?>/occupant-reg.php"><span class="material-icons">insert_chart</span>
                 Occupant Regstration
             </a>
         </div>
         <div class="nav-menu  <?= $location_menu === 'send-invite' ? 'active-menu' : '' ?> ">
-            <a class="color-black" href="http://portali2.sandbox.inventiproptech.com/send-invite.php"><span class="material-icons">insert_chart</span>
+            <a class="color-black" href="<?=WEB_ROOT ?>/send-invite.php"><span class="material-icons">insert_chart</span>
                 Send Invite
             </a>
         </div>
     <?php }} ?>
 
     <!-- <div class="nav-menu  <?= $location_menu === 'dashboard' ? 'active-menu' : '' ?> ">
-                <a href class="color-black"="http://portali2.sandbox.inventiproptech.com/building-directory_new.php" >
+                <a href class="color-black"="<?=WEB_ROOT ?>/building-directory_new.php" >
                 Building Directory
                 </a>
             </div> -->
     <div class="nav-menu   <?= $location_menu === 'profile' ? 'active-menu' : '' ?> ">
-        <a class="color-black" href="http://portali2.sandbox.inventiproptech.com/my-profile_new.php">
+        <a class="color-black" href="<?=WEB_ROOT ?>/my-profile_new.php">
             My Profile
         </a>
     </div>
-    <button onclick="location='http://portali2.sandbox.inventiproptech.com/logout.php'">Logout</button>
+    <button onclick="location='<?=WEB_ROOT ?>/logout.php'">Logout</button>
     <div class="menu-logo">
-        <img src="./assets/images/navlogo1.png" alt="">
+        <img src="./assets/images/navlogo1.png " alt="">
     </div>
 </div>
 

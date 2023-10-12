@@ -34,7 +34,7 @@
 </html>
 <script>
  $('.submit').on('click', function(){
-        window.location.href = 'http://portali2.sandbox.inventiproptech.com/home_new.php';
+        window.location.href = '<?=WEB_ROOT ?>/home_new.php';
     });
 $('.bi-eye-slash').on('click', function(){
     var x = $('.password');

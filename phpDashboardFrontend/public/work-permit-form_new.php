@@ -66,7 +66,7 @@ $closedtotal = count($closed);
                                     <input name="module" type="hidden" readonly value="<?= $module ?>">
                                     <input name="table" type="hidden" readonly value="<?= $table ?>">
                                     <input type="hidden" name="name_id" readonly value="<?= $user->id ?>">
-                                    <input type="hidden" name="unit_id" readonly value="<?= $user->def_unit_id ?>">
+                                    <input type="hidden" name="unit_id" readonly value="<?= $user->unit_id ?>">
                                     <input name="work_details_id" readonly type="hidden" id="work_details_id">
                                     <div class="">
                                         <div class="select form-group">
@@ -100,7 +100,7 @@ $closedtotal = count($closed);
                                     </div>
                                     <div class="">
                                         <div class="form-group">
-                                            <input id="request-form" name="unit" type="text" disabled value="<?= $user->default_unit ?>" required placeholder="text">
+                                            <input id="request-form" name="unit" type="text" disabled value="<?= $user->unit_name ?>" required placeholder="text">
                                             <label id="request-form">Unit # <span class="text-danger">*</span></label>
                                         </div>
                                     </div>

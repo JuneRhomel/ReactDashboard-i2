@@ -26,21 +26,13 @@ $balance = json_decode($result);
 // vdump($balance[0]->balance);
 
 
-$result =  apiSend('tenant', 'get-list-sr', ['table' => 'vw_soa', 'condition' => 'resident_id="' . $user->id . '"']);
+$result =  apiSend('tenant', 'get-list', ['table' => 'vw_soa', 'condition' => 'resident_id="' . $user->id . '"']);
 $soa = json_decode($result);
 
-$result =  apiSend('tenant', 'get-list-sr', ['table' => 'soa_payment', 'condition' => 'soa_id="' . $balance[0]->id . '"', 'limit' => 3]);
+
+$result =  apiSend('tenant', 'get-list', ['table' => 'soa_payment', 'condition' => 'soa_id="' . $balance[0]->id . '"', 'limit' => 3]);
 $soa_detail = json_decode($result);
 // var_dump($soa_detail);
-
-if ($soa_detail) {
-    $totalbal = $balance[0]->amount_due;
-    foreach ($soa_detail as $item) {
-        $totalbal = $totalbal - $item->amount;
-    }
-} else {
-    $totalbal = $balance[0]->amount_due;
-}
 
 
 ?>
@@ -60,7 +52,7 @@ if ($soa_detail) {
                     <?php if ($soa) { ?>
                         <?php
                         foreach ($soa  as $item) {
-                            // echo;
+
                         ?>
                             <div class="soa-bill">
                                 <div class="d-flex justify-content-between align-items-end">
@@ -72,20 +64,11 @@ if ($soa_detail) {
                                     </div>
                                     <div class="text-end">
                                         <label>Total Amount Due</label>
-                                        <h3 class="<?= $item->status === "Paid" ? 'text-decoration-line-through' : '' ?>">₱ <?= $item->amount_due ?> </h3>
+                                        <h3 class="<?= $item->status === "Paid" ? 'text-decoration-line-through' : '' ?>">₱ <?=$item->amount_due ?> </h3>
                                     </div>
                                 </div>
                                 <div class="text-end m-2">
-                                    <a href="">View Details</a>
-                                </div>
-                                <div class="d-flex gap-3 justify-content-between">
-                                    <button onclick="soa_pdf('<?= $item->id ?>')" class="main-btn w-50">
-                                        SOA PDF
-                                    </button>
-                                    <button onclick="payment('<?= $item->enc_id ?>')" class="border-btn-primary w-50 payment ">
-                                        Proof of Payment
-                                    </button>
-
+                                    <a href="<?= WEB_ROOT ?>/view-soa.php?id=<?= $item->enc_id ?>">View Details</a>
                                 </div>
                             </div>
 
@@ -103,6 +86,15 @@ if ($soa_detail) {
     <?php include('menu.php') ?>
 </div>
 <script>
+    const soa_pdf = (id) => {
+        window.open(`<?= WEB_ROOT . "/genpdf.php?display=plain&id=" ?>${id}`, '_blank')
+    }
+    const payment = (id) => {
+        window.location.href = `<?= WEB_ROOT ?>/proof-of-payment.php?id=${id}`;
+    }
+    const pay_now = (id) => {
+        window.location.href = `<?= WEB_ROOT ?>/payment-method.php?id=${id}`;
+    }
     $('.back-button-sr').on('click', function() {
         window.location.href = 'http://portali2.sandbox.inventiproptech.com/billing.php';
     })

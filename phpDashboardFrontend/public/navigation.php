@@ -16,7 +16,7 @@ $notif = json_decode($result);
 $result = apiSend('module', 'get-listnew', ['table' => 'system_info']);
 $system_info = json_decode($result);
 
-// var_dump($system_info);
+// var_dump($system_info[0]->logo);
 
 $data = [
 	'view' => 'users'
@@ -35,7 +35,7 @@ $user = json_decode($user);
 			menu
 		</span> -->
 		<div class="menu-logo">
-			<img src="assets/icon/logo.png" alt="">
+			<img src="<?=$system_info[0]->logo?$system_info[0]->logo : "./assets/images/inventi-logo-blue.png" ?>" alt="">
 		</div>
 	</div>
 	<div class="d-flex align-items-center gap-1">
@@ -54,23 +54,23 @@ $user = json_decode($user);
 	<nav class="navigation-links">
 		<div class="bg-nav">
 			<div class="overlay"></div>
-			<img class="logo-nav" src="assets/icon/Group 2311.png" alt="">
+			<img class="logo-nav" src="<?=$system_info[0]->logo?$system_info[0]->logo :"./assets/images/inventi-logo-blue.png" ?>" alt="">
 			<img class="bg-img" src="assets/icon/Rectangle 624 1.png">
 		</div>
 		<ul>
-			<!-- <li><a href="http://portali2.sandbox.inventiproptech.com">Home</a></li>
-					<li><a href="http://portali2.sandbox.inventiproptech.com/billing.php">SOA <span>3</span></a></li>
-					<li><a href="http://portali2.sandbox.inventiproptech.com/my-requests_new.php">My request <span>3</span></a></li>-->
+			<!-- <li><a href="<?=WEB_ROOT ?>">Home</a></li>
+					<li><a href="<?=WEB_ROOT ?>/billing.php">SOA <span>3</span></a></li>
+					<li><a href="<?=WEB_ROOT ?>/my-requests_new.php">My request <span>3</span></a></li>-->
 			<?php
 			if ($info[0]->ownership === 'HOA') {
 				if ($user->type === "Owner" || $user->type === "Unit Owner") { ?>
-					<li><a href="http://portali2.sandbox.inventiproptech.com/occupant.php">Occupant </a></li>
-					<li><a href="http://portali2.sandbox.inventiproptech.com/occupant-reg.php">Occupant Regstration</a></li>
-					<li><a href="http://portali2.sandbox.inventiproptech.com/send-invite.php">Send Invite</a></li>
+					<li><a href="<?=WEB_ROOT ?>/occupant.php">Occupant </a></li>
+					<li><a href="<?=WEB_ROOT ?>/occupant-reg.php">Occupant Regstration</a></li>
+					<li><a href="<?=WEB_ROOT ?>/send-invite.php">Send Invite</a></li>
 			<?php }
 			} ?>
 
-			<li><a href="http://portali2.sandbox.inventiproptech.com/my-profile_new.php">My Profile</a></li>
+			<li><a href="<?=WEB_ROOT ?>/my-profile_new.php">My Profile</a></li>
 		</ul>
 		<!-- <div class="select-lang-container">
 						<button id="select-lang-btn" class="lang">
@@ -107,8 +107,8 @@ $user = json_decode($user);
 			<div class="bills-container notif">
 
 				<?php foreach ($notif as $item) { ?>
-					<div class="card-box blue">
-						<div class="card-container">
+					<div class="card-box blue align-items-center">
+						<div class="card-container flex-row gap-3 align-items-center">
 							<div>
 								<img src="assets/images/visitors-icon.png" alt="">
 							</div>
@@ -166,7 +166,7 @@ $user = json_decode($user);
 <script>
 	$(".sidenav").show()
 	$('.out').click(function() {
-		window.location.href = 'http://portali2.sandbox.inventiproptech.com/logout.php';
+		window.location.href = '<?=WEB_ROOT ?>/logout.php';
 	})
 	$(".notification").click(function() {
 		$(".sidenav").addClass("show-notf")
@@ -198,13 +198,13 @@ $user = json_decode($user);
 
 
 	$('.add-sr').on('click', function() {
-		window.location.href = 'http://portali2.sandbox.inventiproptech.com/service-request.php';
+		window.location.href = '<?=WEB_ROOT ?>/service-request.php';
 	})
 	$('.pay-now').on('click', function() {
-		window.location.href = 'http://portali2.sandbox.inventiproptech.com/billing.php';
+		window.location.href = '<?=WEB_ROOT ?>/billing.php';
 	})
 	$('.follow-up-concern').on('click', function() {
-		window.location.href = 'http://portali2.sandbox.inventiproptech.com/my-requests_new.php';
+		window.location.href = '<?=WEB_ROOT ?>/my-requests_new.php';
 	})
 	$(".selectedLang").click(function() {
 		$(".selectedLang").removeClass("active");

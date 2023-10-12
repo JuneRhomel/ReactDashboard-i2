@@ -52,6 +52,6 @@ $user = json_decode($user);
     )
 
     $('.back-button-sr').on('click', function() {
-        window.location.href = 'http://portali2.sandbox.inventiproptech.com';
+        window.location.href = '<?=WEB_ROOT ?>';
     });
 </script>

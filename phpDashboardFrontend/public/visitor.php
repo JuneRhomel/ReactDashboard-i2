@@ -54,12 +54,12 @@ $deniedtotal = count($vp_denied);
 
             <div class="card-body" style="margin-top:16px">
               <div class=" forms">
-                <form action="http://portali2.sandbox.inventiproptech.com/gatepass-save.php" method="post" id="form-main">
+                <form action="<?=WEB_ROOT ?>/gatepass-save.php" method="post" id="form-main">
                   <input name="date" type="hidden" readonly value="<?= date('Y-m-d H:i:s') ?> ">
                   <input name="module" type="hidden" readonly value="<?= $module ?>">
                   <input name="table" type="hidden" readonly value="<?= $table ?>">
                   <input type="hidden" name="name_id" readonly value="<?= $user->id ?>">
-                  <input type="hidden" name="unit_id" readonly value="<?= $user->def_unit_id ?>">
+                  <input type="hidden" name="unit_id" readonly value="<?= $user->unit_id ?>">
                   <div class="w-100">
                     <div class="w-100 form-group">
                       <input id="request-form" name="name" value="<?= $user->fullname ?>" disabled required placeholder="text">
@@ -69,7 +69,7 @@ $deniedtotal = count($vp_denied);
 
                   <div class="w-100">
                     <div class="w-100 form-group">
-                      <input id="request-form" name="unit" type="text" disabled value="<?= $user->default_unit ?>" required placeholder="text">
+                      <input id="request-form" name="unit" type="text" disabled value="<?= $user->unit_name ?>" required placeholder="text">
                       <label id="request-form">Unit # <span class="text-danger">*</span></label>
                     </div>
                   </div>
@@ -112,7 +112,7 @@ $deniedtotal = count($vp_denied);
 
 
                 <input id="guest_id" type="hidden" readonly class="form-control">
-                <form method="post" action="http://portali2.sandbox.inventiproptech.com/gatepass-save.php" id="item-send">
+                <form method="post" action="<?=WEB_ROOT ?>/gatepass-save.php" id="item-send">
                   <div>
                     <div id="visitorItem" class="input-items">
                       <div>
@@ -381,7 +381,7 @@ $deniedtotal = count($vp_denied);
         <div class="description-label">
                 <p>Name</p>
                 <p>Contact #</p>
-                <p>Address</p>
+                <p>Vist Purpose</p>
             </div>
             <div class="description-value">
                 <p>${name}</p>

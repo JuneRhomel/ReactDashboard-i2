@@ -119,11 +119,11 @@ $resident = json_decode($result);
             $('#master-pass').modal('hide')
         })
         $('.edit-profile').on('click', function() {
-            window.location.href = 'http://portali2.sandbox.inventiproptech.com/occupant-edit.php?id=<?= $_GET['id'] ?>';
+            window.location.href = '<?=WEB_ROOT ?>/occupant-edit.php?id=<?= $_GET['id'] ?>';
         });
 
         $('.back-button-sr').on('click', function() {
-            window.location.href = 'http://portali2.sandbox.inventiproptech.com/occupant-reg.php';
+            window.location.href = '<?=WEB_ROOT ?>/occupant-reg.php';
         });
         const label = $('.password');
         const originalText = label.text();

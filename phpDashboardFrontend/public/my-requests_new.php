@@ -63,8 +63,6 @@ $allsr = json_decode($result);
                             <?php if ($sr->type === "Gate Pass") {
                                 $result =  apiSend('tenant', 'get-list-sr', ['table' => $sr->table, 'condition' => 'id="' . $sr->id . '"']);
                                 $data = json_decode($result);
-
-
                                 $result =  apiSend('tenant', 'get-list-sr', ['table' => "gatepass_personnel", 'condition' => 'gatepass_id="' .  $data[0]->id . '"']);
                                 $personel = json_decode($result);
 
@@ -214,15 +212,6 @@ $allsr = json_decode($result);
                                     </div>
                                 </div>
                             <?php } ?>
-
-
-
-
-
-
-
-
-
                         <?php } ?>
                     <?php } else {
                         echo "No Service Requests";
@@ -233,70 +222,19 @@ $allsr = json_decode($result);
     </div>
     <?php include('menu.php') ?>
 </div>
-<!-- <div class="modal" tabindex="-1" role="dialog" id='follow-up'>
-        <div class="modal-dialog  modal-dialog-centered" role="document">
-            <div class="modal-content px-1 pt-2" style="border-radius: 10px;">
-                <div class="modal-header justify-content-end pb-0" style="border-bottom: 0px;">
-                    <button type="button" class="btn-close btn-close-followup" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"></span>
-                    </button>
-                </div>
-                <div class="modal-body pt-0 text-center" style="padding-bottom: 20px;">
-                    <h3 class="modal-title align-center text-center mb-3" style="font-weight: 600">Follow Up</h3>
-                    <textarea class="form-control" placeholder="Message" style="border-radius: 10px; height: 150px;"></textarea>
-                    <div class="col-12 py-3">
-                        <button class="submit px-5 py-2 w-100" id="registration-buttons">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id='follow-up-message'>
-        <div class="modal-dialog  modal-dialog-centered" role="document">
-            <div class="modal-content px-1 pt-2" style="border-radius: 10px;">
-                <div class="modal-header justify-content-end pb-0" style="border-bottom: 0px;">
-                    <button type="button" class="btn-close btn-close-message" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"></span>
-                    </button>
-                </div>
-                <div class="modal-body pt-0 text-center" style="padding-bottom: 20px;">
-                    <h3 class="modal-title align-center text-center mb-3" style="font-weight: 600">Great!</h3>
-                    <label>Your request has been created successfully!</label>
-                    <div class="col-12 py-3">
-                        <button class="ok px-5 py-2 w-100" id="registration-buttons">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 
 
 </html>
 <script>
     $('.follow-up').on('click', function() {
-        window.location.href = "http://portali2.sandbox.inventiproptech.com/unit-repair-status_new.php";
+        window.location.href = "<?=WEB_ROOT ?>/unit-repair-status_new.php";
     });
     $('.add-btn-sr').on('click', function() {
-        window.location.href = "http://portali2.sandbox.inventiproptech.com/service-request.php";
+        window.location.href = "<?=WEB_ROOT ?>/service-request.php";
     });
 
-
-
-    // $('.submit').on('click', function(){
-    //     $('#follow-up').modal('hide');
-    //     $('#follow-up-message').modal('show');
-    // });
-
-    // $('.btn-close-message').on('click', function(){
-    //     $('#follow-up-message').modal('hide');
-    // });
-
-    // $('.ok').on('click', function(){
-    //     $('#follow-up-message').modal('hide');
-    // });
-
     $('.back-button-sr').on('click', function() {
-        window.location.href = "http://portali2.sandbox.inventiproptech.com/home.php";
+        window.location.href = "<?=WEB_ROOT ?>/home.php";
     });
 </script>

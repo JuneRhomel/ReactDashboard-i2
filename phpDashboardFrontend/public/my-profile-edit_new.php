@@ -89,7 +89,7 @@ $location_menu = 'profile';
 	// 		dataType: 'JSON',
 	// 		success: function(data) {
 	// 			if(data.success) {
-	// 				window.location.href = 'http://portali2.sandbox.inventiproptech.com/my-profile_new.php';
+	// 				window.location.href = '<?=WEB_ROOT ?>/my-profile_new.php';
 	// 			}
 	// 		},
 	// 	});
@@ -112,7 +112,7 @@ $location_menu = 'profile';
 	// 	// console.log(data)
 
 	// 	$.ajax({
-	// 		url: 'http://portali2.sandbox.inventiproptech.com/change-profile-pic.php', // Replace this with the actual URL of your backend API endpoint
+	// 		url: '<?=WEB_ROOT ?>/change-profile-pic.php', // Replace this with the actual URL of your backend API endpoint
 	// 		type: 'POST', // Use the appropriate HTTP method (POST, GET, etc.) based on your backend implementation
 	// 		data: formData,
 	// 		processData: false,
@@ -171,7 +171,7 @@ $location_menu = 'profile';
 			formData.append('description', "profile-pic");
 	
 			$.ajax({
-				url: 'http://portali2.sandbox.inventiproptech.com/change-profile-pic.php',
+				url: '<?=WEB_ROOT ?>/change-profile-pic.php',
 				type: 'POST',
 				data: formData,
 				processData: false,
@@ -195,6 +195,6 @@ $location_menu = 'profile';
 
 
 	$('.cancel').on('click', function() {
-		window.location.href = 'http://portali2.sandbox.inventiproptech.com/my-profile_new.php';
+		window.location.href = '<?=WEB_ROOT ?>/my-profile_new.php';
 	});
 </script>

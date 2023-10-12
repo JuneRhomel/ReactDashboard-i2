@@ -91,11 +91,11 @@ $profile = json_decode($result);
 		});
 	});
 	$('.out').click(function() {
-		window.location.href ='http://portali2.sandbox.inventiproptech.com/logout.php'; 
+		window.location.href ='<?=WEB_ROOT ?>/logout.php'; 
 	})
 
     $('.back-button-sr').on('click', function() {
-        window.location.href = 'http://portali2.sandbox.inventiproptech.com/my-profile_new.php';
+        window.location.href = '<?=WEB_ROOT ?>/my-profile_new.php';
     });
 
 </script>

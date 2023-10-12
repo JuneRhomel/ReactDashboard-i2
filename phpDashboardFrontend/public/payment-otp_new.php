@@ -70,7 +70,7 @@
                     </div>
                     
                     <div class="col-12 py-3">
-                        <a href="http://portali2.sandbox.inventiproptech.com/"> <button class="submit px-5 py-2 w-100" id="registration-buttons">GO TO HOMEPAGE</button></a>
+                        <a href="<?=WEB_ROOT ?>/"> <button class="submit px-5 py-2 w-100" id="registration-buttons">GO TO HOMEPAGE</button></a>
                     </div>
                 </div>
             </div>

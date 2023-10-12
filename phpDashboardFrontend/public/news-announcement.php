@@ -5,7 +5,7 @@ include("footerheader.php");
 $location_menu = "news&announcement";
 
 
-$result = apiSend('news', 'getlist', ['table' => 'news']);
+$result = apiSend('news', 'getlist', ['table' => 'news','condition' => 'status="Publish"']);
 $news = json_decode($result);
 ?>
 <div class="d-flex">

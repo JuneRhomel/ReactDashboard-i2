@@ -61,7 +61,12 @@ $allsr = json_decode($result);
                             <p>Address</p>
                             <label><?= $resident[0]->address ?></label>
                         </div>
-
+                        <?php if ($info[0]->property_type === 'Commercial') { ?>
+                            <div class="">
+                                <p>Company</p>
+                                <label><?= $resident[0]->company_name ?></label>
+                            </div>
+                        <?php } ?>
                         <div class="">
                             <p>Contact #</p>
                             <label><?= $resident[0]->contact_no ?></label>
@@ -305,11 +310,11 @@ $allsr = json_decode($result);
             $('#master-pass').modal('hide')
         })
         $('.edit-profile').on('click', function() {
-            window.location.href = 'http://portali2.sandbox.inventiproptech.com/occupant-edit.php?id=<?= $_GET['id'] ?>';
+            window.location.href = '<?=WEB_ROOT ?>/occupant-edit.php?id=<?= $_GET['id'] ?>';
         });
 
         $('.back-button-sr').on('click', function() {
-            window.location.href = 'http://portali2.sandbox.inventiproptech.com/occupant.php';
+            window.location.href = '<?=WEB_ROOT ?>/occupant.php';
         });
         const label = $('.password');
         const originalText = label.text();

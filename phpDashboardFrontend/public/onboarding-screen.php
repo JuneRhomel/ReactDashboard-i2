@@ -84,6 +84,6 @@ require_once ("header.php");
         dots: true,
     });
     $('.get-started').on('click', function(){
-        window.location.href = 'http://portali2.sandbox.inventiproptech.com/register.php';
+        window.location.href = '<?=WEB_ROOT ?>/register.php';
     });
 </script>

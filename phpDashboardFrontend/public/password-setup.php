@@ -93,10 +93,10 @@ $email = ($_GET['email']) ?? "";
 				<label style="font-weight: 100; font-size: 14px;" class="mb-4">For your login, ensure to follow this specific link</label>
 				<div class="d-flex gap-4 justify-content-center">
 					<div class="form-group w-75 m-0 ">
-						<input id="request-form" class="copy_text_input" value="http://portali2.sandbox.inventiproptech.com?acctcode=<?= $acctcode ?>" readonly disabled required placeholder="text">
+						<input id="request-form" class="copy_text_input" value="<?=WEB_ROOT ?>?acctcode=<?= $acctcode ?>" readonly disabled required placeholder="text">
 						<label id="request-form">URL</label>
 					</div>
-					<a class="copy_text align-items-center copy_text d-flex justify-content-center" style="color: #1c5196;" data-toggle="tooltip" style="font-size: 12px; " title="Copy to Clipboard" href="http://portali2.sandbox.inventiproptech.com?acctcode=<?= $acctcode ?>"><span class="material-icons">
+					<a class="copy_text align-items-center copy_text d-flex justify-content-center" style="color: #1c5196;" data-toggle="tooltip" style="font-size: 12px; " title="Copy to Clipboard" href="<?=WEB_ROOT ?>?acctcode=<?= $acctcode ?>"><span class="material-icons">
 							file_copy
 						</span></a>
 
@@ -156,7 +156,7 @@ $email = ($_GET['email']) ?? "";
 			});
 		});
 		$('.success').click(function() {
-			window.location = 'http://portali2.sandbox.inventiproptech.com?acctcode=<?= $acctcode ?>'
+			window.location = '<?=WEB_ROOT ?>?acctcode=<?= $acctcode ?>'
 			
 		})
 		$('.btn-close-verification').on('click', function() {

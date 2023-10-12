@@ -119,8 +119,9 @@ function alertJS($message) {
     exit;
 }
 
-function formatDate($val) {
-	return date("d M Y",strtotime($val));
+function formatDate($val)
+{
+	return is_null($val) ? "-" : date("m/d/Y", strtotime($val));
 }
 
 function formatDateUnix($val) {

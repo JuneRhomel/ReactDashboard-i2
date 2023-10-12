@@ -7,6 +7,8 @@
   font-family: "Montserrat";
 }
 
+
+
 /* switch */
 .switch input[type=checkbox] {
   height: 0;
@@ -29,7 +31,9 @@
   border-radius: 100px;
   position: relative;
 }
-
+.text-color-primary {
+  color: #1C5196 !important;
+}
 .switch label:after {
   content: '';
   position: absolute;
@@ -42,6 +46,10 @@
   border-radius: 90px;
   transition: 0.3s;
 }
+.view-details-billing div:nth-child(odd) {
+  background-color: #F4F7FA;
+}
+
 
 .profile-box {
   height: 100px;
@@ -603,6 +611,12 @@ select#request-form:valid~label#request-form {
   font-weight: 700;
 
 }
+input#request-form:disabled ~ label {
+  color: #8593A3 !important;
+}
+input#request-form:disabled {
+ color: #8593A3 !important;
+}
 
 input#request-form:focus~label#request-form,
 select#request-form:focus~label#request-form,
@@ -674,7 +688,7 @@ textarea:not(:placeholder-shown)#request-form~label#request-form {
   align-items: center;
   justify-content: center;
   font-weight: 400;
-  height: 60px;
+  height: 45px;
   color: #ffffff;
   gap: 5px;
   border-radius: 5px;
@@ -1616,7 +1630,7 @@ main .post-content .post-meta {
 
 }
 .bg-palette-grey {
-  background-color: #F4F7FA;
+  background-color: #F4F7FA !important;
 }
 .bg-indicator {
   background-color: #FFF59F;
@@ -1665,22 +1679,7 @@ height: 44px;
   font-size: 14px;
 }
 
-.card-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #ffffff;
-  border-radius: 5px;
-  width: 100%;
-  position: relative;
-  padding: 19px 12px;
-}
 
-.card-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
 
 .red-btn{
   
@@ -1790,7 +1789,7 @@ height: 44px;
 }
 
 .notif>div {
-  height: 80px;
+  min-height: 80px;
 }
 
 .visitor span {
@@ -2263,7 +2262,7 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm:focus {
   font-size: 14px !important;
   padding: 4px 7px !important;
   /* width: 33% !important; */
-  height: 55px;
+  height: 45px;
 }
 .soa-bill h3 {
   color: #000;
@@ -2359,4 +2358,69 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm:focus {
 
 .alert-error:hover {
   background: var(--constants-error-hover, #FABBA8);
+}
+
+
+
+.check-box {
+  
+  left: 0%;
+
+  bottom: 60%;
+  display: block;
+  position: absolute;
+  cursor: pointer;
+  z-index: 7;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.check-box input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  outline: auto #1c5196;
+  border-radius: 50%
+}
+
+.check-box:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.check-box input:checked ~ .checkmark {
+  background-color: #1c5196;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.check-box input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.check-box .checkmark:after {
+  left: 8px;
+  top: 4px;
+  width: 9px;
+  height: 14px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }

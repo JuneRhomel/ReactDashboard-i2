@@ -69,9 +69,12 @@
 }
 
 .navigation .bg-nav .logo-nav {
-    bottom: 25px;
-    left: 32px;
+    bottom: 24px;
+    left: 14px;
     position: absolute;
+    width: auto;
+    height: 50px;
+    object-fit: contain;
 }
 
 .navigation .navigation-links ul,
@@ -216,7 +219,7 @@
 }
 
 .navigation .menu-logo img {
-    height: 30px;
+    height: 50px;
     object-fit: contain;
 }
 

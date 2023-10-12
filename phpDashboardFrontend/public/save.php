@@ -8,8 +8,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
-
 $data = $_POST;
 if (isset($_FILES['attachments']['tmp_name'])) {
     $attachment = [
@@ -20,7 +18,10 @@ if (isset($_FILES['attachments']['tmp_name'])) {
 }
 
 
+
+
 $result = apiSend('tenant','save',$data);
+
 echo  $result;
 
 

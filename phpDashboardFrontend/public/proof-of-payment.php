@@ -115,6 +115,6 @@ $id = decryptData($_GET['id']);
 
 
     $('.cancel').on('click', function() {
-        window.location.href = 'http://portali2.sandbox.inventiproptech.com/billing.php';
+        window.location.href = '<?=WEB_ROOT ?>/billing.php';
     });
 </script>

@@ -56,12 +56,12 @@ $deniedtotal = count($gatepass_denied);
 
                         <div class="card-body " style="padding:24px 12px;">
                             <div class="forms">
-                                <form action="http://portali2.sandbox.inventiproptech.com/gatepass-save.php" method="post" id="form-main">
+                                <form action="<?=WEB_ROOT ?>/gatepass-save.php" method="post" id="form-main">
                                     <input name="date" type="hidden" readonly value="<?= date('Y-m-d H:i:s') ?>">
                                     <input name="module" type="hidden" readonly value="<?= $module ?>">
                                     <input name="table" readonly type="hidden" value="<?= $table ?>">
                                     <input type="hidden" readonly name="name_id" value="<?= $user->id ?>">
-                                    <input type="hidden" readonly name="unit_id" value="<?= $user->def_unit_id ?>">
+                                    <input type="hidden" readonly name="unit_id" value="<?= $user->unit_id ?>">
 
                                     <!-- <input type="hidden" name="type" readonly value="tenant" > -->
                                     <div class="w-100">
@@ -96,7 +96,7 @@ $deniedtotal = count($gatepass_denied);
                                     </div>
                                     <div class="w-100">
                                         <div class="w-100 form-group">
-                                            <input id="request-form" name="unit" type="text" disabled value="<?= $user->default_unit ?>" required placeholder="text">
+                                            <input id="request-form" name="unit" type="text" disabled value="<?= $user->unit_name ?>" required placeholder="text">
                                             <label id="request-form">Unit # <span class="text-danger">*</span></label>
                                         </div>
                                     </div>
@@ -139,7 +139,7 @@ $deniedtotal = count($gatepass_denied);
                                     </div>
 
                                 </div>
-                                <form method="post" action="http://portali2.sandbox.inventiproptech.com/gatepass-save.php" id="form-personnel">
+                                <form method="post" action="<?=WEB_ROOT ?>/gatepass-save.php" id="form-personnel">
 
 
                                     <input class="gatepass_id" name="gatepass_id" readonly type="hidden" class="form-control">
@@ -435,7 +435,7 @@ $deniedtotal = count($gatepass_denied);
         items.forEach(i => {
             console.log(i)
             $.ajax({
-                url: 'http://portali2.sandbox.inventiproptech.com/gatepass-save.php',
+                url: '<?=WEB_ROOT ?>/gatepass-save.php',
                 method: 'POST',
                 data: i,
                 success: function(response) {

@@ -9,10 +9,10 @@
 
 
 function popup(e) {
-  const data = e.data
-  //alert-error
-  //alert-warning
-  $('html').append(`
+    const data = e.data
+    //alert-error
+    //alert-warning
+    $('html').append(`
   <div class="alert-card ${data.success != 1 ? 'alert-warning' : ''} ">
 	<div>
 		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
@@ -20,7 +20,7 @@ function popup(e) {
 		</svg>
 	</div>
 	<div>
-		<p>${e.title? e.title :  data.description}</p>
+		<p>${e.title ? e.title : data.description}</p>
 	</div>
 	<div class="close">
 		<button class="close-alert">
@@ -34,98 +34,98 @@ function popup(e) {
   `)
 
 
-  const alertCard = $('.alert-card');
-  let hideTimer;
+    const alertCard = $('.alert-card');
+    let hideTimer;
 
-  $('.close-alert').click(function () {
-    alertCard.fadeOut(); 
-  });
+    $('.close-alert').click(function () {
+        alertCard.fadeOut();
+    });
 
-  // Set a timer to hide the alert card after a certain duration with a fade-out effect.
-  const hideDuration = e.reload_time; 
+    // Set a timer to hide the alert card after a certain duration with a fade-out effect.
+    const hideDuration = e.reload_time;
 
-  function startHideTimer() {
-    hideTimer = setTimeout(function () {
-      alertCard.fadeOut();
-      if(data.success === 1 ) {
-        if (e.redirect) {
-          location.href = e.redirect
-        }
-      } 
-    }, hideDuration);
-  }
-  startHideTimer();
-
-
-
-  // Pause the timer when the alert-card is hovered
-  alertCard.hover(
-    function () {
-      clearTimeout(hideTimer);
-    },
-    function () {
-      startHideTimer();
+    function startHideTimer() {
+        hideTimer = setTimeout(function () {
+            alertCard.fadeOut();
+            if (data.success === 1) {
+                if (e.redirect) {
+                    location.href = e.redirect
+                }
+            }
+        }, hideDuration);
     }
-  );
+    startHideTimer();
+
+
+
+    // Pause the timer when the alert-card is hovered
+    alertCard.hover(
+        function () {
+            clearTimeout(hideTimer);
+        },
+        function () {
+            startHideTimer();
+        }
+    );
 }
 
 
 function table_data(props) {
 
-  let currentPage = 1;
-  const itemsPerPage = 3; // Adjust as needed
-  let data = {}; // Declare the data variable
+    let currentPage = 1;
+    const itemsPerPage = 3; // Adjust as needed
+    let data = {}; // Declare the data variable
 
-  function goToPage(page) {
-      if (page === 'prev' && currentPage > 1) {
-          currentPage--;
-      } else if (page === 'next' && currentPage) {
-          currentPage++;
-      }
-      // Update UI and fetch data for the new page
-      updatePageUI();
-      fetchOccupantsData();
-  }
+    function goToPage(page) {
+        if (page === 'prev' && currentPage > 1) {
+            currentPage--;
+        } else if (page === 'next' && currentPage) {
+            currentPage++;
+        }
+        // Update UI and fetch data for the new page
+        updatePageUI();
+        fetchOccupantsData();
+    }
 
-  function updatePageUI() {
-      const pageInfo = document.querySelector('.page-info');
-      if (data.max) {
-          pageInfo.textContent = `Page ${currentPage} of ${data.max}`;
-      } else {
-          pageInfo.textContent = 'Loading...';
-      }
-  }
+    function updatePageUI() {
+        const pageInfo = document.querySelector('.page-info');
+        if (data.max) {
+            pageInfo.textContent = `Page ${currentPage} of ${data.max}`;
+        } else {
+            pageInfo.textContent = 'Loading...';
+        }
+    }
 
-  function fetchOccupantsData() {
-      $.ajax({
-          url: props.url, 
-          method: 'POST',
-          data: {
-              page: currentPage,
-              table: props.table,
-              unitowner: props.unitowner,
-              limit: itemsPerPage
-          },
-          success: function (response) {
-              data = JSON.parse(response);
+    function fetchOccupantsData() {
+        $.ajax({
+            url: props.url,
+            method: 'POST',
+            data: {
+                page: currentPage,
+                table: props.table,
+                unitowner: props.unitowner,
+                limit: itemsPerPage
+            },
+            success: function (response) {
+                data = JSON.parse(response);
 
-              html(data.data);
-              updatePageUI();
-          },
-          error: function (xhr, status, error) {
+                html(data.data);
+                updatePageUI();
+            },
+            error: function (xhr, status, error) {
 
-          }
-      });
-  }
+            }
+        });
+    }
 
-  function html(param) {
-      $('.table-data').html('');
+    function html(param) {
+        $('.table-data').html('');
 
-      if (param.length != 0 ) {
-          param.forEach((item) => {
+        if (param.length != 0) {
+            param.forEach((item) => {
 
 
-              $('.table-data').append(`
+                $('.table-data').append(`
               <div class="col-12">
                   <a href="${location.origin}/${props.view}?id=${item.enc_id}" class="occupant">
                       <div class="d-flex gap-2 w-100">
@@ -143,46 +143,46 @@ function table_data(props) {
               </div>
           `);
 
-          });
-      } else {
-          $('.table-data').append(`
+            });
+        } else {
+            $('.table-data').append(`
           <div class="text-left"><b> No data </b>
           </div>
           `);
 
-      }
+        }
 
-      // Disable "Next" button if there is no more data to load
-      const nextBtn = document.querySelector('.next-btn');
-      if (data.max && currentPage >= data.max) {
-          nextBtn.disabled = true;
-      } else {
-          nextBtn.disabled = false;
-      }
-  }
+        // Disable "Next" button if there is no more data to load
+        const nextBtn = document.querySelector('.next-btn');
+        if (data.max && currentPage >= data.max) {
+            nextBtn.disabled = true;
+        } else {
+            nextBtn.disabled = false;
+        }
+    }
 
-  function btn() {
-      $('.table-data').after(`
+    function btn() {
+        $('.table-data').after(`
           <div class="pagination-table">
               <button class="prev-btn main-btn" style="font-size: 15px;">Previous</button>
               <span class="page-info" style="font-size: 12px;">Loading...</span>
               <button class="next-btn main-btn" style="font-size: 15px;">Next</button>
           </div>
       `);
-  }
+    }
 
-  btn();
-  fetchOccupantsData();
+    btn();
+    fetchOccupantsData();
 
-  $('.prev-btn').click(function () {
-      goToPage('prev');
-  });
+    $('.prev-btn').click(function () {
+        goToPage('prev');
+    });
 
-  $('.next-btn').click(function () {
-      goToPage('next');
-  });
+    $('.next-btn').click(function () {
+        goToPage('next');
+    });
 
-  // Initial data fetch on page load
+    // Initial data fetch on page load
 }
 
 // Call the table_data function to start everything
@@ -190,25 +190,63 @@ table_data();
 
 
 function update_status(table, id, field, status, WEB_ROOT, email = '') {
-  console.log(table)
-  $.ajax({
-      url: WEB_ROOT + "/update-status.php",
-      type: 'POST',
-      data: {
-          table: table,
-          id: id,
-          field: field,
-          status: status,
-          email: email
-      },
-      dataType: 'JSON',
-      success: function (data) {
+    console.log(table)
+    $.ajax({
+        url: WEB_ROOT + "/update-status.php",
+        type: 'POST',
+        data: {
+            table: table,
+            id: id,
+            field: field,
+            status: status,
+            email: email
+        },
+        dataType: 'JSON',
+        success: function (data) {
 
-          popup({
-              data: data,
-              reload_time: 2000,
-              redirect: location.href
-          })
-      },
-  });
+            popup({
+                data: data,
+                reload_time: 2000,
+                redirect: location.href
+            })
+        },
+    });
+}
+
+
+// Function to handle image compression
+function compressImage(file, maxSize, callback) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        const img = new Image();
+        img.onload = function () {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            // Check if the image size exceeds the maximum size
+            if (file.size > maxSize) {
+                const aspectRatio = width / height;
+                if (width > height) {
+                    width = Math.sqrt(maxSize * aspectRatio);
+                    height = width / aspectRatio;
+                } else {
+                    height = Math.sqrt(maxSize / aspectRatio);
+                    width = height * aspectRatio;
+                }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            canvas.toBlob(function (blob) {
+                callback(blob);
+            }, file.type);
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
 }

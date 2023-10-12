@@ -61,30 +61,7 @@ $occupant_reg = json_decode($result);
                 <label class="title-section my-4">Occupant Registration List</label>
                 <div class="row table-data gap-2">
                 </div>
-                <!-- <div class="row gap-2">
-                    <div class="col-12">
-                        <div class="occupant">
-                            <div class="d-flex gap-2">
-                                <img src="./assets/icon/profile.png" alt="">
-                                <div class="d-flex flex-column  gap-2 ">
-                                    <b class="red">Disapproved</b>
-                                    <h1>Arkin Paroan</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="occupant">
-                            <div class="d-flex gap-2">
-                                <img src="./assets/icon/profile.png" alt="">
-                                <div class="d-flex flex-column  gap-2 ">
-                                    <b class="green">Approved</b>
-                                    <h1>Arkin Paroan</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+
             </div>
         </div>
 
@@ -96,7 +73,7 @@ $occupant_reg = json_decode($result);
     const view = (id, event) => {
     // Check if the clicked element is a button
     if (event.target.tagName != 'BUTTON') {
-         window.location.href = `http://portali2.sandbox.inventiproptech.com/view-occupant-reg.php?id=${id}`;
+         window.location.href = `<?=WEB_ROOT ?>/view-occupant-reg.php?id=${id}`;
     }
 };
     table_data({
@@ -106,6 +83,6 @@ $occupant_reg = json_decode($result);
         view: 'view-occupant-reg.php',
     })
     $('.back-button-sr').on('click', function() {
-        window.location.href = 'http://portali2.sandbox.inventiproptech.com';
+        window.location.href = '<?=WEB_ROOT ?>';
     });
 </script>
