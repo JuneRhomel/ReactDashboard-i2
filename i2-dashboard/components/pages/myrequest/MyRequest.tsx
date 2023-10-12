@@ -13,7 +13,7 @@ const MyRequest = ({ myRequest }: {
     const requestProps = {
         title: 'My Request',
         headerAction:
-            <Link href='/' className="main-btn">
+            <Link href='/servicerequest' className="main-btn">
                 <MdAdd />
                 Create New
             </Link>,

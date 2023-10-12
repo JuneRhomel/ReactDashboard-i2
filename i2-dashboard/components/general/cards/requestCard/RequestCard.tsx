@@ -28,7 +28,6 @@ function RequestCard({ request }: { request: any }) {
                 </>
             )
         } else if (props.type === "Report Issue") {
-            console.log(props.data)
             return (
                 <div className={style.description_box}
                 >
@@ -43,7 +42,6 @@ function RequestCard({ request }: { request: any }) {
                 </div >
             )
         } else if (props.type === "Work Permit") {
-            console.log(props.data)
             return (
                 <>
                     <p><b>{props.type}</b></p>
