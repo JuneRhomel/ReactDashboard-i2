@@ -1,3 +1,3 @@
-import serviceRequest from '@/components/pages/servicerequest/servicerequest'
+import ServiceRequest from "@/components/pages/servicerequest/serviceRequest"
 
-export default serviceRequest
+export default ServiceRequest

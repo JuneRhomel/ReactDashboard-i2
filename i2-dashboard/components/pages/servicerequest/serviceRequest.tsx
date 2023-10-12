@@ -1,13 +1,11 @@
 import Layout from '@/components/layouts/layout';
-import React from 'react'
 
-const servicerequest = () => {
-
+const Servicerequest = () => {
     return (
         <Layout title="My Request">
-            <div>asd</div>
+            <div></div>
         </Layout>
     );
 }
 
-export default servicerequest
+export default Servicerequest
