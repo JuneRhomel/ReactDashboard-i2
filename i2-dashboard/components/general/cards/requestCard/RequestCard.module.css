@@ -21,7 +21,7 @@
     align-items: center;
     padding-bottom: 12px;
     margin-bottom: 12px;
-    border-bottom: 2px solid var(--inventi-neutral);
+    border-bottom: 1px solid var(--inventi-neutral);
 }
 
 .date {
@@ -34,6 +34,7 @@
 
 .desciption p  {
     margin-bottom: 5px;
+    font-size: 12px;
 }
 
 .open {
@@ -49,4 +50,18 @@
 .closed {
     background: var(--error-bg);
     color: var(--pending-txt)
+}
+
+.image {
+    width: 140px;
+    min-height: 100px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.description_box {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
 }

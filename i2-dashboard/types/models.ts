@@ -88,3 +88,9 @@ export interface SoaDetailsType extends ChangeHistory{
     status: string,
     transactionDate: string,
 }
+export interface RequestType extends ChangeHistory{
+    id: string,
+    date_upload: string,
+    type: string,
+    table: string,
+}
