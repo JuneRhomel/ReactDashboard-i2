@@ -12,6 +12,9 @@ export async function getServerSideProps(context: any) {
   const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
   const jwt = context.req.cookies.token;
   const user = authorizeUser(jwt);
+  if (!user) {
+    return {redirect : {destination: '/?error=accessDenied', permanent: false}};
+  }
   const token = `${user?.token}:tenant`;
   const soaParams: ParamGetSoaType = {
     accountcode: accountCode,
@@ -29,10 +32,7 @@ export async function getServerSideProps(context: any) {
   }
   response = await api.soa.getSoaDetails(soaDetailsParams, token);  // get soa details (transactions for this soa)
   const soaDetails: SoaDetailsType[] = mapObject(await response?.json()) as SoaDetailsType[];
-  console.log(soaDetails)
-  return user
-    ? {props: {user, soa, soaDetails}}
-    : { redirect: {destination: '/?error=accessDenied', permanent: false} };
+  return {props: {user, soa, soaDetails}};
 }
 
 export default function Dashboard(props : any) {

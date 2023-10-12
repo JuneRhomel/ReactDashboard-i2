@@ -4,7 +4,6 @@ import getDateTimeString from '@/utils/getDateTimeString';
 import formatCurrency from '@/utils/formatCurrency';
 
 export const PaymentCard = ({transaction} : {transaction: SoaDetailsType}) => {
-  console.log(transaction);
   const transactionDate = getDateTimeString(transaction?.transactionDate);
   const amount = formatCurrency(transaction?.amount);
   const status = transaction?.status;

@@ -9,7 +9,6 @@ const getDateTimeString = (dateTime: string) : string => {
     const minutes = inputDate.getMinutes();
     const amPM = hours >= 12 ? "PM" : "AM";
     const formattedHours = hours % 12 || 12;
-    console.log(month)
 
     const dateTimeString = `${getDateString(day, month + 1, year)} ${formattedHours}:${String(minutes).padStart(2,'0')} ${amPM}`;
     return dateTimeString;
