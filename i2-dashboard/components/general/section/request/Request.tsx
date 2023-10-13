@@ -2,7 +2,7 @@ import { RequestType } from '@/types/models';
 import RequestCard from '../../cards/requestCard/RequestCard';
 import style from './Request.module.css'
 
-const Request = ({myRequest} : {myRequest: RequestType[]}) => {
+const Request = ({ myRequest }: { myRequest: RequestType[] }) => {
     if (myRequest == undefined) {
         return (<div>Undefined</div>)
     }

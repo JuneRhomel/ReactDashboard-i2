@@ -1,7 +1,7 @@
 import styles from './SoaCard.module.css'
 import Link from 'next/link'
 import getDateString from '@/utils/getDateString';
-const SoaCard = ({props}: {props: any}) => {
+const SoaCard = ({ props }: { props: any }) => {
     const status = props?.status;
     const statementDate = getDateString(null, props?.monthOf, props?.yearOf);
     const dueDate = getDateString(props?.dueDate);
