@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 
 export default function Navigation() {
   const router = useRouter();
-  const [selectedTab, setSelectedTab] = useState('/Dashboard');
   const [windowLoc, setWindowLoc] = useState(router.pathname || '/');
 
   const navigationItems = [
@@ -17,16 +16,13 @@ export default function Navigation() {
     { id: 5, link: '/', text: 'Menu', icon: <MdMenu /> },
   ];
 
-  const navigate = (link: string) => {
-    setSelectedTab(link);
-  };
+
 
   return (
     <nav className={styles.navigation}>
       <ul>
         {navigationItems.map((item) => (
           <li
-            onClick={() => navigate(item.link)} // Pass item.link here
             key={item.id}
             className={`${windowLoc === item.link ? styles.active : ''}`}
           >

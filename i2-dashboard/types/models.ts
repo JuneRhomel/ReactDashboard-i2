@@ -94,3 +94,8 @@ export interface RequestType extends ChangeHistory{
     type: string,
     table: string,
 }
+export interface ListRequest extends ChangeHistory{
+    title: string,
+    img: string,
+    link: string,
+}

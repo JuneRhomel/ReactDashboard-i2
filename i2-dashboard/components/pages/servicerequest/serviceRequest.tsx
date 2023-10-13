@@ -1,9 +1,15 @@
 import Layout from '@/components/layouts/layout';
+import styles from "./ServiceRequest.module.css"
+import MyRequests from '../../general/section/Servicerequest/Servicerequest';
+import { ListRequest } from '@/types/models';
 
-const Servicerequest = () => {
+const Servicerequest = ({ serviceRequest }: any) => {
+    console.log(serviceRequest)
     return (
         <Layout title="My Request">
-            <div></div>
+            <div className={styles.container}>
+                <MyRequests props={serviceRequest} />
+            </div>
         </Layout>
     );
 }

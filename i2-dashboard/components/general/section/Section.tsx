@@ -3,9 +3,9 @@ import PaymentTransactions from './paymentTransactions/PaymentTransactions';
 import SoaCard from '../cards/soaCard/SoaCard';
 import styles from './Section.module.css';
 import Request from './request/Request';
+
 const Section = ({props}: {props: any}) => {
     const title = props?.title.toLowerCase();
-    
     const cardMap: Record<string, ReactNode> = {
         'soa': <SoaCard props={props.data}/>,
         'payment transactions': <PaymentTransactions transactions={props.data}/>,

@@ -3,7 +3,6 @@ import RequestCard from '../../cards/requestCard/RequestCard';
 import style from './Request.module.css'
 
 const Request = ({myRequest} : {myRequest: RequestType[]}) => {
-    console.log(myRequest)
     if (myRequest == undefined) {
         return (<div>Undefined</div>)
     }

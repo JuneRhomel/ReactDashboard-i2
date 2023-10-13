@@ -10,7 +10,7 @@ export default function Header() {
           <img className={styles.logo} src="/logo.png" alt="" />
         </div>
         <div className={styles.icon_container} >
-          <Link href={'/'}>
+          <Link href={'/servicerequest'}>
             {<MdAddCircle className={styles.icon} />}
           </Link>
           <Link href={'/'}>

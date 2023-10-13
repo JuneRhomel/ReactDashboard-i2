@@ -1,6 +1,6 @@
 import style from './RequestCard.module.css'
 import getDateString from '@/utils/getDateString';
-import classNames from 'classnames';
+
 function RequestCard({ request }: { request: any }) {
     const status = request?.data.status;
 
@@ -24,7 +24,6 @@ function RequestCard({ request }: { request: any }) {
                     <p><b>Guests:</b> {props.data.guest.map((e: { guest_name: string; }, index: number) => (
                         index === props.data.guest.length - 1 ? e.guest_name : `${e.guest_name}, `
                     ))}</p>
-
                 </>
             )
         } else if (props.type === "Report Issue") {
