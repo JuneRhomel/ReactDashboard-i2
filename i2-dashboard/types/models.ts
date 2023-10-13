@@ -51,7 +51,7 @@ interface ChangeHistory {
     encId: string,
 }
 
-export interface SoaType extends ChangeHistory{
+export interface SoaType extends ChangeHistory {
     id: string,
     residentId: string,
     monthOf: string,
@@ -76,7 +76,7 @@ export interface SoaType extends ChangeHistory{
     locationType: string | null,
 }
 
-export interface SoaDetailsType extends ChangeHistory{
+export interface SoaDetailsType extends ChangeHistory {
     id: string,
     soaId: string,
     paymentType: string,
@@ -88,13 +88,13 @@ export interface SoaDetailsType extends ChangeHistory{
     status: string,
     transactionDate: string,
 }
-export interface RequestType extends ChangeHistory{
+export interface RequestType extends ChangeHistory {
     id: string,
     date_upload: string,
     type: string,
     table: string,
 }
-export interface ListRequest extends ChangeHistory{
+export interface ListRequest extends ChangeHistory {
     title: string,
     img: string,
     link: string,

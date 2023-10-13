@@ -8,7 +8,7 @@ const Servicerequest = ({props} : {props: ListRequest[]}) => {
     }
     const array: number[] = [1, 2, 3];
     return (
-        < >
+        <>
             {props.map((request, index) => (<ServiceRequestCard key={index} request={request} />))}
         </>
     )
