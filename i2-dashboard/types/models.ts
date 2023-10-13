@@ -43,6 +43,12 @@ export type ParamGetSoaDetailsType = {
     limit?: number,
 }
 
+export type ParamGetServiceRequestsType = {
+    accountcode: string,
+    userId: number,
+    limit?: number,
+}
+
 interface ChangeHistory {
     createdBy: string,
     createdOn: string,
