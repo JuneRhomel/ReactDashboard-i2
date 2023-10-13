@@ -1,5 +1,6 @@
 import Soa from "@/components/pages/soa/Soa";
-import { ParamGetSoaDetailsType, ParamGetSoaType, SoaDetailsType, SoaType } from "@/types/models";
+import { SoaDetailsType, SoaType } from "@/types/models";
+import { ParamGetSoaDetailsType, ParamGetSoaType } from "@/types/apiRequestParams";
 import api from "@/utils/api";
 import authorizeUser from "@/utils/authorizeUser";
 import mapObject from "@/utils/mapObject";

@@ -4,6 +4,7 @@ import { getSoa } from "./soa/getSoa";
 import { getSoaDetails } from "./soa/getSoaDetails";
 import { logout } from "./user/logout";
 import { getServiceRequests } from "./requests/getServiceRequests";
+import { getServiceRequestDetails } from "./requests/getServiceRequestDetails";
 
 /**
 * This object contains all the API functions for the client to make user related requests
@@ -20,6 +21,7 @@ const soa = {
 
 const requests = {
     getServiceRequests: getServiceRequests,
+    getServiceRequestDetails: getServiceRequestDetails,
 }
 
 const api = {

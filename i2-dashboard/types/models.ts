@@ -31,24 +31,6 @@ export type LoginSchema = {
     accountcode: string;
 }
 
-export type ParamGetSoaType = {
-    accountcode: string,
-    userId: number,
-    limit?: number,
-}
-
-export type ParamGetSoaDetailsType = {
-    accountcode: string,
-    soaId: number,
-    limit?: number,
-}
-
-export type ParamGetServiceRequestsType = {
-    accountcode: string,
-    userId: number,
-    limit?: number,
-}
-
 interface ChangeHistory {
     createdBy: string,
     createdOn: string,
