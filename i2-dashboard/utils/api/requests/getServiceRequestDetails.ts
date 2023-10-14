@@ -12,8 +12,11 @@ export async function getServiceRequestDetails(params: ParamGetServiceRequestTyp
     const method: string = 'POST';
     const body: string = JSON.stringify({
         accountcode: params.accountcode,
-        table: table === 'personnel' ? 'gatepass_personnel' : `vw_${table}`,
-        condition: table === 'personnel' ? null : `name_id=${params.userId}`,
+        table: table === 'personnel' ? 'gatepass_personnel'
+                : table === 'vp_guest' ? 'vp_guest'
+                : table === 'work_details' ? 'work_details'
+                : `vw_${table}`,
+        condition: table === 'personnel' || table === 'vp_guest' || table === 'work_details' ? null : `name_id=${params.userId}`,
         limit: params.limit,
     });
     const headers = {
