@@ -100,7 +100,7 @@ export async function getServerSideProps(context: any){
   }
 }
 
-export default function myrequest({serviceRequests}) {
+export default function myrequest({serviceRequests}: {serviceRequests: any}) {
   const props = {
     title: "Requests",
     headerAction: null,

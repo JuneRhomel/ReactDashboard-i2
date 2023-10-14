@@ -1,5 +1,4 @@
-import { ParamGetSoaDetailsType } from "@/types/models";
-
+import { ParamGetSoaDetailsType } from "@/types/apiRequestParams";
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 
 /** 

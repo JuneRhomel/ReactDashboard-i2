@@ -1,6 +1,6 @@
 import Layout from "@/components/layouts/layout";
-import PaymentTransactions from "@/components/general/section/paymentTransactions/PaymentTransactions";
-import { ParamGetSoaDetailsType, ParamGetSoaType, SoaDetailsType, SoaType, UserType } from "@/types/models";
+import { SoaDetailsType, SoaType,  } from "@/types/models";
+import { ParamGetSoaType, ParamGetSoaDetailsType } from "@/types/apiRequestParams";
 import authorizeUser from "@/utils/authorizeUser";
 import Section from "@/components/general/section/Section";
 import api from "@/utils/api";
