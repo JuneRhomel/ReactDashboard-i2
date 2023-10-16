@@ -1,0 +1,13 @@
+.descriptionBox {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.image {
+    width: 140px;
+    min-height: 100px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}

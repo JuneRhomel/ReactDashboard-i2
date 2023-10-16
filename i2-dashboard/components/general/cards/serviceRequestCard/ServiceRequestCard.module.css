@@ -4,16 +4,7 @@
     border-radius: 10px;
 }
 
-.status {
-    display: flex;
-    padding: 4px 8px;
-    align-items: center;
-    gap: 4px;
-    border-radius: 40px;
-    width: max-content;
-    padding-inline: 10px;
-    font-size: 12px;
-}
+
 
 .head {
     display: flex;
@@ -37,20 +28,7 @@
     font-size: 12px;
 }
 
-.open {
-    background: var(--status-bg-green);
-    color: var(--inventi-green)
-}
 
-.pending {
-    background: var(--pending-bg);
-    color: var(--pending-txt)
-}
-
-.closed {
-    background: var(--error-bg);
-    color: var(--pending-txt)
-}
 
 .image {
     width: 140px;

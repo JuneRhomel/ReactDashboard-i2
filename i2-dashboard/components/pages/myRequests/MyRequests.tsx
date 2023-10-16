@@ -4,23 +4,30 @@ import Link from "next/link"
 import { RequestType } from "@/types/models"
 import Section from "@/components/general/section/Section"
 
-const MyRequest = ({ myRequest }: {
-    myRequest: RequestType,
-}) => {
-    const requestProps = {
-        title: 'My Request',
-        headerAction:
-            <Link href='/servicerequest' className="main-btn">
-                <MdAdd />
-                Create New
-            </Link>,
-        data: myRequest,
+const MyRequest = ( props: any ) => {
+    const title = "i2 - My Requests"
+    if (props.error) {
+        return (
+            <Layout title={title}>
+                <h1>{props.error}</h1>
+            </Layout>
+        )
+    } else {
+        const requestProps = {
+            title: 'My Requests',
+            headerAction:
+                <Link href='#' className="main-btn">
+                    <MdAdd />
+                    Create New
+                </Link>,
+            data: props.serviceRequests,
+        }
+        return (
+            <Layout title={title}>
+                <Section props={requestProps} />
+            </Layout>
+        );
     }
-    return (
-        <Layout title="My Request">
-            <Section props={requestProps} />
-        </Layout>
-    );
 }
 
 export default MyRequest

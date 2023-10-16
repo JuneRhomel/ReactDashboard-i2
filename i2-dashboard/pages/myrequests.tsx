@@ -22,13 +22,15 @@ export async function getServerSideProps(context: any){
   const getServiceRequestProps: ParamGetServiceRequestType = {
     accountcode: accountCode,
     userId: user.tenantId,
+    limit: 10,
   }
 
   let jsonResponse;
   let response = await api.requests.getServiceRequests(getServiceRequestProps, token);
   typeof response != 'string' ? jsonResponse = await response.json() : props.error = response;
   const serviceRequests: ServiceRequestsType | null = jsonResponse ? mapObject(jsonResponse) as ServiceRequestsType : null;
-  // serviceRequests?.sort((a: any, b: any) => a.id - b.id);
+  serviceRequests?.sort((a: any, b: any) => parseInt(b.id) - parseInt(a.id));
+  console.log(serviceRequests);
   const serviceRequestDetails: MyRequestDataType = {
     gatePasses: 'gatepass',
     personnel: 'personnel',
@@ -91,7 +93,6 @@ export async function getServerSideProps(context: any){
 
     props.serviceRequests = serviceRequests as ServiceRequestsType;
   }))
-  console.log(props)
   return {
     props
   }
