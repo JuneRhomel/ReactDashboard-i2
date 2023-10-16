@@ -1,10 +1,12 @@
 import styles from './Navigation.module.css';
 import { MdDashboard, MdBallot, MdReceipt, MdInsertChart, MdMenu } from 'react-icons/md';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export default function Navigation() {
-  const [selectedTab, setSelectedTab] = useState('/Dashboard');
+  const router = useRouter();
+  const [windowLoc, setWindowLoc] = useState(router.pathname || '/');
 
   const navigationItems = [
     { id: 1, link: '/dashboard', text: 'Dashboard', icon: <MdDashboard /> },
@@ -14,18 +16,15 @@ export default function Navigation() {
     { id: 5, link: '/', text: 'Menu', icon: <MdMenu /> },
   ];
 
-  const navigate = (link: string) => {
-    setSelectedTab(link);
-  };
+
 
   return (
     <nav className={styles.navigation}>
       <ul>
         {navigationItems.map((item) => (
           <li
-            onClick={() => navigate(item.link)} // Pass item.link here
             key={item.id}
-            className={`${selectedTab === item.link ? styles.active : ''}`}
+            className={`${windowLoc === item.link ? styles.active : ''}`}
           >
             <Link href={item.link} className={styles.link} passHref>
               <div className={`${styles.tab}`}>

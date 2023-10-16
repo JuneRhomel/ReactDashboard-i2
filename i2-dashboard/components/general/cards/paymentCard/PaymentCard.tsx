@@ -10,17 +10,17 @@ export const PaymentCard = ({transaction} : {transaction: SoaDetailsType}) => {
 
   return (
     <div className={style.card}>
-        <div className={ status === 'Invalid' ? `${style.invalid}` :
-                        status === 'For Verification' ? `${style.forVerification}` :
-                        `${style.successful}`}>
-            <span className={`${style.status} ${style.invalid}`}>{status}</span>
-            <p className={style.description}>{transaction.particular}</p>
-            <p className={style.label}>{transactionDate}</p>
-            <p className={style.label}>{transaction?.paymentType}</p>
-        </div>
-        <div>
-            <p className={`${style.amount}`}>{amount}</p>
-        </div>
+      <div className={status === 'Invalid' ? `${style.invalid}` :
+        status === 'For Verification' ? `${style.forVerification}` :
+          `${style.successful}`}>
+        <span className={`${style.status} ${style.invalid}`}>{status}</span>
+        <p className={style.description}>{transaction.particular}</p>
+        <p className={style.label}>{transactionDate}</p>
+        <p className={style.label}>{transaction?.paymentType}</p>
+      </div>
+      <div>
+        <p className={`${style.amount}`}>{amount}</p>
+      </div>
     </div>
   )
 }

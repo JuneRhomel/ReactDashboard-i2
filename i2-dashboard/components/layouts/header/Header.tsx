@@ -20,7 +20,7 @@ export default function Header() {
         </div>
         <button onClick={handleLogout}>Logout</button>
         <div className={styles.icon_container} >
-          <Link href={'/'}>
+          <Link href={'/servicerequest'}>
             {<MdAddCircle className={styles.icon} />}
           </Link>
           <Link href={'/'}>

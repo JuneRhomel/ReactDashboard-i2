@@ -1,5 +1,4 @@
-import Layout from "@/components/layouts/layout";
-import Section from "@/components/general/section/Section";
+import MyRequests from "@/components/pages/myRequests/MyRequests";
 import { ParamGetServiceRequestType } from "@/types/apiRequestParams";
 import authorizeUser from "@/utils/authorizeUser";
 import api from "@/utils/api";
@@ -92,32 +91,10 @@ export async function getServerSideProps(context: any){
 
     props.serviceRequests = serviceRequests as ServiceRequestsType;
   }))
-  
+  console.log(props)
   return {
     props
-    // props: {}
   }
 }
 
-export default function myrequest(props: any) {
-  if (!props.error) {
-    const serviceRequests = props.serviceRequests;
-    const sectionProps = {
-      title: "Requests",
-      headerAction: null,
-      data: serviceRequests,
-    }
-    return (
-      <Layout title='i2 - Requests'>
-        <Section props={sectionProps}/>
-        {JSON.stringify(serviceRequests)}
-      </Layout>
-    )
-  } else {
-    return (
-      <Layout title='i2 Error'>
-        <h1>{props.error.error}</h1>
-      </Layout>
-    )
-  }
-}
+export default MyRequests

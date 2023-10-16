@@ -9,6 +9,7 @@
   --inventi-orange: #E67E22;
   --inventi-green: #10513F;
   --inventi-neutral: #A8B5C2;
+  --background-color: #F0F2F5;
   --input-hover: #E4EAF2;
   --form-border: rgba(213, 215, 217, 0.5);
   --formGroup-border: #A8B5C2;
@@ -16,6 +17,9 @@
   --error-bg: #FDDDD3;
   --fontColour-forVerification: #663000;
   --forVerification-bg: #FFEECC;
+  --status-bg-green: #E6FAF4;
+  --pending-bg: #FFEECC;
+  --pending-txt: #663000;
 }
 
 * {
@@ -23,10 +27,11 @@
   padding: 0;
   box-sizing: border-box;
   font-family: Montserrat;
+  text-decoration: none;
 }
 
 main {
-  background-color: #F0F2F5;
+  background-color: var(--background-color);
 }
 
 main.login {
@@ -34,7 +39,29 @@ main.login {
 }
 
 .container {
-  min-height: 100vh;
   width: 90%;
+  min-height: 76.5vh;
   margin: auto;
+}
+
+.main-btn {
+  background-color: var(--inventi-blue);
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  height: 45px;
+  padding-inline: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.title-section {
+  font-size: 20px;
+  color: black;
+  font-weight: 800;
+  margin-bottom: 10px;
 }
