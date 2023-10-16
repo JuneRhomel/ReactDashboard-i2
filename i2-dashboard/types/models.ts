@@ -76,3 +76,124 @@ export interface SoaDetailsType extends ChangeHistory{
     status: string,
     transactionDate: string,
 }
+
+export interface GatePassPersonnelType extends ChangeHistory {
+    id: string,
+    gatepassId: string,
+    personnelName: string,
+    companyName: string,
+    personnelDescription: string | null,
+    personnelNo: string,
+}
+
+export interface GatePassType extends ChangeHistory {
+    id: string,
+    gpType: string,
+    gpPeronnelId: string | null,
+    gpDate: string,
+    gpTime: string,
+    nameId: string,
+    unitId: string,
+    contactNo: string,
+    approveId: string,
+    status: string,
+    dateUpload: string,
+    firstName: string,
+    fullName: string,
+    unit: string,
+    type: string,
+    personnel: GatePassPersonnelType | GatePassPersonnelType[] | null,
+}
+
+export interface GuestType extends ChangeHistory {
+    guestName: string,
+    guestNo: string,
+    guestPurpose: string,
+    guestId: string,
+}
+
+export interface VisitorsPassType extends ChangeHistory {
+    id: string,
+    nameId: string,
+    firstName: string,
+    lastName: string,
+    unitId: string,
+    contactNo: string,
+    departureDate: string,
+    arrivalDate: string,
+    arrivalTime: string,
+    departureTime: string,
+    dateUpload: string,
+    approveId: string,
+    status: string,
+    locationName: string,
+    guests: GuestType[] | GuestType | null,
+}
+
+export interface ServiceIssueType extends ChangeHistory {
+    id: string,
+    issueId: string,
+    nameId: string,
+    issueName: string,
+    firstName: string,
+    lastName: string,
+    fullName: string,
+    status: string,
+    contactNo: string,
+    unitId: string,
+    locationName: string | null,
+    description: string,
+    statusId: string,
+    attachments: string | null,
+    dateUpload: string,
+}
+
+export interface WorkDetailType extends ChangeHistory {
+    id: string,
+    nameContractor: string,
+    scopeWork: string,
+    personCharge: string,
+    contactNumber: string,
+}
+
+export interface WorkPermitType extends ChangeHistory {
+    id: string,
+    locationName: string,
+    categoryName: string,
+    firstName: string,
+    lastName: string,
+    status: string,
+    fullName: string,
+    unitId: string,
+    contactNo: string,
+    startDate: string,
+    endDate: string,
+    statusId: string,
+    workpermitcategoryId: string,
+    workDetailsId: string,
+    dateUpload: string,
+    nameId: string,
+    workDetail: WorkDetailType | WorkDetailType[] | null,
+}
+
+export type ServiceRequestDataType = WorkPermitType | ServiceIssueType | GatePassType | VisitorsPassType | null;
+
+export interface ServiceRequestType {
+    id: string,
+    dateUpload: string,
+    type: string,
+    table: string,
+    data: ServiceRequestDataType,
+}
+
+export type ServiceRequestsType = ServiceRequestType[];
+
+export interface MyRequestDataType {
+    gatePasses: GatePassType[] | string,
+    personnel: GatePassPersonnelType[] | string,
+    serviceIssues: ServiceIssueType[] | string,
+    workPermits: WorkPermitType[] | string,
+    workDetails: WorkDetailType[] | string,
+    visitorPasses: VisitorsPassType[] | string,
+    guests: GuestType[] | string,
+  }
