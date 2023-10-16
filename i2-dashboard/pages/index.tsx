@@ -10,6 +10,9 @@ export function getServerSideProps(context: any) {
     console.log("User already logged in")
     return {redirect : {destination: '/dashboard', permanent: false}};
   }
+  return {
+    props: {}
+  }
 }
 
 export default function Home() {
