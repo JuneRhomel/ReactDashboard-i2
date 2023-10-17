@@ -1,5 +1,5 @@
 import ServiceRequestCard from "@/components/general/cards/serviceRequestCard/ServiceRequestCard"
-import MyRequests from "@/components/pages/myRequests/MyRequests";
+import MyRequests from "@/components/pages/myrequests/MyRequests";
 import { ParamGetServiceRequestType } from "@/types/apiRequestParams";
 import authorizeUser from "@/utils/authorizeUser";
 import api from "@/utils/api";

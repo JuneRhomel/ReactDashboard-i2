@@ -204,7 +204,7 @@ export interface MyRequestDataType {
     type: string,
     table: string,
 }
-export interface ListRequest extends ChangeHistory {
+export interface ServiceRequestsThumbnailData {
     title: string,
     img: string,
     link: string,

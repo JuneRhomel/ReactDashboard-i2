@@ -11,7 +11,7 @@ export default function Navigation() {
   const navigationItems = [
     { id: 1, link: '/dashboard', text: 'Dashboard', icon: <MdDashboard /> },
     { id: 2, link: '/soa', text: 'SOA', icon: <MdBallot /> },
-    { id: 3, link: '/myrequests', text: 'My Request', icon: <MdReceipt /> },
+    { id: 3, link: '/myrequests', text: 'My Requests', icon: <MdReceipt /> },
     { id: 4, link: '/newsannouncement', text: 'News & Announcement', icon: <MdInsertChart /> },
     { id: 5, link: '/', text: 'Menu', icon: <MdMenu /> },
   ];

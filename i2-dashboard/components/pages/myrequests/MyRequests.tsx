@@ -16,7 +16,7 @@ const MyRequest = ( props: any ) => {
         const requestProps = {
             title: 'My Requests',
             headerAction:
-                <Link href='/servicerequest' className="main-btn">
+                <Link href='/selectservicerequest' className="main-btn">
                     <MdAdd />
                     Create New
                 </Link>,
