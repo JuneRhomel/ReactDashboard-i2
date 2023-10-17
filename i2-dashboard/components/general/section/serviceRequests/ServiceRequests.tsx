@@ -16,7 +16,7 @@ const ServiceRequests = ({ serviceRequests }: { serviceRequests: ServiceRequestT
                 //                             request.type === 'Visitor Pass' ? <VisitorPassCard key={index} visitorPass={request.data}/> :
                 //                             <h1>Not Found</h1>
                 // return componentToRender;
-                return <ServiceRequestCard key={index} request={request} />
+                return <ServiceRequestCard key={index} request={request}/>
             })}
             {/* <ServiceRequestCard request={serviceRequest}></ServiceRequestCard> */}
         </div>

@@ -6,8 +6,11 @@ import GatePass from './GatePass';
 import ServiceIssue from './ServiceIssue';
 import WorkPermit from './WorkPermit';
 import VisitorPass from './VisitorPass';
+import { useRouter } from 'next/router';
 
-function ServiceRequestCard({ request }: { request: ServiceRequestType }) {
+function ServiceRequestCard({ request }: { request: ServiceRequestType}) {
+    const router = useRouter();
+    const page = router.pathname;
     const status: string = request?.data?.status as string;
 
     const componentToRender = request.type === 'Report Issue' ? <ServiceIssue serviceIssue={request.data as ServiceIssueType}/> :
@@ -19,7 +22,10 @@ function ServiceRequestCard({ request }: { request: ServiceRequestType }) {
     return (
         <div className={style.card}>
             <div className={style.head}>
-                <StatusBubble status={status}/>
+                <div className={style.headStatus}>
+                    {page !== '/myrequests' ? <div className={style.id}>#100</div> : <></>}
+                    <StatusBubble status={status}/>
+                </div>
                 <p className={style.date}>{request.dateUpload}</p>
             </div>
             <div className={style.desciption}>

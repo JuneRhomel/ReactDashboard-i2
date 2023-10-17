@@ -28,7 +28,20 @@
     font-size: 12px;
 }
 
+.headStatus {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
 
+.id {
+    font-size: 10px;
+    font-weight: bold;
+    background-color: var(--inventi-blue);
+    color: white;
+    border-radius: 5px;
+    padding: 4px;
+}
 
 .image {
     width: 140px;
@@ -37,9 +50,9 @@
     object-fit: cover;
     border-radius: 5px;
 }
-
+/* 
 .description_box {
     display: flex;
     justify-content: space-between;
     gap: 5px;
-}
+} */

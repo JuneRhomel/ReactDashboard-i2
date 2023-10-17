@@ -9,7 +9,7 @@ const Section = ({props}: {props: any}) => {
     const cardMap: Record<string, ReactNode> = {
         'soa': <SoaCard props={props.data}/>,
         'payment transactions': <PaymentTransactions transactions={props.data}/>,
-        'my requests': <ServiceRequests serviceRequests={props.data} />
+        'my requests': <ServiceRequests serviceRequests={props.data}/>
     }
     const componentToRender: ReactNode = cardMap[title];
 

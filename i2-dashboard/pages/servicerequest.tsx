@@ -4,7 +4,7 @@ export async function getServerSideProps(context: any) {
         {
             title: "Gate Pass",
             img: '/gatepass.png',
-            link: '/'
+            link: '/gatepass'
         },
         {
             title: "Visitor Pass",
