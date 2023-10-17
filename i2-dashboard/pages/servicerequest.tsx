@@ -1,5 +1,4 @@
-import ServiceRequest from "@/components/pages/servicerequest/ServiceRequest";
-
+import ServiceRequest from "@/components/pages/servicerequest/serviceRequest"
 export async function getServerSideProps(context: any) {
     const serviceRequest = [
         {

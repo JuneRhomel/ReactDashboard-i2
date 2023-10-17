@@ -1,7 +1,7 @@
 import { ListRequest } from '@/types/models';
 import ServiceRequestCard from '../../cards/myrequestCard/ServiceRequestCard';
 
-const Servicerequest = ({props} : {props: ListRequest[]}) => {
+const ServiceRequests = ({props} : {props: ListRequest[]}) => {
     console.log(props)
     if (props == undefined) {
         return (<div>Undefined</div>)
@@ -14,4 +14,4 @@ const Servicerequest = ({props} : {props: ListRequest[]}) => {
     )
 }
 
-export default Servicerequest
+export default ServiceRequests
