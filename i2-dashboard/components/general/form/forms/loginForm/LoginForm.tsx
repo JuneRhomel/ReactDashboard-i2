@@ -4,12 +4,14 @@ import api from '@/utils/api';
 import { useState } from 'react';
 import InputGroup from '../../inputGroup/InputGroup';
 import { NextRouter, useRouter } from 'next/router';
+import { InputProps } from '@/types/models';
 
 const iconStyle: object = {
   color: "#1C5196",
   margin: "auto",
 }
-
+// {/* <InputGroup name='email' label='Email Address' type='email' handleInput={handleInput} formData={formData}/> */}
+// {/* <InputGroup name='password' label='Password' type='password' handleInput={handleInput} formData={formData}/> */}
 
 const LoginForm = () => {
     const router: NextRouter = useRouter();
@@ -44,6 +46,26 @@ const LoginForm = () => {
         }
     }
 
+    const props: { [key: string]: InputProps } = {
+        emailInput: {
+            name: 'email',
+            label: 'Email Address',
+            type: 'email',
+            onChange: handleInput,
+            value: formData.email,
+            // required: true,
+        },
+        passwordInput: {
+            name: 'password',
+            label: 'Password',
+            type: 'password',
+            onChange: handleInput,
+            value: formData.password,
+            // required: true,
+        }
+    };
+
+
     return (
         <form className={styles.loginForm} onSubmit={handleSubmit}>
             {/* Form Header is one div */}
@@ -58,11 +80,12 @@ const LoginForm = () => {
             </div>
             {/* Show the error message if there is one */}
             {error !== "" ? (<div>{error}</div>): null }
-            <InputGroup name='email' label='Email Address' type='email' handleInput={handleInput} formData={formData}/>
-            <InputGroup name='password' label='Password' type='password' handleInput={handleInput} formData={formData}/>
+            <InputGroup props={props.emailInput}/>
+            <InputGroup props={props.passwordInput}/>
             <button className={styles.submitButton} type="submit">Submit</button>
         </form>
     )
 }
 
 export default LoginForm
+

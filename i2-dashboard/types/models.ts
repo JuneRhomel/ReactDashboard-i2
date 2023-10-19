@@ -189,13 +189,13 @@ export interface ServiceRequestType {
 export type ServiceRequestsType = ServiceRequestType[];
 
 export interface MyRequestDataType {
-    gatePasses: GatePassType[] | string,
-    personnel: GatePassPersonnelType[] | string,
-    serviceIssues: ServiceIssueType[] | string,
-    workPermits: WorkPermitType[] | string,
-    workDetails: WorkDetailType[] | string,
-    visitorPasses: VisitorsPassType[] | string,
-    guests: GuestType[] | string,
+    gatePasses?: GatePassType[] | string,
+    personnel?: GatePassPersonnelType[] | string,
+    serviceIssues?: ServiceIssueType[] | string,
+    workPermits?: WorkPermitType[] | string,
+    workDetails?: WorkDetailType[] | string,
+    visitorPasses?: VisitorsPassType[] | string,
+    guests?: GuestType[] | string,
   }
 
   export interface RequestType extends ChangeHistory {
@@ -208,4 +208,17 @@ export interface ServiceRequestsThumbnailData {
     title: string,
     img: string,
     link: string,
+}
+
+export type TypeOfInput = 'text' | 'password' | 'email' | 'date' | 'select' | 'number' | 'time'
+
+export interface InputProps {
+    name: string,
+    label: string,
+    type: TypeOfInput,
+    onChange: any,
+    value: any,
+    required?: boolean,
+    disabled?: boolean,
+    options?: any[],
 }

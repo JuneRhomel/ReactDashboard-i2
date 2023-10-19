@@ -1,0 +1,13 @@
+.button {
+    cursor: pointer;
+}
+
+.back {
+    background-color: transparent;
+    border-radius: 10px;
+    border: 1px solid var(--inventi-blue);
+    color: var(--inventi-blue);
+    font-size: 10px;
+    width: 30px;
+    height: 29px;
+}

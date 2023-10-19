@@ -1,51 +1,30 @@
 import styles from "./InputGroup.module.css"
-import {BsEyeSlash, BsEyeFill} from 'react-icons/bs';
-import { useState } from "react";
+import { InputProps } from "@/types/models";
+import PasswordInput from "./PasswordInput";
+import StandardInput from "./StandardInput";
+import SelectInput from "./SelectInput";
+import DateInput from "./DateInput";
 
-const eyeIconStyle: object = {
-    all: "unset",
-    color: "#c6c6c6",
-    fontSize: "20px",
-    transition: "300ms ease all",
-  }
-
-const InputGroup = ({name, label, type, handleInput, formData}: {name: string, label: string, type: 'text' | 'password' | 'email' | 'date', handleInput: any, formData: any}) => {
-    const [showPassword, setShowPassword] = useState(false);
-
-    const toggleShowPassword = (event: any) => {
-        event.preventDefault();
-        setShowPassword(!showPassword);
+const InputGroup = ({props}: {props: InputProps}) => {
+    const inputTypeMap: {[key: string]: JSX.Element} = {
+        password: <PasswordInput props={props}/>,
+        select: <SelectInput props={props} />,
+        date: <DateInput props={props} />,
     }
+    const inputToRender = inputTypeMap[props.type] ? inputTypeMap[props.type] : <StandardInput props={props}/>;
 
+    const inputGroupClassName = props.disabled ? `${styles.formInputGroup} ${styles.disabled}` : `${styles.formInputGroup}`;
     return (
         <div 
-            className={styles.formInputGroup}
-            onClick={() => {document.getElementById(name)?.focus();}}  
+            className={inputGroupClassName}
+            onClick={() => {document.getElementById(props.name)?.click();}}
         >
-            <label htmlFor={name} className={styles.inputLabel}>{label}</label>
-            {type === 'password' ?
-            <div className={styles.passwordInput}>
-                <input
-                    id={name}
-                    type={showPassword ? 'text' : 'password'}
-                    name={name}
-                    className={styles.inputField}
-                    onChange={handleInput}
-                    value={formData[name]}
-                />
-                <button style={eyeIconStyle} onClick={toggleShowPassword}>{showPassword ? (<BsEyeFill/>) : (<BsEyeSlash/>)}
-                </button>
-            </div>
-            : 
-            <input
-                id={name}
-                type={type}
-                name={name}
-                className={styles.inputField}
-                onChange={handleInput}
-                value={formData[name]}
-            />
-            }
+            <label htmlFor={props.name} className={styles.inputLabel}>
+                {props.label}
+                {props.required ? <span className={styles.required}> *</span> : <></>}
+            </label>
+            {inputToRender}
+
         </div>
     )
 }

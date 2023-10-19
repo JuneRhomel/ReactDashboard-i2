@@ -1,49 +1,90 @@
 .formInputGroup {
-    border: solid 1px var(--formGroup-border);
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 10px 16px;
-    gap: 5px;
-    align-items: flex-start;
-    border-radius: 5px;
-  }
-  
-  .formInputGroup:hover {
-    background-color: var(--input-hover);
-  }
-  
-  .formInputGroup:focus-within {
-    border: 3px solid var(--inventi-blue);
-  }
-  
-  .inputLabel {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--inventi-blue);
-  }
-  
-  .inputField {
-    background: transparent;
-    color: black;
-    font-size: 1rem;
-    padding: 5px 0;
-    width: 100%;
-    border: none;
-  }
-  
-  .inputField[name="password"]{
-    letter-spacing: 0.25rem;
-  }
-  
-  .inputField:focus {
-    outline: none;
-  }
+  border: solid 1px var(--formGroup-border);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px 16px;
+  gap: 5px;
+  align-items: flex-start;
+  border-radius: 5px;
+}
 
-  .passwordInput {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    gap: 5px;
-  }
+.formInputGroup:hover {
+  background-color: var(--input-hover);
+}
+
+.formInputGroup:focus-within {
+  border: 3px solid var(--inventi-blue);
+}
+
+.formInputGroup.disabled {
+  background-color: var(--disabled-input);
+}
+
+.inputLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--inventi-blue);
+}
+
+.inputField {
+  background: transparent;
+  color: black;
+  font-size: 1rem;
+  padding: 5px 0;
+  width: 100%;
+  border: none;
+}
+
+.inputField[name="password"]{
+  letter-spacing: 0.25rem;
+}
+
+.inputField:focus {
+  outline: none;
+}
+
+.passwordInput {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.select {
+  position: relative;
+  background-color: transparent;
+  width: 100%;
+  font-size: 14px;
+  border-radius: 0;
+  border: none;
+  border-radius: 5px;
+  appearance: none;
+  padding-top: 5px
+}
+
+.selectCaret {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-10px);
+  font-size: 20px;
+  color: #B4B4B4;
+}
+
+.dateInput {
+  width: 100%;
+  font-size: 14px;
+  border: none;
+  background: transparent;
+}
+
+.dateInput:focus {
+  outline: none;
+}
+
+.required {
+  color: red;
+}

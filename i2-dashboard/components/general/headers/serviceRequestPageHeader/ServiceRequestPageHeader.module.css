@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--inventi-blue);
+}

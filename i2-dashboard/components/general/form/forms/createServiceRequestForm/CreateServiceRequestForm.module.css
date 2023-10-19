@@ -1,0 +1,35 @@
+.dropdown {
+    background-color: white;
+    color: var(--inventi-blue);
+    border: 0.5px solid lightgrey;
+    border-radius: 3px;
+    box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.5); /* Add your shadow properties */
+    padding: 5px 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.title {
+    font-weight: 400;
+}
+
+.content {
+
+}
+
+.hidden {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.1s cubic-bezier(0,1,0,1);
+}
+
+.show {
+    max-height: 9999px;    
+    height: auto;
+    transition: all 0.1s cubic-bezier(1,0,1,0);
+}

@@ -1,11 +1,9 @@
-import ServiceRequestCard from "@/components/general/cards/serviceRequestCard/ServiceRequestCard"
-import MyRequests from "@/components/pages/myrequests/MyRequests";
 import { ParamGetServiceRequestType } from "@/types/apiRequestParams";
 import authorizeUser from "@/utils/authorizeUser";
 import api from "@/utils/api";
 import mapObject from "@/utils/mapObject";
 import { GatePassPersonnelType, GatePassType, GuestType, MyRequestDataType, ServiceIssueType, ServiceRequestType, ServiceRequestsType, VisitorsPassType, WorkDetailType, WorkPermitType } from "@/types/models";
-import { useRouter } from "next/router";
+import Gatepass from "@/components/pages/gatepass/Gatepass";
 
 export async function getServerSideProps(context: any){
   type PropsType = {
@@ -98,16 +96,5 @@ export async function getServerSideProps(context: any){
     props
   }
 }
-const gatepass = (props: any) => {
-    const serviceRequests: ServiceRequestType[] = props.serviceRequests;
 
-  return (
-    <>
-        {serviceRequests.map((serviceRequest, index) => (
-            <ServiceRequestCard key={index} request={serviceRequest}></ServiceRequestCard>
-        ))}
-    </>
-  )
-}
-
-export default gatepass
+export default Gatepass
