@@ -2,6 +2,7 @@ import { InputProps } from "@/types/models";
 import InputGroup from "../../inputGroup/InputGroup";
 import styles from './CreateGatePassForm.module.css';
 import { useEffect, useState } from "react";
+import ItemizedDetailsSection from "../../section/ItemizedDetailsSection";
 
 export default function CreateGatePassForm() {
     const [formData, setFormData] = useState({
@@ -10,7 +11,9 @@ export default function CreateGatePassForm() {
         forDate: '2023-05-15',
         time: '13:01',
         unit: '305',
-        contactNumber: '1234567890'
+        contactNumber: '1234567890',
+        items: null,
+        personnel: null,
     })
 
     const handleInput = (event: any) => {
@@ -20,11 +23,7 @@ export default function CreateGatePassForm() {
         setFormData(newFormData);
     }
 
-    useEffect(()=> {
-        console.log(formData)
-    },[formData])
-
-    const props: InputProps[] = [
+    const baseFields: InputProps[] = [
         {
             name: 'requestorName',
             label: 'Requestor Name',
@@ -77,9 +76,11 @@ export default function CreateGatePassForm() {
             required: true,
         }
     ]
+    
     return (
         <form action="" className={styles.form}>
-            {props.map((prop, index) => (<InputGroup key={index} props={prop}/>))}
+            {baseFields.map((field, index) => (<InputGroup key={index} props={field}/>))}
+            <ItemizedDetailsSection type='Item Details' formData={formData} setFormData={setFormData}/>
         </form>
     )
 }

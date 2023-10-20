@@ -9,8 +9,11 @@ export default function CreateServiceRequestForm({type}: {type: string}){
     const handleClick = () => {
         setIsOpen(!isOpen);
     }
+
+    const formToRender = type === 'Gate Pass' ? <CreateGatePassForm/> : <></>
     const contentStyle = isOpen ? `${styles.content} ${styles.show}` : `${styles.content} ${styles.hidden}`;
     const dropdownHeaderIcon = isOpen ? <FaCaretUp/> : <FaCaretDown/>;
+    
     return (
         <div className={styles.dropdown}>
             <div className={styles.header} onClick={handleClick}>
@@ -18,9 +21,8 @@ export default function CreateServiceRequestForm({type}: {type: string}){
                 {dropdownHeaderIcon}
             </div>
             <div className={contentStyle}>
-                <CreateGatePassForm/>
+                {formToRender}
             </div>
         </div>
     )
-
 }

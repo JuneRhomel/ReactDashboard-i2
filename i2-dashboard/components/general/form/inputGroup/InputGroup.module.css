@@ -1,5 +1,5 @@
 .formInputGroup {
-  border: solid 1px var(--formGroup-border);
+  border: solid 2px var(--formGroup-border);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
 }
 
 .formInputGroup:focus-within {
-  border: 3px solid var(--inventi-blue);
+  border: 2px solid var(--inventi-blue);
 }
 
 .formInputGroup.disabled {
@@ -87,4 +87,17 @@
 
 .required {
   color: red;
+}
+
+.textArea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  resize: none;
+  height: 100px;
+  font-size: 14px;
+}
+
+.textArea:focus{
+  outline: none;
 }

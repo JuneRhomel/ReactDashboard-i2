@@ -11,3 +11,12 @@
     width: 30px;
     height: 29px;
 }
+
+.addItem {
+    background-color: var(--inventi-blue);
+    color: white;
+    padding: 15px 10px;
+    border-radius: 5px;
+    border: none;
+    max-width: 100px;
+}

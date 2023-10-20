@@ -4,14 +4,16 @@
 * @return {JsxElement} Returns a JsxElement of an HTML form
 */
 
+import CreateServiceRequestForm from "./forms/createServiceRequestForm/CreateServiceRequestForm";
 import LoginForm from "./forms/loginForm/LoginForm";
 
-const Form = ({type} : {type : 'login'}) => {
-    if (type === 'login') {
-        return <LoginForm/>;
-    }
-    return <div>Default Form</div>
-
+const Form = ({type} : {type : string}) => {
+    const formTypeMap: {[key: string]: JSX.Element} = {
+        login: <LoginForm/>,
+        gatepass: <CreateServiceRequestForm type='gatepass'/>,
+    };
+    const formToRender = formTypeMap[type] ? formTypeMap[type] : <h1>Form does not exist yet</h1>;
+    return formToRender;
 }
 
 export default Form

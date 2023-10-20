@@ -15,7 +15,9 @@ const Gatepass = (props: any) => {
     return (
         <Layout title={title}>
             <ServiceRequestPageHeader title='Gate Pass'/>
+
             <CreateServiceRequestForm type='Gate Pass'/>
+
             <ServiceRequestStatusFilter handler={serviceRequestStatusFilterHandler}/>
             {serviceRequests.map((serviceRequest: ServiceRequestType, index: number) => (
                 <ServiceRequestCard key={index} request={serviceRequest}/>

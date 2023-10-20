@@ -210,7 +210,7 @@ export interface ServiceRequestsThumbnailData {
     link: string,
 }
 
-export type TypeOfInput = 'text' | 'password' | 'email' | 'date' | 'select' | 'number' | 'time'
+export type TypeOfInput = 'text' | 'password' | 'email' | 'date' | 'select' | 'number' | 'time' | 'textArea'
 
 export interface InputProps {
     name: string,

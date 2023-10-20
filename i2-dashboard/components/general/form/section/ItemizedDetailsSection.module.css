@@ -1,0 +1,33 @@
+.container {
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.itemsContainer {
+    margin-bottom: 15px;
+}
+
+.title {
+    margin-bottom: 20px;
+}
+
+.fieldsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.footer {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+
+.error {
+    color: red;
+    font-style: italic;
+    font-size: 14px;
+}
