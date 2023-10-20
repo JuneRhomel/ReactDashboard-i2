@@ -20,3 +20,27 @@
     border: none;
     max-width: 100px;
 }
+
+.submit {
+    background-color: var(--inventi-blue);
+    color: white;
+    padding: 15px;
+    border: solid 1px var(--inventi-blue);
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.cancel {
+    background-color: #f6f6f6;
+    color: var(--inventi-blue);
+    padding: 15px;
+    border: solid 1px transparent;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.cancel:hover {
+    border: solid 1px black
+}

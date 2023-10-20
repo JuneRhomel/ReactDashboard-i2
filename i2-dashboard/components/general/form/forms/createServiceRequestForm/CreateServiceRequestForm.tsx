@@ -10,7 +10,11 @@ export default function CreateServiceRequestForm({type}: {type: string}){
         setIsOpen(!isOpen);
     }
 
-    const formToRender = type === 'Gate Pass' ? <CreateGatePassForm/> : <></>
+    const closeDropdown = () => {
+        setIsOpen(false);
+    }
+
+    const formToRender = type === 'Gate Pass' ? <CreateGatePassForm closeDropdown={closeDropdown}/> : <></>
     const contentStyle = isOpen ? `${styles.content} ${styles.show}` : `${styles.content} ${styles.hidden}`;
     const dropdownHeaderIcon = isOpen ? <FaCaretUp/> : <FaCaretDown/>;
     

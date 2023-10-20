@@ -3,8 +3,9 @@ import InputGroup from "../../inputGroup/InputGroup";
 import styles from './CreateGatePassForm.module.css';
 import { useEffect, useState } from "react";
 import ItemizedDetailsSection from "../../section/ItemizedDetailsSection";
+import Button from "@/components/general/button/Button";
 
-export default function CreateGatePassForm() {
+export default function CreateGatePassForm({closeDropdown}: {closeDropdown: any}) {
     const [formData, setFormData] = useState({
         requestorName: "Kevin",
         gatepassType: '',
@@ -13,7 +14,11 @@ export default function CreateGatePassForm() {
         unit: '305',
         contactNumber: '1234567890',
         items: null,
-        personnel: null,
+        personnel: {
+            courier: 'Some Courier',
+            courierName: 'Person 1',
+            contactInfo: 'Some contact info'
+        },
     })
 
     const handleInput = (event: any) => {
@@ -77,10 +82,62 @@ export default function CreateGatePassForm() {
         }
     ]
     
+    const personnelDetailsFields: InputProps[] = [
+        {
+            name: 'courier',
+            label: 'Courier / Company',
+            type: 'text',
+            onChange: handleInput,
+            value: formData.personnel?.courier,
+            required: true
+        },
+        {
+            name: 'courierName',
+            label: 'Name',
+            type: 'text',
+            onChange: handleInput,
+            value: formData.personnel?.courierName,
+            required: true,
+        },
+        {
+            name: 'contactInfo',
+            label: 'Contact Details',
+            type: 'text',
+            onChange: handleInput,
+            value: formData.personnel?.contactInfo,
+            required: true,
+        }
+    ]
+
+    // TODO
+    const clearForm = () => {
+        console.log('clearForm() has not yet been implemented')
+    }
+
+    const handleCancel = (event: any) => {
+        event.preventDefault();
+        closeDropdown();
+        clearForm();
+    }
+
+    const handleSubmit = (event: any) => {
+        event.preventDefault();
+        console.log('submitting form')
+    }
     return (
         <form action="" className={styles.form}>
             {baseFields.map((field, index) => (<InputGroup key={index} props={field}/>))}
             <ItemizedDetailsSection type='Item Details' formData={formData} setFormData={setFormData}/>
+
+            <div className={styles.personnelContainer}>
+                <h3>Personnel Details</h3>
+                {personnelDetailsFields.map((field, index) => (<InputGroup key={index} props={field}/>))}
+            </div>
+
+            <div className={styles.footer}>
+                <Button type='submit' onClick={handleSubmit}/>
+                <Button type='cancel' onClick={handleCancel}/>
+            </div>
         </form>
     )
 }
