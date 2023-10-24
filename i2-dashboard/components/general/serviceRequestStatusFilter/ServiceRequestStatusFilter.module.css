@@ -1,0 +1,62 @@
+.container {
+    margin: 20px 0;
+}
+
+.title {
+    color: var(--inventi-blue);
+    padding: 10px 0;
+}
+
+.radioFilter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+    height: 40px;
+}
+
+.radioInput {
+    display: none;
+}
+
+.radioLabel {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    color: #6A7682;
+    text-align: center;
+    border: 1px solid var(--inventi-neutral);
+    font-size: 12px;
+    transition: background 0.2s;
+}
+
+.quantityDisplay {
+    border: 1px solid var(--inventi-blue);
+    border-radius: 3px;
+    padding: 0 4px;
+    color: var(--inventi-blue);
+    margin-left: 5px;
+    background-color: white;
+}
+
+.radioLabel:first-of-type {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: none;
+}
+
+.radioLabel:last-of-type {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: none;
+}
+
+.radioLabel:hover,  .radioInput:checked + .radioLabel{
+    background-color: var(--inventi-blue);
+    color: white;
+}

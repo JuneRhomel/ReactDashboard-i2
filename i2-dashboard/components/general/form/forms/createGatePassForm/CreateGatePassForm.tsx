@@ -1,30 +1,57 @@
-import { InputProps } from "@/types/models";
+import { CreateGatePassFormType, InputProps, PersonnelDetailsType } from "@/types/models";
 import InputGroup from "../../inputGroup/InputGroup";
 import styles from './CreateGatePassForm.module.css';
 import { useEffect, useState } from "react";
 import ItemizedDetailsSection from "../../section/ItemizedDetailsSection";
 import Button from "@/components/general/button/Button";
 
+const testFormData = {
+    requestorName: 'Kevin',
+    gatepassType: null,
+    forDate: '2023-12-12',
+    time: '12:31',
+    unit: '121',
+    contactNumber: '1231231234',
+    items: null,
+    personnel: {
+        courier: 'Some Courier',
+        courierName: 'Person 1',
+        courierContact: 'Some contact info'
+    },
+}
+
+const newPersonnel = {
+    courier: '',
+    courierName: '',
+    courierContact: '',
+}
+
+const emptyFormData = {
+    requestorName: '',
+    gatepassType: null,
+    forDate: '',
+    time: '',
+    unit: '',
+    contactNumber: '',
+    items: null,
+    personnel: null,
+}
+
 export default function CreateGatePassForm({closeDropdown}: {closeDropdown: any}) {
-    const [formData, setFormData] = useState({
-        requestorName: "Kevin",
-        gatepassType: '',
-        forDate: '2023-05-15',
-        time: '13:01',
-        unit: '305',
-        contactNumber: '1234567890',
-        items: null,
-        personnel: {
-            courier: 'Some Courier',
-            courierName: 'Person 1',
-            contactInfo: 'Some contact info'
-        },
-    })
+    const [formData, setFormData] = useState<CreateGatePassFormType>(emptyFormData)
 
     const handleInput = (event: any) => {
         const name = event?.target?.name;
         const value = event?.target?.value;
-        const newFormData = {...formData, [name]: value};
+        const newFormData: CreateGatePassFormType = {...formData};
+        if (name.substring(0,7) === 'courier') {
+            const newPersonnelData = formData.personnel || {...newPersonnel};
+            newPersonnelData[name as keyof PersonnelDetailsType] = value;
+            newFormData.personnel = newPersonnelData;
+            console.log(formData.personnel)
+        } else {
+            newFormData[name as keyof CreateGatePassFormType] = value;
+        }
         setFormData(newFormData);
     }
 
@@ -88,7 +115,7 @@ export default function CreateGatePassForm({closeDropdown}: {closeDropdown: any}
             label: 'Courier / Company',
             type: 'text',
             onChange: handleInput,
-            value: formData.personnel?.courier,
+            value: formData.personnel?.courier || '',
             required: true
         },
         {
@@ -96,37 +123,40 @@ export default function CreateGatePassForm({closeDropdown}: {closeDropdown: any}
             label: 'Name',
             type: 'text',
             onChange: handleInput,
-            value: formData.personnel?.courierName,
+            value: formData.personnel?.courierName || '',
             required: true,
         },
         {
-            name: 'contactInfo',
+            name: 'courierContact',
             label: 'Contact Details',
             type: 'text',
             onChange: handleInput,
-            value: formData.personnel?.contactInfo,
+            value: formData.personnel?.courierContact || '',
             required: true,
         }
     ]
 
-    // TODO
     const clearForm = () => {
-        console.log('clearForm() has not yet been implemented')
+        setFormData({...emptyFormData})
     }
 
     const handleCancel = (event: any) => {
         event.preventDefault();
+        window.scrollTo(0,0);
         closeDropdown();
         clearForm();
     }
 
+    // TODO
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        console.log('submitting form')
+        console.log(formData)
     }
+
     return (
         <form action="" className={styles.form}>
             {baseFields.map((field, index) => (<InputGroup key={index} props={field}/>))}
+            
             <ItemizedDetailsSection type='Item Details' formData={formData} setFormData={setFormData}/>
 
             <div className={styles.personnelContainer}>

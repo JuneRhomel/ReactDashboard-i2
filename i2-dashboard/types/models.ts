@@ -222,3 +222,26 @@ export interface InputProps {
     disabled?: boolean,
     options?: any[],
 }
+
+export interface PersonnelDetailsType {
+    courier: string | null,
+    courierName: string | null,
+    courierContact: string | null,
+}
+
+export interface GatePassItemType {
+    itemName: string | null,
+    itemQuantity: number | null,
+    itemDescription: string | null,
+}
+
+export interface CreateGatePassFormType {
+    requestorName: string | null,
+    gatepassType: string | null,
+    forDate: string | null,
+    time: string | null,
+    unit: string | null,
+    contactNumber: string | null,
+    items: GatePassItemType[] | null,
+    personnel: PersonnelDetailsType | null,
+}

@@ -4,7 +4,7 @@ import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import CreateGatePassForm from '../createGatePassForm/CreateGatePassForm';
 
 export default function CreateServiceRequestForm({type}: {type: string}){
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleClick = () => {
         setIsOpen(!isOpen);

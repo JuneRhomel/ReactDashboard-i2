@@ -3,7 +3,6 @@
     color: var(--inventi-blue);
     border: 0.5px solid lightgrey;
     border-radius: 3px;
-    box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.5); /* Add your shadow properties */
     padding: 5px 10px;
 }
 

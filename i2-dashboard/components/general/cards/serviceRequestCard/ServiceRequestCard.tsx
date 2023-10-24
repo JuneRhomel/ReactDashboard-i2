@@ -1,4 +1,4 @@
-import { GatePassType, ServiceIssueType, ServiceRequestType, VisitorsPassType, WorkPermitType } from '@/types/models';
+import { GatePassType, ServiceIssueType, ServiceRequestDataType, ServiceRequestType, VisitorsPassType, WorkPermitType } from '@/types/models';
 import StatusBubble from '../../statusBubble/StatusBubble';
 import style from './ServiceRequestCard.module.css'
 import getDateString from '@/utils/getDateString';
@@ -8,25 +8,34 @@ import WorkPermit from './WorkPermit';
 import VisitorPass from './VisitorPass';
 import { useRouter } from 'next/router';
 
-function ServiceRequestCard({ request }: { request: ServiceRequestType}) {
+function ServiceRequestCard({ request, variant = undefined }: { request: ServiceRequestType | ServiceRequestDataType, variant?: 'Report Issue' |'Gate Pass' |'Work Permit' | 'Visitor Pass' | undefined}) {
     const router = useRouter();
     const page = router.pathname;
-    const status: string = request?.data?.status as string;
+    const type = request && 'data' in request ?
+                    request.type : variant;
+    const data = request && 'data' in request ?
+                    request.data : request;
+    const status= request && 'data' in request ?
+                    request.data?.status as string : data?.status as string;
 
-    const componentToRender = request.type === 'Report Issue' ? <ServiceIssue serviceIssue={request.data as ServiceIssueType}/> :
-                                request.type === 'Gate Pass' ? <GatePass gatePass={request.data as GatePassType}/> :
-                                request.type === 'Work Permit' ? <WorkPermit workPermit={request.data as WorkPermitType}/> :
-                                request.type === 'Visitor Pass' ? <VisitorPass visitorPass={request.data as VisitorsPassType}/> :
-                                <h1>Service request details not found</h1>
+    const cardDetailsComponent = new Map<string, JSX.Element>(
+        [
+            ['Report Issue', <ServiceIssue serviceIssue={data as ServiceIssueType} key={data?.id}/>],
+            ['Gate Pass', <GatePass gatePass={data as GatePassType} key={data?.id}/>],
+            ['Work Permit', <WorkPermit workPermit={data as WorkPermitType} key={data?.id}/>],
+            ['Visitor Pass', <VisitorPass visitorPass={data as VisitorsPassType} key={data?.id}/>],
+        ]
+    )
 
+    const componentToRender = type && cardDetailsComponent.get(type) || <p>No Component to Render</p>;
     return (
         <div className={style.card}>
             <div className={style.head}>
                 <div className={style.headStatus}>
-                    {page !== '/myrequests' ? <div className={style.id}>#100</div> : <></>}
+                    {page !== '/myrequests' ? <div className={style.id}>#{request?.id}</div> : <></>}
                     <StatusBubble status={status}/>
                 </div>
-                <p className={style.date}>{request.dateUpload}</p>
+                <p className={style.date}>{data?.dateUpload}</p>
             </div>
             <div className={style.desciption}>
                 {componentToRender}

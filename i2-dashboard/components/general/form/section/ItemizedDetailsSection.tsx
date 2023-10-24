@@ -1,19 +1,25 @@
 import { useEffect, useState } from 'react';
 import styles from './ItemizedDetailsSection.module.css';
-import { InputProps } from '@/types/models';
+import { GatePassItemType, InputProps } from '@/types/models';
 import InputGroup from '../inputGroup/InputGroup';
 import Button from '../../button/Button';
 import ItemDetails from '../itemDetails/ItemDetails';
 
 const emptyItemDetails = {
+    itemName: '',
+    itemQuantity: 0,
+    itemDescription: '',
+}
+
+const testItemDetails = {
     itemName: 'sa',
     itemQuantity: 2,
     itemDescription: 'sd',
 }
 
 export default function ItemizedDetailsSection({type, formData, setFormData}: {type: string, formData: any, setFormData: any}) {
-    const [items, setItems] = useState<any[]>([emptyItemDetails]);
-    const [itemDetails, setItemDetails] = useState<any>({...emptyItemDetails});
+    const [items, setItems] = useState<GatePassItemType[]>([]);
+    const [itemDetails, setItemDetails] = useState<GatePassItemType>({...emptyItemDetails});
     const [error, setError] = useState('');
 
     useEffect(()=> {
@@ -35,7 +41,7 @@ export default function ItemizedDetailsSection({type, formData, setFormData}: {t
         if (itemName.value && description.value && parseInt(itemQuantity.value) > 0) {
             const newItem = {
                 itemName: itemName.value,
-                itemQuantity: itemQuantity.value,
+                itemQuantity: parseInt(itemQuantity.value) || 0,
                 itemDescription: description.value,
             }
             setItems((previousItems) => [...previousItems, newItem]);
