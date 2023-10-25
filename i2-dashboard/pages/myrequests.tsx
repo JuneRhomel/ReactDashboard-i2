@@ -3,7 +3,7 @@ import { ParamGetServiceRequestType, ServiceRequestTable } from "@/types/apiRequ
 import authorizeUser from "@/utils/authorizeUser";
 import api from "@/utils/api";
 import mapObject from "@/utils/mapObject";
-import { GatePassPersonnelType, GatePassType, GuestType, MyRequestDataType, ServiceIssueType, ServiceRequestType, ServiceRequestsType, VisitorsPassType, WorkDetailType, WorkPermitType } from "@/types/models";
+import { GatepassPersonnelType, GatepassType, GuestType, MyRequestDataType, ServiceIssueType, ServiceRequestType, ServiceRequestsType, VisitorsPassType, WorkDetailType, WorkPermitType } from "@/types/models";
 
 export async function getServerSideProps(context: any){
   type PropsType = {
@@ -31,7 +31,7 @@ export async function getServerSideProps(context: any){
   const serviceRequests: ServiceRequestsType | null = jsonResponse ? mapObject(jsonResponse) as ServiceRequestsType : null;
   serviceRequests?.sort((a: any, b: any) => parseInt(b.id) - parseInt(a.id));
   const serviceRequestDetails: MyRequestDataType = {
-    gatePasses: 'gatepass',
+    gatepasses: 'gatepass',
     personnel: 'personnel',
     serviceIssues: 'report_issue',
     workPermits: 'workpermit',
@@ -51,14 +51,14 @@ export async function getServerSideProps(context: any){
 
   serviceRequests && await Promise.all(serviceRequests.map((request: ServiceRequestType) => {
     if (request.type === "Gate Pass") {
-      const gatePasses: GatePassType[] = serviceRequestDetails.gatePasses as GatePassType[];
-      const personnel: GatePassPersonnelType[] = serviceRequestDetails.personnel as GatePassPersonnelType[];
-      const gatePass: GatePassType | undefined = gatePasses.find((gatePass: GatePassType) => gatePass.id == request.id);
+      const gatepasses: GatepassType[] = serviceRequestDetails.gatepasses as GatepassType[];
+      const personnel: GatepassPersonnelType[] = serviceRequestDetails.personnel as GatepassPersonnelType[];
+      const gatepass: GatepassType | undefined = gatepasses.find((gatepass: GatepassType) => gatepass.id == request.id);
       // get the personnel details of the permit.
-      if (gatePass) {
-        const gatePassPersonnel: GatePassPersonnelType | undefined = personnel?.find((details: GatePassPersonnelType) => details.gatepassId === `${gatePass.id}`);
-        gatePass.personnel = gatePassPersonnel ? gatePassPersonnel : null;
-        request.data = gatePass;
+      if (gatepass) {
+        const gatepassPersonnel: GatepassPersonnelType | undefined = personnel?.find((details: GatepassPersonnelType) => details.gatepassId === `${gatepass.id}`);
+        gatepass.personnel = gatepassPersonnel ? gatepassPersonnel : null;
+        request.data = gatepass;
       } else {
         request.data = null;
       }

@@ -1,12 +1,11 @@
-import gatepass from "@/pages/gatepass";
-import { GatePassPersonnelType, GatePassType } from "@/types/models";
+import { GatepassPersonnelType, GatepassType } from "@/types/models";
 import { useRouter } from "next/router";
 
-const GatePass = ({gatePass} : {gatePass: GatePassType}) => {
+const Gatepass = ({gatePass} : {gatePass: GatepassType}) => {
   const router = useRouter();
   const page = router.pathname;
   const type = gatePass.type;
-  const personnel: GatePassPersonnelType | null = gatePass.personnel as GatePassPersonnelType | null;
+  const personnel: GatepassPersonnelType | null = gatePass.personnel as GatepassPersonnelType | null;
   const personnelName: string = personnel?.personnelName as string;
   return (
     <>
@@ -18,4 +17,4 @@ const GatePass = ({gatePass} : {gatePass: GatePassType}) => {
   )
 }
 
-export default GatePass;
+export default Gatepass;

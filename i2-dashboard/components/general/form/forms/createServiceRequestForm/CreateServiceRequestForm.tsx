@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './CreateServiceRequestForm.module.css';
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
-import CreateGatePassForm from '../createGatePassForm/CreateGatePassForm';
+import CreateGatepassForm from '../createGatepassForm/CreateGatepassForm';
 
 export default function CreateServiceRequestForm({type}: {type: string}){
     const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +14,7 @@ export default function CreateServiceRequestForm({type}: {type: string}){
         setIsOpen(false);
     }
 
-    const formToRender = type === 'Gate Pass' ? <CreateGatePassForm closeDropdown={closeDropdown}/> : <></>
+    const formToRender = type === 'Gate Pass' ? <CreateGatepassForm closeDropdown={closeDropdown}/> : <></>
     const contentStyle = isOpen ? `${styles.content} ${styles.show}` : `${styles.content} ${styles.hidden}`;
     const dropdownHeaderIcon = isOpen ? <FaCaretUp/> : <FaCaretDown/>;
     

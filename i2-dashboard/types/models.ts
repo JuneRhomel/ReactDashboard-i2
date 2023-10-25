@@ -77,7 +77,7 @@ export interface SoaDetailsType extends ChangeHistory {
     transactionDate: string,
 }
 
-export interface GatePassPersonnelType extends ChangeHistory {
+export interface GatepassPersonnelType extends ChangeHistory {
     id: string,
     gatepassId: string,
     personnelName: string,
@@ -86,7 +86,7 @@ export interface GatePassPersonnelType extends ChangeHistory {
     personnelNo: string,
 }
 
-export interface GatePassType extends ChangeHistory {
+export interface GatepassType extends ChangeHistory {
     id: string,
     gpType: string,
     gpPeronnelId: string | null,
@@ -102,7 +102,7 @@ export interface GatePassType extends ChangeHistory {
     fullName: string,
     unit: string,
     type: string,
-    personnel: GatePassPersonnelType | GatePassPersonnelType[] | null,
+    personnel: GatepassPersonnelType | GatepassPersonnelType[] | null,
 }
 
 export interface GuestType extends ChangeHistory {
@@ -176,7 +176,7 @@ export interface WorkPermitType extends ChangeHistory {
     workDetail: WorkDetailType | WorkDetailType[] | null,
 }
 
-export type ServiceRequestDataType = WorkPermitType | ServiceIssueType | GatePassType | VisitorsPassType | null;
+export type ServiceRequestDataType = WorkPermitType | ServiceIssueType | GatepassType | VisitorsPassType | null;
 
 export interface ServiceRequestType {
     id: string,
@@ -189,8 +189,8 @@ export interface ServiceRequestType {
 export type ServiceRequestsType = ServiceRequestType[];
 
 export interface MyRequestDataType {
-    gatePasses?: GatePassType[] | string,
-    personnel?: GatePassPersonnelType[] | string,
+    gatepasses?: GatepassType[] | string,
+    personnel?: GatepassPersonnelType[] | string,
     serviceIssues?: ServiceIssueType[] | string,
     workPermits?: WorkPermitType[] | string,
     workDetails?: WorkDetailType[] | string,
@@ -229,19 +229,24 @@ export interface PersonnelDetailsType {
     courierContact: string | null,
 }
 
-export interface GatePassItemType {
+export interface GatepassItemType {
     itemName: string | null,
     itemQuantity: number | null,
     itemDescription: string | null,
 }
 
-export interface CreateGatePassFormType {
+export interface CreateGatepassFormType {
     requestorName: string | null,
     gatepassType: string | null,
     forDate: string | null,
     time: string | null,
     unit: string | null,
     contactNumber: string | null,
-    items: GatePassItemType[] | null,
+    items: GatepassItemType[] | null,
     personnel: PersonnelDetailsType | null,
+}
+
+export interface GatepassTypeType extends ChangeHistory{
+    id: string,
+    categoryName: string,
 }

@@ -1,12 +1,11 @@
-import { GatePassType, ServiceIssueType, ServiceRequestDataType, ServiceRequestType, VisitorsPassType, WorkPermitType } from '@/types/models';
+import { GatepassType, ServiceIssueType, ServiceRequestDataType, ServiceRequestType, VisitorsPassType, WorkPermitType } from '@/types/models';
 import StatusBubble from '../../statusBubble/StatusBubble';
 import style from './ServiceRequestCard.module.css'
-import getDateString from '@/utils/getDateString';
-import GatePass from './GatePass';
 import ServiceIssue from './ServiceIssue';
 import WorkPermit from './WorkPermit';
 import VisitorPass from './VisitorPass';
 import { useRouter } from 'next/router';
+import Gatepass from './Gatepass';
 
 function ServiceRequestCard({ request, variant = undefined }: { request: ServiceRequestType | ServiceRequestDataType, variant?: 'Report Issue' |'Gate Pass' |'Work Permit' | 'Visitor Pass' | undefined}) {
     const router = useRouter();
@@ -21,7 +20,7 @@ function ServiceRequestCard({ request, variant = undefined }: { request: Service
     const cardDetailsComponent = new Map<string, JSX.Element>(
         [
             ['Report Issue', <ServiceIssue serviceIssue={data as ServiceIssueType} key={data?.id}/>],
-            ['Gate Pass', <GatePass gatePass={data as GatePassType} key={data?.id}/>],
+            ['Gate Pass', <Gatepass gatePass={data as GatepassType} key={data?.id}/>],
             ['Work Permit', <WorkPermit workPermit={data as WorkPermitType} key={data?.id}/>],
             ['Visitor Pass', <VisitorPass visitorPass={data as VisitorsPassType} key={data?.id}/>],
         ]

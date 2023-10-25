@@ -25,3 +25,4 @@ itemQty
 description
 gatepassId
 table = gatepass_items
+module

@@ -1,18 +1,26 @@
-import { CreateGatePassFormType, InputProps, PersonnelDetailsType } from "@/types/models";
+import { CreateGatepassFormType, GatepassTypeType, InputProps, PersonnelDetailsType } from "@/types/models";
 import InputGroup from "../../inputGroup/InputGroup";
-import styles from './CreateGatePassForm.module.css';
+import styles from './CreateGatepassForm.module.css';
 import { useEffect, useState } from "react";
 import ItemizedDetailsSection from "../../section/ItemizedDetailsSection";
 import Button from "@/components/general/button/Button";
+import parseFormErrors from "@/utils/parseFormErrors";
+import api from "@/utils/api";
 
 const testFormData = {
     requestorName: 'Kevin',
-    gatepassType: null,
+    gatepassType: '1',
     forDate: '2023-12-12',
     time: '12:31',
     unit: '121',
-    contactNumber: '1231231234',
-    items: null,
+    contactNumber: '9569784569',
+    items: [
+        {
+            itemName: 'Item 1',
+            itemQuantity: 2,
+            itemDescription: 'Decsription 1'
+        },
+    ],
     personnel: {
         courier: 'Some Courier',
         courierName: 'Person 1',
@@ -37,20 +45,35 @@ const emptyFormData = {
     personnel: null,
 }
 
-export default function CreateGatePassForm({closeDropdown}: {closeDropdown: any}) {
-    const [formData, setFormData] = useState<CreateGatePassFormType>(emptyFormData)
+export default function CreateGatepassForm({closeDropdown}: {closeDropdown: any}) {
+    // const [formData, setFormData] = useState<CreateGatepassFormType>(emptyFormData);
+    const [formData, setFormData] = useState<CreateGatepassFormType>(testFormData);
+    const [gatepassTypes, setGatepassTypes] = useState<GatepassTypeType[]>([]);
+
+    useEffect(() => {
+        const getGatepassTypes = async ()=> {
+            const response = await api.requests.getGatepassTypes();
+            if (typeof response !== 'string') {
+                const newGatepassTypes = [...gatepassTypes];
+                response.forEach((type: GatepassTypeType)=> {
+                    newGatepassTypes.push(type);
+                })
+                gatepassTypes.length == 0 && setGatepassTypes(newGatepassTypes);
+            }
+        }
+        getGatepassTypes();
+    }, [])
 
     const handleInput = (event: any) => {
         const name = event?.target?.name;
         const value = event?.target?.value;
-        const newFormData: CreateGatePassFormType = {...formData};
+        const newFormData: CreateGatepassFormType = {...formData};
         if (name.substring(0,7) === 'courier') {
             const newPersonnelData = formData.personnel || {...newPersonnel};
             newPersonnelData[name as keyof PersonnelDetailsType] = value;
             newFormData.personnel = newPersonnelData;
-            console.log(formData.personnel)
         } else {
-            newFormData[name as keyof CreateGatePassFormType] = value;
+            newFormData[name as keyof CreateGatepassFormType] = value;
         }
         setFormData(newFormData);
     }
@@ -72,7 +95,7 @@ export default function CreateGatePassForm({closeDropdown}: {closeDropdown: any}
             onChange: handleInput,
             value: formData.gatepassType,
             required: true,
-            options: ['Delivery', 'Move In', 'Move Out', 'Pull Out']
+            options: gatepassTypes,
         },
         {
             name: 'forDate',
@@ -102,7 +125,7 @@ export default function CreateGatePassForm({closeDropdown}: {closeDropdown: any}
         {
             name: 'contactNumber',
             label: 'Contact Number',
-            type: 'number',
+            type: 'text',
             onChange: handleInput,
             value: formData.contactNumber,
             required: true,
@@ -148,13 +171,25 @@ export default function CreateGatePassForm({closeDropdown}: {closeDropdown: any}
     }
 
     // TODO
-    const handleSubmit = (event: any) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
-        console.log(formData)
+        const form = document.getElementById('createGatepassForm') as HTMLFormElement;
+        if (!form?.checkValidity()) {
+            const errors = parseFormErrors(form);
+        } else {
+            // const form = new FormData(event.target);
+            // const body = {};
+            // for (const [key, value] of form.entries()){
+            //     body[key] = value;
+            // }
+            // console.log({body})
+            const response = await api.requests.saveGatepass(formData);
+        }
+
     }
 
     return (
-        <form action="" className={styles.form}>
+        <form action="" onSubmit={handleSubmit} className={styles.form} id="createGatepassForm">
             {baseFields.map((field, index) => (<InputGroup key={index} props={field}/>))}
             
             <ItemizedDetailsSection type='Item Details' formData={formData} setFormData={setFormData}/>
@@ -165,7 +200,7 @@ export default function CreateGatePassForm({closeDropdown}: {closeDropdown: any}
             </div>
 
             <div className={styles.footer}>
-                <Button type='submit' onClick={handleSubmit}/>
+                <Button type='submit' onClick={null}/>
                 <Button type='cancel' onClick={handleCancel}/>
             </div>
         </form>

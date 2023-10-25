@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './ItemizedDetailsSection.module.css';
-import { GatePassItemType, InputProps } from '@/types/models';
+import { GatepassItemType, InputProps } from '@/types/models';
 import InputGroup from '../inputGroup/InputGroup';
 import Button from '../../button/Button';
 import ItemDetails from '../itemDetails/ItemDetails';
@@ -18,8 +18,9 @@ const testItemDetails = {
 }
 
 export default function ItemizedDetailsSection({type, formData, setFormData}: {type: string, formData: any, setFormData: any}) {
-    const [items, setItems] = useState<GatePassItemType[]>([]);
-    const [itemDetails, setItemDetails] = useState<GatePassItemType>({...emptyItemDetails});
+    // const [items, setItems] = useState<GatepassItemType[]>([]);
+    const [items, setItems] = useState<GatepassItemType[]>(formData.items || []);
+    const [itemDetails, setItemDetails] = useState<GatepassItemType>({...emptyItemDetails});
     const [error, setError] = useState('');
 
     useEffect(()=> {

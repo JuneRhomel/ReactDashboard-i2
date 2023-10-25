@@ -48,6 +48,4 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
 }
 
-
-
 export default authenticate;

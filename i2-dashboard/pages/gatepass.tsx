@@ -1,16 +1,17 @@
 import { ParamGetServiceRequestType } from "@/types/apiRequestParams";
 import authorizeUser from "@/utils/authorizeUser";
 import api from "@/utils/api";
-import { GatePassType} from "@/types/models";
+import { GatepassType} from "@/types/models";
 import Gatepass from "@/components/pages/gatepass/Gatepass";
 import mapObject from "@/utils/mapObject";
 
 export async function getServerSideProps(context: any){
   type PropsType = {
     error: string | null,
-    gatePasses: GatePassType[] | null,
+    gatepasses: GatepassType[] | null,
+    gatepassTypes: any;
   }
-  const props: PropsType = {error: null, gatePasses: null};
+  const props: PropsType = {error: null, gatepasses: null, gatepassTypes: null};
   const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
   const jwt: string = context?.req?.cookies?.token;
   const user = authorizeUser(jwt);
@@ -19,14 +20,17 @@ export async function getServerSideProps(context: any){
   }
   const token = `${user.token}:tenant`
 
-  const getGatePassesProps: ParamGetServiceRequestType = {
+  const getGatepassesProps: ParamGetServiceRequestType = {
     accountcode: accountCode,
     userId: user.tenantId,
     // limit: 10,
   }
 
-  const response = await api.requests.getGatePasses(getGatePassesProps, token);
-  typeof response != 'string' ? props.gatePasses = response : props.error = response;
+  const gatepasses = await api.requests.getGatepasses(getGatepassesProps, token);
+  typeof gatepasses != 'string' ? props.gatepasses = gatepasses : props.error = gatepasses;
+  const gatepassTypes = await api.requests.getGatepassTypes();
+  typeof gatepassTypes != 'string' ? props.gatepassTypes = gatepassTypes : props.error = gatepassTypes;
+  
   return {
     props
   }
