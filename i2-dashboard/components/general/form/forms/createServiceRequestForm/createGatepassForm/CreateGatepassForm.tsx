@@ -1,12 +1,10 @@
-import { CreateGatepassFormType, GatepassTypeType, InputProps, PersonnelDetailsType } from "@/types/models";
-import InputGroup from "../../inputGroup/InputGroup";
+import { CreateGatepassFormType, GatepassTypeType, InputProps } from "@/types/models";
+import InputGroup from "../../../inputGroup/InputGroup";
 import styles from './CreateGatepassForm.module.css';
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import ItemizedDetailsSection from "../../section/ItemizedDetailsSection";
+import ItemizedDetailsSection from "../../../section/ItemizedDetailsSection";
 import Button from "@/components/general/button/Button";
-import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
-import { clear } from "console";
 
 const emptyFormData = {
     requestorName: '',
@@ -164,6 +162,7 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
         (
             <form action="" onSubmit={handleSubmit} className={styles.form} id="createGatepassForm">
                 {baseFields.map((field, index) => (<InputGroup key={index} props={field}/>))}
+                
                 <ItemizedDetailsSection type='Item Details' formData={formData} setFormData={setFormData}/>
 
                 <div className={styles.personnelContainer}>

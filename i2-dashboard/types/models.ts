@@ -246,6 +246,23 @@ export interface CreateGatepassFormType {
     personnel: PersonnelDetailsType | null,
 }
 
+export interface GuestDataType {
+    guestName: string | null,
+    guestContact: string | null,
+    guestPurpose: string | null,
+}
+
+export interface CreateVisitorPassFormDataType {
+    requestorName: string | null,
+    unit: string | null,
+    contactNumber: string | null,
+    arrivalDate: string | null,
+    arrivalTime: string | null,
+    departureDate: string | null,
+    departureTime: string | null,
+    guests: GuestDataType[],
+}
+
 export interface GatepassTypeType extends ChangeHistory{
     id: string,
     categoryName: string,

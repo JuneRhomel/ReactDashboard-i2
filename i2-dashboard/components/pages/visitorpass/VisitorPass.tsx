@@ -1,46 +1,33 @@
-import ServiceRequestCard from "@/components/general/cards/serviceRequestCard/ServiceRequestCard";
-import CreateServiceRequestForm from "@/components/general/form/forms/createServiceRequestForm/CreateServiceRequestForm";
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
-import ServiceRequestStatusFilter from "@/components/general/serviceRequestStatusFilter/ServiceRequestStatusFilter";
 import Layout from "@/components/layouts/layout";
-import styles from './Gatepass.module.css';
-import { CreateGatepassFormType, GatepassType, PersonnelDetailsType } from "@/types/models";
+import { CreateGatepassFormType, CreateVisitorPassFormDataType, GatepassType, GuestDataType, PersonnelDetailsType } from "@/types/models";
 import { useEffect, useState } from "react";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
+import CreateServiceRequestForm from "@/components/general/form/forms/createServiceRequestForm/CreateServiceRequestForm";
 
-const title = 'i2 - Gate Pass'
+const title = 'i2 - Visitor Pass'
 const testFormData = {
-    requestorName: 'Kevin',
-    gatepassType: '1',
-    forDate: '2023-12-12',
-    time: '12:31',
-    unit: '121',
-    contactNumber: '9569784569',
-    items: [
-        {
-            itemName: 'Item 1',
-            itemQuantity: 2,
-            itemDescription: 'Decsription 1'
-        },
-    ],
-    personnel: {
-        courier: 'Some Courier',
-        courierName: 'Person 1',
-        courierContact: '9991111122'
-    },
+    requestorName: '',
+    unit: 'Unit 5',
+    contactNumber: '1234567894',
+    arrivalDate: '2023-12-05',
+    arrivalTime: '11:22',
+    departureDate: '2023-12-07',
+    departureTime: '22:33',
+    guests: []
 }
 
-const newPersonnel = {
-    courier: '',
-    courierName: '',
-    courierContact: '',
+const newGuest: GuestDataType = {
+    guestName: '',
+    guestContact: '',
+    guestPurpose: '',
 }
 
-//TODO Update the counts onSubmit
-const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
+const VisitorPass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
     const maxNumberToShow = 4;
-    const [formData, setFormData] = useState<CreateGatepassFormType>(testFormData);
+    const [formData, setFormData] = useState<CreateVisitorPassFormDataType>(testFormData);
+    const [guestData, setGuestData] = useState<GuestDataType>(newGuest);
     const pendingGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Pending');
     const approvedGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Approved');
     const deniedGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Disapproved');
@@ -69,15 +56,15 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
     }
 
     const handleInput = (event: any) => {
-        const name = event?.target?.name;
+        const name = event?.target?.name as string;
         const value = event?.target?.value;
-        const newFormData: CreateGatepassFormType = {...formData};
-        if (name.substring(0,7) === 'courier') {
-            const newPersonnelData = formData.personnel || {...newPersonnel};
-            newPersonnelData[name as keyof PersonnelDetailsType] = value;
-            newFormData.personnel = newPersonnelData;
+        const newFormData: CreateVisitorPassFormDataType = {...formData};
+        if (name.substring(0,5) === 'guest') {
+            const newGuestData = guestData;
+            newGuestData[name as keyof GuestDataType] = value;
+            newFormData.guests.push(newGuestData);
         } else {
-            newFormData[name as keyof CreateGatepassFormType] = value;
+            newFormData[name as keyof CreateVisitorPassFormDataType] = value;
         }
         setFormData(newFormData);
     }
@@ -90,37 +77,37 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
             const errors = parseFormErrors(form);
             return null;
         } else {
-            const response = await api.requests.saveGatepass(formData);
-            if (response.success) {
-                pendingGatepasses.unshift(response.data.gatepass as GatepassType);
-                setFilteredGatepasses({...filteredGatepasses, pending: pendingGatepasses})
-                return response;
-            }
+            // const response = await api.requests.saveGatepass(formData);
+            // if (response.success) {
+            //     pendingGatepasses.unshift(response.data.gatepass as GatepassType);
+            //     setFilteredGatepasses({...filteredGatepasses, pending: pendingGatepasses})
+            //     return response;
+            // }
             return null;
         }
     }
 
     return (
         <Layout title={title}>
-            <ServiceRequestPageHeader title='Gate Pass'/>
+            <ServiceRequestPageHeader title='Visitor Pass'/>
 
             <CreateServiceRequestForm
-                type='gatepass'
+                type='visitorpass'
                 handleInput={handleInput}
                 formData={formData}
-                setFormData={setFormData as any}
+                setFormData={setFormData as any} // Need to fix the Typing for this
                 onSubmit={handleSubmit}
             />
 
-            <ServiceRequestStatusFilter handler={serviceRequestStatusFilterHandler} counts={counts}/>
+            {/* <ServiceRequestStatusFilter handler={serviceRequestStatusFilterHandler} counts={counts}/>
 
             <div className={styles.dataContainer}>
                 {gatepassesToShow.length > 0 ? gatepassesToShow.map((gatepass: GatepassType, index: number) => (
                     <ServiceRequestCard key={index} request={gatepass} variant="Gate Pass"/>
                 )) : <div>No data to display</div>}
-            </div>
+            </div> */}
         </Layout>
     )
 }
 
-export default Gatepass;
+export default VisitorPass;

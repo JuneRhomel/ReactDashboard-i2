@@ -3,7 +3,7 @@ import Layout from '@/components/layouts/layout';
 import Image from 'next/image';
 
 import Header from "./Header"
-import Form from '@/components/general/form/Form';
+import LoginForm from '@/components/general/form/forms/loginForm/LoginForm';
 
 const pageTitle: string = "Welcome to i2";
 
@@ -15,7 +15,7 @@ export default function Login() {
       <Header />
 
       {/* This is the main body of the login page. */}
-      <Form type='login'/>
+      <LoginForm />
       
       <Image className={styles.footerLogo} height={44} width={113} src="/navlogo1.png" alt="Powered by Inventi Logo"/>
     </Layout>

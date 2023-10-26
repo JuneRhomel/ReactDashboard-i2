@@ -5,6 +5,7 @@ import authorizeUser from "@/utils/authorizeUser";
 import Section from "@/components/general/section/Section";
 import api from "@/utils/api";
 import mapObject from "@/utils/mapObject";
+import Dashboard from "@/components/pages/dashboard/Dashboard";
 
 export async function getServerSideProps(context: any) {
   // Do the stuff to check if user is authenticated
@@ -35,24 +36,4 @@ export async function getServerSideProps(context: any) {
   return {props: {user, soa, soaDetails}};
 }
 
-export default function Dashboard(props : any) {
-  // else redirect to login
-  const soaProps = {
-    title: 'SOA',
-    headerAction: null,
-    data: props.soa,
-  }
-
-  const paymentTransactionsProps = {
-    title: 'Payment Transactions',
-    headerAction: "Show All",
-    data: props.soaDetails as SoaDetailsType,
-    };
-
-  return (
-    <Layout title="Dashboard" >
-        <Section props={soaProps}></Section>
-        <Section props={paymentTransactionsProps} />
-    </Layout>
-  )
-}
+export default Dashboard

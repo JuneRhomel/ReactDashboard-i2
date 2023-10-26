@@ -13,7 +13,7 @@ const SelectServiceRequest = () => {
         {
             title: "Visitor Pass",
             img: '/visitorspass.png',
-            link: '/'
+            link: '/visitorpass'
         },
         {
             title: "Work Permit",
@@ -35,9 +35,7 @@ const SelectServiceRequest = () => {
 
     return (
         <Layout title="i2 - Service Requests">
-            <div className={styles.container}>
                 <Section props={props}/>
-            </div>
         </Layout>
     );
 }

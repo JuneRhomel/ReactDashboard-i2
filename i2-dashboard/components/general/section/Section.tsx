@@ -11,7 +11,8 @@ const Section = ({props}: {props: any}) => {
         'soa': <SoaCard props={props.data}/>,
         'payment transactions': <PaymentTransactions transactions={props.data}/>,
         'my requests': <ServiceRequests serviceRequests={props.data}/>,
-        'select service request': <ServiceRequestThumbnails data={props.data} />
+        'select service request': <ServiceRequestThumbnails/>,
+        'service requests': <ServiceRequestThumbnails/>
     }
     const componentToRender: ReactNode = cardMap[title];
 
