@@ -4,13 +4,26 @@
 * @return {JsxElement} Returns a JsxElement of an HTML form
 */
 
+import { Dispatch, SetStateAction } from "react";
 import CreateServiceRequestForm from "./forms/createServiceRequestForm/CreateServiceRequestForm";
 import LoginForm from "./forms/loginForm/LoginForm";
 
-const Form = ({type} : {type : string}) => {
+const Form = ({type, handleInput, formData, setFormData, onSubmit} : {
+    type : string,
+    handleInput?: Function,
+    formData?: any,
+    setFormData?: Dispatch<SetStateAction<any>>,
+    onSubmit?: Function,
+}) => {
     const formTypeMap: {[key: string]: JSX.Element} = {
         login: <LoginForm/>,
-        gatepass: <CreateServiceRequestForm type='gatepass'/>,
+        gatepass: <CreateServiceRequestForm
+            type={type}
+            handleInput={handleInput as Function}
+            formData={formData}
+            setFormData={setFormData as Dispatch<SetStateAction<any>>}
+            onSubmit={onSubmit as Function}
+            />,
     };
     const formToRender = formTypeMap[type] ? formTypeMap[type] : <h1>Form does not exist yet</h1>;
     return formToRender;
