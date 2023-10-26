@@ -12,6 +12,7 @@ export async function getServiceRequestDetails(params: ParamGetServiceRequestTyp
     const host = context?.req?.headers?.host || 'localhost:3000';
     const apiUrl = '/api/requests/getservicerequestdetails';
     const url = `${protocol}://${host}${apiUrl}`;
+    console.log(url);
     const method: string = 'POST';
     const condition = params.id ? `id=${params.id}` : `name_id=${params.userId}`;
     const body: string = JSON.stringify({
