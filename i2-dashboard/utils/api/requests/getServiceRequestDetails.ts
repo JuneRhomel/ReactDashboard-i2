@@ -1,5 +1,4 @@
 import { ParamGetServiceRequestType, ServiceRequestTable } from "@/types/apiRequestParams";
-import { useRouter } from "next/router";
 
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 /** 
@@ -11,7 +10,7 @@ export async function getServiceRequestDetails(params: ParamGetServiceRequestTyp
     const host = context?.req?.headers?.host || 'localhost:3000';
     const protocol = host === 'localhost:3000' ? 'http' : 'https';
     const apiUrl = '/api/requests/getservicerequestdetails';
-    const url = `${protocol}://${host}${apiUrl}`;
+    const url = context ? `${protocol}://${host}${apiUrl}` : apiUrl;
     const method: string = 'POST';
     const condition = params.id ? `id=${params.id}` : `name_id=${params.userId}`;
     const body: string = JSON.stringify({
