@@ -8,11 +8,10 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
  * @return {Promise<Response>} Returns a promise of a Response object.
 */
 export async function getServiceRequestDetails(params: ParamGetServiceRequestType, table: ServiceRequestTable, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant", context: any = undefined): Promise<Response>{
-    const protocol = context?.req?.protocol || 'http';
     const host = context?.req?.headers?.host || 'localhost:3000';
+    const protocol = host === 'localhost:3000' ? 'http' : 'https';
     const apiUrl = '/api/requests/getservicerequestdetails';
     const url = `${protocol}://${host}${apiUrl}`;
-    console.log(url);
     const method: string = 'POST';
     const condition = params.id ? `id=${params.id}` : `name_id=${params.userId}`;
     const body: string = JSON.stringify({
