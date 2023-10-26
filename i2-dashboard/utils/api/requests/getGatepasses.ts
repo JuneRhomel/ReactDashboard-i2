@@ -12,8 +12,8 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 */
 export async function getGatepasses(params: ParamGetServiceRequestType, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant", context: any = undefined): Promise<GatepassType[] | string>{
     let response: string | GatepassType[] = "Unable to fetch gatepass information";
-    const getGatepassResponse = await api.requests.getServiceRequestDetails(params, 'gatepass', token);
-    const getPersonnelResponse = await api.requests.getServiceRequestDetails(params, 'personnel', token);
+    const getGatepassResponse = await api.requests.getServiceRequestDetails(params, 'gatepass', token, context);
+    const getPersonnelResponse = await api.requests.getServiceRequestDetails(params, 'personnel', token, context);
     if (typeof getGatepassResponse != 'string') {
         const gatepasses = mapObject(await getGatepassResponse.json()) as GatepassType[];
         if (typeof getPersonnelResponse != 'string') {
