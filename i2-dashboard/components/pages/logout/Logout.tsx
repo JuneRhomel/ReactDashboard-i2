@@ -15,7 +15,7 @@ export default function Logout() {
   return (
     <>
         <h1>Logout was successful</h1>
-        <p>You will be redirected to the login page in {timer} seconds</p>
+        {timer > 0 ? (<p>You will be redirected to the login page in {timer} seconds</p>) : (<p>Rerouting...</p>)};
         <Link href='/'><button>Go to Login page</button></Link>
     </>    
   )

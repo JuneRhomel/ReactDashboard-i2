@@ -40,7 +40,6 @@ export async function getServerSideProps(context: any) {
       soaDetails.push(...filtered)
     };
   }));
-  console.log(soaDetails.length)
   
   const currentSoa = soas.shift();
   const paidSoas = soas.filter((soa: SoaType) => 
