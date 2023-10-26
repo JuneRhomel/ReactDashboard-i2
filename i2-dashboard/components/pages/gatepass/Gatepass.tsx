@@ -100,7 +100,7 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
             <ServiceRequestPageHeader title='Gate Pass'/>
 
             <Form
-                type='Gate Pass'
+                type='gatepass'
                 handleInput={handleInput}
                 formData={formData}
                 setFormData={setFormData}

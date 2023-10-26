@@ -21,7 +21,7 @@ export default function CreateServiceRequestForm({type, handleInput, formData, s
         setIsOpen(false);
     }
 
-    const formToRender = type === 'Gate Pass' ?
+    const formToRender = type === 'gatepass' ?
         <CreateGatepassForm
             closeDropdown={closeDropdown}
             handleInput={handleInput}
