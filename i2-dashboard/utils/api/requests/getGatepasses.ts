@@ -24,7 +24,6 @@ export async function getGatepasses(params: ParamGetServiceRequestType, token: s
             })
             response = gatepasses;
         }
-
     }
     return response;
 }

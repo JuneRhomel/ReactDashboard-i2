@@ -6,6 +6,7 @@ import ItemizedDetailsSection from "../../section/ItemizedDetailsSection";
 import Button from "@/components/general/button/Button";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
+import { clear } from "console";
 
 const emptyFormData = {
     requestorName: '',
@@ -125,6 +126,7 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
 
     const clearForm = () => {
         setFormData({...emptyFormData})
+        setStatus('');
     }
 
     const handleCancel = (event: any) => {
@@ -134,27 +136,13 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
         clearForm();
     }
 
-    // TODO
+    // 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
-        window.scrollTo(0,0);
-        const form = document.getElementById('createGatepassForm') as HTMLFormElement;
-        if (!form?.checkValidity()) {
-            const errors = parseFormErrors(form);
-        } else {
-            // const form = new FormData(event.target);
-            // const body = {};
-            // for (const [key, value] of form.entries()){
-            //     body[key] = value;
-            // }
-            // console.log({body})
-            setStatus('submitting');
-            const response = await onSubmit(event);
-            console.log(response)
-            !response.success && setStatus('error');
-            setStatus('success');
-        }
-
+        setStatus('submitting');
+        const response = await onSubmit(event);
+        setFormData(emptyFormData);
+        response?.success ? setStatus('success') : setStatus('error');
     }
 
     return status === 'submitting' ? 
@@ -162,10 +150,16 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             <div>Submitting your request...</div>
         ) : status === 'success' ?
         (
-            <div>Your request has successfully been submitted</div>
+            <div>
+                <div>Your request has successfully been submitted</div>
+                <button onClick={clearForm}>Submit another request</button>
+            </div>
         ) : status === 'error' ?
         (
-            <div>There was an error submitting your request. Please try again</div>
+            <div>
+                <div>There was an error submitting your request. Please try again</div>
+                <button onClick={clearForm}>Try again</button>
+            </div>
         ) :
         (
             <form action="" onSubmit={handleSubmit} className={styles.form} id="createGatepassForm">

@@ -5,7 +5,7 @@ import ServiceRequestStatusFilter from "@/components/general/serviceRequestStatu
 import Layout from "@/components/layouts/layout";
 import styles from './Gatepass.module.css';
 import { CreateGatepassFormType, GatepassType, PersonnelDetailsType } from "@/types/models";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
 import Form from "@/components/general/form/Form";
@@ -42,25 +42,30 @@ const newPersonnel = {
 const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
     const maxNumberToShow = 4;
     const [formData, setFormData] = useState<CreateGatepassFormType>(testFormData);
-
     const pendingGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Pending');
     const approvedGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Approved');
-    const deniedGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Denied');
-    const filteredPasses = new Map<string, GatepassType[]>([
-        ['pending', pendingGatepasses],
-        ['approved', approvedGatepasses],
-        ['denied', deniedGatepasses],
-    ])
+    const deniedGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Disapproved');
+    const [filteredGatepasses, setFilteredGatepasses] = useState<{[key: string]: GatepassType[]}>({
+        pending: pendingGatepasses,
+        approved: approvedGatepasses,
+        denied: deniedGatepasses,
+    })
+
     const counts = {
-        'pending': pendingGatepasses.length,
-        'approved': approvedGatepasses.length,
-        'denied': deniedGatepasses.length
+        'pending': filteredGatepasses.pending.length,
+        'approved': filteredGatepasses.approved.length,
+        'denied': filteredGatepasses.denied.length,
     };
-    const [gatepassesToShow, setGatepassesToShow] = useState<GatepassType[]>(pendingGatepasses.slice(0, maxNumberToShow));
+
+    const [gatepassesToShow, setGatepassesToShow] = useState<GatepassType[]>(filteredGatepasses.pending.slice(0, maxNumberToShow));
+
+    useEffect(() => {
+        setGatepassesToShow(filteredGatepasses.pending.slice(0, maxNumberToShow));
+    }, [filteredGatepasses])
 
     const serviceRequestStatusFilterHandler = (event: any) => {
         const filter = event?.target?.value;
-        const filtered = filteredPasses.get(filter);
+        const filtered = filteredGatepasses[filter];
         setGatepassesToShow(filtered?.slice(0, maxNumberToShow) as GatepassType[])
     }
 
@@ -89,9 +94,10 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
             const response = await api.requests.saveGatepass(formData);
             if (response.success) {
                 pendingGatepasses.unshift(response.data.gatepass as GatepassType);
-                setGatepassesToShow(pendingGatepasses.slice(0, maxNumberToShow))
+                setFilteredGatepasses({...filteredGatepasses, pending: pendingGatepasses})
+                return response;
             }
-            return response;
+            return null;
         }
     }
 

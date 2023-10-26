@@ -6,8 +6,11 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 * @param {ParamGetServiceRequestDetailsType} params - This is a json object that has accountCode, queryCondition, and resultLimit
 * @return {Promise<Response>} Returns a promise of a Response object.
 */
-export async function getGatepassTypes(token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<GatepassTypeType[] | string>{
-    const url: string = 'http://localhost:3000/api/requests/getGatepassTypes';
+export async function getGatepassTypes(token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant", context: any = undefined): Promise<GatepassTypeType[] | string>{
+    const protocol = context?.req?.protocol || 'http';
+    const host = context?.req?.headers?.host || 'localhost:3000';
+    const apiUrl = '/api/requests/getGatepassTypes';
+    const url = `${protocol}://${host}${apiUrl}`;
     const method: string = 'POST';
     const body: string = JSON.stringify({
         table: 'list_gatepasscategory',

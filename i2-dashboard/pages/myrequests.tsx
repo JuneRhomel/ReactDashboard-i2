@@ -43,7 +43,7 @@ export async function getServerSideProps(context: any){
 
   await Promise.all(keys.map(async (key: string) => {
     const table= serviceRequestDetails[key as keyof MyRequestDataType] as string;
-    const response = await api.requests.getServiceRequestDetails(getServiceRequestProps, table as ServiceRequestTable, token);
+    const response = await api.requests.getServiceRequestDetails(getServiceRequestProps, table as ServiceRequestTable, token, context);
     const jsonResponse = typeof response != 'string' ? await response.json() : null;
     const obj = jsonResponse ? mapObject(jsonResponse) : response;
     serviceRequestDetails[key as keyof MyRequestDataType] = obj as [];
