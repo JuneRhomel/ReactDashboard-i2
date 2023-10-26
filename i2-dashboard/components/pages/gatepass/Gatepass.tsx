@@ -8,6 +8,7 @@ import { CreateGatepassFormType, GatepassType, PersonnelDetailsType } from "@/ty
 import { useState } from "react";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
+import Form from "@/components/general/form/Form";
 
 const title = 'i2 - Gate Pass'
 const testFormData = {
@@ -37,8 +38,7 @@ const newPersonnel = {
     courierContact: '',
 }
 
-
-
+//TODO Update the counts onSubmit
 const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
     const maxNumberToShow = 4;
     const [formData, setFormData] = useState<CreateGatepassFormType>(testFormData);
@@ -99,7 +99,7 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
         <Layout title={title}>
             <ServiceRequestPageHeader title='Gate Pass'/>
 
-            <CreateServiceRequestForm
+            <Form
                 type='Gate Pass'
                 handleInput={handleInput}
                 formData={formData}
