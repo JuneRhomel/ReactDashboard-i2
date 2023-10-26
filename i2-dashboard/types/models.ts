@@ -250,3 +250,24 @@ export interface GatepassTypeType extends ChangeHistory{
     id: string,
     categoryName: string,
 }
+
+export interface GatepassDisplayType {
+    gatepassId?: number,
+    status?: string,
+    date?: string,
+    type?: string,
+    personnel?: string,
+    unit?: string,
+}
+
+export interface SaveGatePassDataType {
+    personnelId?: number,
+    itemIds?: number[],
+    gatepass?: GatepassType
+}
+
+export interface SaveGatePassResponseType {
+    success: boolean,
+    data: SaveGatePassDataType, 
+    errors?: any,
+}

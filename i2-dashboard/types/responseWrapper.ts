@@ -7,6 +7,7 @@ import { SoaDetailsType, SoaType } from "./models";
 export type ApiResponse<T = never> = {
     success?: number;
     description?: string;
+    id?: string;
     data?: T;
     status?: number;
     message?: string;

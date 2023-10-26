@@ -7,14 +7,15 @@ import authorizeUser from "@/utils/authorizeUser";
 const baseURL: string = "http://apii2-sandbox.inventiproptech.com";
 const url: string = `${baseURL}/tenant/save`;
 const accountCode = process.env.TEST_ACCOUNT_CODE;
+// const accountCode = 'fee';
 
 const saveGatepass = async (req: NextApiRequest, res: NextApiResponse) => {
     const jwt = req.cookies.token as string;
     const user = authorizeUser(jwt);
     const token = `${user?.token}:tenant`;
-    const reqBody = JSON.parse(req.body);
-    const gatepassBody = {...reqBody.gatepassData, accountcode: accountCode};
-    const body = JSON.stringify(gatepassBody);
+    const jsonBody = JSON.parse(req.body);
+    const requestBody = jsonBody.gatepassData || jsonBody.personnelData || jsonBody.itemData;
+    const body = JSON.stringify({...requestBody, accountcode: accountCode});
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
@@ -26,23 +27,22 @@ const saveGatepass = async (req: NextApiRequest, res: NextApiResponse) => {
             headers: headers,
             referrerPolicy: "unsafe-url"
         })
-        const jsonResponse: ApiResponse<GatepassTypeType[]> = await response.json()
-        console.log(jsonResponse)
-        if (Array.isArray(jsonResponse)) {
-            const payload= jsonResponse as GatepassTypeType[];
+        const jsonResponse: ApiResponse = await response.json()
+        if (jsonResponse.success) {
+            const payload = jsonResponse;
             res.status(200)
                 .json(payload);
         } else {
-            // If success==0 or response.success does not exist
-            const errorMessage = jsonResponse.status ? "Invalid account code" : jsonResponse.description;
-            const error = {
-                "error": "Unauthorized",
-                "message": errorMessage
+            const errorMessage = jsonResponse.status ? jsonResponse.message : jsonResponse.description;
+            const error = jsonResponse.status ? 'Unauthorized' : 'Bad Request';
+            const errorStatus = jsonResponse.status || 400;
+            const errorResponse = {
+                error: error,
+                message: errorMessage
             }
-            res.status(401)
-                .json(error);
+            res.status(errorStatus)
+                .json(errorResponse);
         }
-
     } catch (error){
         console.error(error)
         res.status(500).json({ error: "Internal Server Error" });

@@ -30,7 +30,6 @@ export async function getServerSideProps(context: any){
   typeof gatepasses != 'string' ? props.gatepasses = gatepasses : props.error = gatepasses;
   const gatepassTypes = await api.requests.getGatepassTypes();
   typeof gatepassTypes != 'string' ? props.gatepassTypes = gatepassTypes : props.error = gatepassTypes;
-  
   return {
     props
   }

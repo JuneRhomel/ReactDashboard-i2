@@ -1,22 +1,22 @@
 import { ParamGetServiceRequestType, ServiceRequestTable } from "@/types/apiRequestParams";
 
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
-
 /** 
-* Fetches all the user's Gate Passes
-* @param {ParamGetServiceRequestDetailsType} params - This is a json object that has accountCode, queryCondition, and resultLimit
-* @return {Promise<Response>} Returns a promise of a Response object.
+ * Fetches all the user's Gate Passes
+ * @param {ParamGetServiceRequestDetailsType} params - This is a json object that has accountCode, queryCondition, and resultLimit
+ * @return {Promise<Response>} Returns a promise of a Response object.
 */
 export async function getServiceRequestDetails(params: ParamGetServiceRequestType, table: ServiceRequestTable, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<Response>{
-    const url: string = `${process.env.API_URL}/tenant/get-list-sr`;
+    const url = 'http://localhost:3000/api/requests/getservicerequestdetails';
     const method: string = 'POST';
+    const condition = params.id ? `id=${params.id}` : `name_id=${params.userId}`;
     const body: string = JSON.stringify({
         accountcode: params.accountcode,
         table: table === 'personnel' ? 'gatepass_personnel'
                 : table === 'vp_guest' ? 'vp_guest'
                 : table === 'work_details' ? 'work_details'
                 : `vw_${table}`,
-        condition: table === 'personnel' || table === 'vp_guest' || table === 'work_details' ? null : `name_id=${params.userId}`,
+        condition: table === 'personnel' || table === 'vp_guest' || table === 'work_details' ? null : condition,
         limit: params.limit,
     });
     const headers = {
@@ -37,6 +37,7 @@ export async function getServiceRequestDetails(params: ParamGetServiceRequestTyp
         return response;
         
     } catch (error: any) {
+        console.log(error.message)
         return error.message ? error.message : "Something went wrong";
     }
 }

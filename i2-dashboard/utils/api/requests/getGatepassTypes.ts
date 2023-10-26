@@ -7,13 +7,13 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 * @return {Promise<Response>} Returns a promise of a Response object.
 */
 export async function getGatepassTypes(token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<GatepassTypeType[] | string>{
-    const url: string = '/api/requests/getGatepassTypes';
+    const url: string = 'http://localhost:3000/api/requests/getGatepassTypes';
     const method: string = 'POST';
     const body: string = JSON.stringify({
         table: 'list_gatepasscategory',
         orderby: 'category_name',
     });
-
+    
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,

@@ -12,8 +12,9 @@ export type ParamGetSoaDetailsType = {
 
 export interface ParamGetServiceRequestType {
     accountcode: string,
-    userId: number,
+    userId?: number,
     limit?: number,
+    id?: number,
 }
 
 export type ServiceRequestTable = 'personnel' | 'vp_guest' | 'work_details' | 'gatepass' | 'visitor_pass' | 'report_issue' | 'workpermit'
