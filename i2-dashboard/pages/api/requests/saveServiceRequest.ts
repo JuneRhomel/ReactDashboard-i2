@@ -1,7 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import copyHeaders from "@/utils/copyHeaders";
 import { ApiResponse } from "@/types/responseWrapper";
-import { GatepassTypeType } from "@/types/models";
 import authorizeUser from "@/utils/authorizeUser";
 
 const baseURL: string = "http://apii2-sandbox.inventiproptech.com";
@@ -9,12 +7,11 @@ const url: string = `${baseURL}/tenant/save`;
 const accountCode = process.env.TEST_ACCOUNT_CODE;
 // const accountCode = 'fee';
 
-const saveGatepass = async (req: NextApiRequest, res: NextApiResponse) => {
+const saveServiceRequest = async (req: NextApiRequest, res: NextApiResponse) => {
     const jwt = req.cookies.token as string;
     const user = authorizeUser(jwt);
     const token = `${user?.token}:tenant`;
-    const jsonBody = JSON.parse(req.body);
-    const requestBody = jsonBody.gatepassData || jsonBody.personnelData || jsonBody.itemData;
+    const requestBody = JSON.parse(req.body);
     const body = JSON.stringify({...requestBody, accountcode: accountCode});
     const headers = {
         'Content-Type': 'application/json',
@@ -50,4 +47,4 @@ const saveGatepass = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
 }
 
-export default saveGatepass;
+export default saveServiceRequest;

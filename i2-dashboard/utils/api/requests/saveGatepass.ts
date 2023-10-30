@@ -1,9 +1,8 @@
 import { ParamGatepassItemType, ParamGatepassPersonnelType, ParamSaveGatepassType } from "@/types/apiRequestParams";
-import { CreateGatepassFormType, GatepassDisplayType, GatepassItemType, GatepassPersonnelType, GatepassType, PersonnelDetailsType, SaveGatePassDataType, SaveGatePassResponseType } from "@/types/models";
-import getDateTimeString from "@/utils/getDateTimeString";
+import { CreateGatepassFormType, GatepassItemType, PersonnelDetailsType, SaveGatePassDataType, SaveServiceRequestResponseType } from "@/types/models";
 import api from "..";
 
-const url: string = '/api/requests/saveGatepass';
+const url: string = '/api/requests/saveServiceRequest';
 const method: string = 'POST';
 const nameId = '1';
 const unitId = '5';
@@ -12,15 +11,15 @@ const token = "c8c69a475a9715c2f2c6194bc1974fae:tenant";
 /** 
 * Saves the user's Gatepass request. It makes at least 3 api fetch requests.
 * @param {CreateGatepassFormType} formData
-* @return {Promise<Response>} Returns a promise of a Response object.
+* @return {Promise<SaveServiceRequestResponseType>} Returns a promise of a Response object.
 */
-export default async function saveGatepass(formData: CreateGatepassFormType, user=null): Promise<SaveGatePassResponseType> {
+export default async function saveGatepass(formData: CreateGatepassFormType, user=null): Promise<SaveServiceRequestResponseType<SaveGatePassDataType>> {
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const module = 'gatepass';
     const personnel = formData.personnel as PersonnelDetailsType;
     const items = formData.items as GatepassItemType[];
     const errors = [];
-    const response: SaveGatePassResponseType = {
+    const response: SaveServiceRequestResponseType<SaveGatePassDataType> = {
         success: false,
         data: {
             personnelId: undefined,
@@ -30,7 +29,7 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
         errors: undefined,
     }
 
-    const gatepassData: ParamSaveGatepassType = {
+    const gatepassDataBody: ParamSaveGatepassType = {
         date: currentDate,
         module: module,
         table: 'gatepass',
@@ -42,7 +41,7 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
         contact_no: formData.contactNumber as string,
     }
 
-    const personnelData: ParamGatepassPersonnelType = {
+    const personnelDataBody: ParamGatepassPersonnelType = {
         gatepass_id: '',
         module: module,
         table: 'gatepass_personnel',
@@ -51,10 +50,6 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
         personnel_no: personnel?.courierContact as string,
     }
     
-    const gatepassDataBody = {
-        gatepassData: gatepassData,
-    };
-
     console.log("Submitting Gatepass Request...")
     const gatepassResponse = await postRequest(gatepassDataBody);
     const gatepassId = gatepassResponse.id;
@@ -65,34 +60,31 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
             await Promise.all(items.map(async (item) => {
                 console.log("Submitting save item request...")
                 const itemDataBody = {
-                    itemData: {
-                        item_name: item.itemName as string,
-                        item_qty: item.itemQuantity?.toString() as string,
-                        description: item.itemDescription as string,
-                        gatepass_id: gatepassId,
-                        table: 'gatepass_items',
-                        module: module,
-                    }
+                    item_name: item.itemName as string,
+                    item_qty: item.itemQuantity?.toString() as string,
+                    description: item.itemDescription as string,
+                    gatepass_id: gatepassId,
+                    table: 'gatepass_items',
+                    module: module,
                 }
                 const itemResponse = await postRequest(itemDataBody);
-                itemResponse.id ? itemIds.push(itemResponse.id) : errors.push(getErrorObject(itemDataBody.itemData as ParamGatepassItemType, itemResponse));
+                itemResponse.id ? itemIds.push(itemResponse.id) : errors.push(getErrorObject(itemDataBody as ParamGatepassItemType, itemResponse));
                 console.log(itemResponse.id ? "Item Saved" : "Item not saved");
             }))
         });
 
-        const personnelDataBody = {
-            personnelData: {...personnelData, gatepass_id: gatepassId}
-        }
+        personnelDataBody.gatepass_id = gatepassId
+
         const personnelResponsePromise = (async () => {
             console.log("Submitting Personnel save request");
             const personnelResponse = await postRequest(personnelDataBody);
-            personnelResponse.id ? response.data ? response.data.personnelId = personnelResponse.id : null : errors.push(getErrorObject(personnelDataBody.personnelData as ParamGatepassPersonnelType, personnelResponse));
+            personnelResponse.id ? response.data ? response.data.personnelId = personnelResponse.id : null : errors.push(getErrorObject(personnelDataBody as ParamGatepassPersonnelType, personnelResponse));
             console.log(personnelResponse.id ? "personnel saved" : "personnel not saved");
         })
         await Promise.all([processItemsPromise(), personnelResponsePromise()]);
         response.data ? response.data.itemIds = itemIds : null;
     } else {
-        errors.push(getErrorObject(gatepassDataBody.gatepassData as ParamSaveGatepassType, gatepassResponse));
+        errors.push(getErrorObject(gatepassDataBody as ParamSaveGatepassType, gatepassResponse));
     }
     response.success = errors.length == 0;
     response.errors = errors;

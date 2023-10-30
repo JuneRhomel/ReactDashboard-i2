@@ -19,22 +19,23 @@ export interface ParamGetServiceRequestType {
 
 export type ServiceRequestTable = 'personnel' | 'vp_guest' | 'work_details' | 'gatepass' | 'visitor_pass' | 'report_issue' | 'workpermit'
 
-export type ModuleType = 'gatepass';
-
+export type ModuleType = 'gatepass' | 'visitorpass';
+export type VisitorPassTables = 'visitorpass' | 'vp_guest';
 export type GatepassTables = 'gatepass' | 'gatepass_personnel' | 'gatepass_items';
-export type TableType = GatepassTables;
+export type TableType = GatepassTables | VisitorPassTables;
 
-
-export interface ParamSaveGatepassType {
+export interface BaseSaveParams {
     date: string,
     module: ModuleType,
     table: TableType,
     name_id: string,
     unit_id: string,
+    contact_no: string,    
+}
+export interface ParamSaveGatepassType extends BaseSaveParams {
     gp_type: string,
     gp_date: string,
     gp_time: string,
-    contact_no: string,
 }
 
 export interface ParamGatepassPersonnelType {
@@ -54,3 +55,21 @@ export interface ParamGatepassItemType {
     description: string,
     gatepass_id: string,
 }
+
+export interface ParamSaveVisitorPassType extends BaseSaveParams {
+    arrival_date: string,
+    arrival_time: string,
+    departure_date: string,
+    departure_time: string,
+}
+
+export interface ParamSaveGuestListType {
+    module: ModuleType,
+    table: TableType,
+    guest_id: string,
+    guest_name: string,
+    guest_no: string,
+    guest_purpose: string,
+}
+
+export type RequestBodyType = ParamSaveGatepassType | ParamGatepassItemType | ParamGatepassPersonnelType | ParamSaveGuestListType | ParamSaveVisitorPassType

@@ -96,13 +96,9 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         setStatus('submitting');
-        // const response = await onSubmit(event);
-        console.log(formData);
-        setTimeout(() => {
-            setStatus('success');
-        }, 1000);
+        const response = await onSubmit(event);
         setFormData(emptyFormData);
-        // response?.success ? setStatus('success') : setStatus('error');
+        response?.success ? setStatus('success') : setStatus('error');
     }
 
     return status === 'submitting' ? 

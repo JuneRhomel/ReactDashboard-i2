@@ -1,11 +1,13 @@
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
 import Layout from "@/components/layouts/layout";
-import { CreateGatepassFormType, CreateVisitorPassFormDataType, GatepassType, GuestDataType, PersonnelDetailsType } from "@/types/models";
+import { CreateGatepassFormType, CreateVisitorPassFormDataType, GatepassType, GuestDataType, PersonnelDetailsType, VisitorsPassType } from "@/types/models";
 import { useEffect, useState } from "react";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
 import CreateServiceRequestForm from "@/components/general/form/forms/createServiceRequestForm/CreateServiceRequestForm";
 import ServiceRequestStatusFilter from "@/components/general/serviceRequestStatusFilter/ServiceRequestStatusFilter";
+import styles from './VisitorPass.module.css';
+import ServiceRequestCard from "@/components/general/cards/serviceRequestCard/ServiceRequestCard";
 
 const title = 'i2 - Visitor Pass'
 const testFormData = {
@@ -25,35 +27,35 @@ const newGuest: GuestDataType = {
     guestPurpose: '',
 }
 
-const VisitorPass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
+const VisitorPass = ({visitorPasses}: {visitorPasses: VisitorsPassType[]}) => {
     const maxNumberToShow = 4;
     const [formData, setFormData] = useState<CreateVisitorPassFormDataType>(testFormData);
     const [guestData, setGuestData] = useState<GuestDataType>(newGuest);
-    const pendingGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Pending');
-    const approvedGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Approved');
-    const deniedGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Disapproved');
-    const [filteredGatepasses, setFilteredGatepasses] = useState<{[key: string]: GatepassType[]}>({
-        pending: pendingGatepasses,
-        approved: approvedGatepasses,
-        denied: deniedGatepasses,
+    const pendingVisitorPasses = visitorPasses.filter((visitorPass) => visitorPass.status === 'Pending');
+    const approvedVisitorPasses = visitorPasses.filter((visitorPass) => visitorPass.status === 'Approved');
+    const deniedVisitorPasses = visitorPasses.filter((visitorPass) => visitorPass.status === 'Disapproved');
+    const [filteredVisitorPasses, setFilteredVisitorPasses] = useState<{[key: string]: VisitorsPassType[]}>({
+        pending: pendingVisitorPasses,
+        approved: approvedVisitorPasses,
+        denied: deniedVisitorPasses,
     })
 
     const counts = {
-        'pending': filteredGatepasses.pending.length,
-        'approved': filteredGatepasses.approved.length,
-        'denied': filteredGatepasses.denied.length,
+        'pending': filteredVisitorPasses.pending.length,
+        'approved': filteredVisitorPasses.approved.length,
+        'denied': filteredVisitorPasses.denied.length,
     };
 
-    const [gatepassesToShow, setGatepassesToShow] = useState<GatepassType[]>(filteredGatepasses.pending.slice(0, maxNumberToShow));
+    const [gatepassesToShow, setVisitorPassesToShow] = useState<VisitorsPassType[]>(filteredVisitorPasses.pending.slice(0, maxNumberToShow));
 
     useEffect(() => {
-        setGatepassesToShow(filteredGatepasses.pending.slice(0, maxNumberToShow));
-    }, [filteredGatepasses])
+        setVisitorPassesToShow(filteredVisitorPasses.pending.slice(0, maxNumberToShow));
+    }, [filteredVisitorPasses])
 
     const serviceRequestStatusFilterHandler = (event: any) => {
         const filter = event?.target?.value;
-        const filtered = filteredGatepasses[filter];
-        setGatepassesToShow(filtered?.slice(0, maxNumberToShow) as GatepassType[])
+        const filtered = filteredVisitorPasses[filter];
+        setVisitorPassesToShow(filtered?.slice(0, maxNumberToShow) as VisitorsPassType[])
     }
 
     const handleInput = (event: any) => {
@@ -78,12 +80,12 @@ const VisitorPass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
             const errors = parseFormErrors(form);
             return null;
         } else {
-            // const response = await api.requests.saveGatepass(formData);
-            // if (response.success) {
-            //     pendingGatepasses.unshift(response.data.gatepass as GatepassType);
-            //     setFilteredGatepasses({...filteredGatepasses, pending: pendingGatepasses})
-            //     return response;
-            // }
+            const response = await api.requests.saveVisitorPass(formData);
+            if (response.success) {
+                pendingVisitorPasses.unshift(response.data.visitorPass as VisitorsPassType);
+                setFilteredVisitorPasses({...filteredVisitorPasses, pending: pendingVisitorPasses})
+                return response;
+            }
             return null;
         }
     }
@@ -102,11 +104,11 @@ const VisitorPass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
 
             <ServiceRequestStatusFilter handler={serviceRequestStatusFilterHandler} counts={counts}/>
 
-            {/* <div className={styles.dataContainer}>
-                {gatepassesToShow.length > 0 ? gatepassesToShow.map((gatepass: GatepassType, index: number) => (
-                    <ServiceRequestCard key={index} request={gatepass} variant="Gate Pass"/>
+            <div className={styles.dataContainer}>
+                {gatepassesToShow.length > 0 ? gatepassesToShow.map((visitorPass: VisitorsPassType, index: number) => (
+                    <ServiceRequestCard key={index} request={visitorPass} variant="Visitor Pass"/>
                 )) : <div>No data to display</div>}
-            </div> */}
+            </div>
         </Layout>
     )
 }

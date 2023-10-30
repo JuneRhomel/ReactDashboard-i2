@@ -8,6 +8,8 @@ import { getServiceRequestDetails } from "./requests/getServiceRequestDetails";
 import { getGatepasses } from "./requests/getGatepasses";
 import saveGatepass from "./requests/saveGatepass";
 import { getGatepassTypes } from "./requests/getGatepassTypes";
+import { getVisitorPasses } from "./requests/getVisitorPasses";
+import saveVisitorPass from "./requests/saveVisitorPass";
 
 /**
 * This object contains all the API functions for the client to make user related requests
@@ -27,7 +29,9 @@ const requests = {
     getServiceRequestDetails: getServiceRequestDetails,
     getGatepasses: getGatepasses,
     getGatepassTypes: getGatepassTypes,
+    getVisitorPasses: getVisitorPasses,
     saveGatepass: saveGatepass,
+    saveVisitorPass: saveVisitorPass,
 }
 
 const api = {

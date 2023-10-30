@@ -290,8 +290,13 @@ export interface SaveGatePassDataType {
     gatepass?: GatepassType
 }
 
-export interface SaveGatePassResponseType {
+export interface SaveVisitorPassDataType {
+    visitorPass?: VisitorsPassType,
+    guestIds?: number[],
+}
+
+export interface SaveServiceRequestResponseType<T> {
     success: boolean,
-    data: SaveGatePassDataType, 
+    data: T, 
     errors?: any,
 }

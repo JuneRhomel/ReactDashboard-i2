@@ -34,10 +34,9 @@ import VisitorPass from "@/components/pages/visitorpass/VisitorPass";
 export async function getServerSideProps(context: any){
     type PropsType = {
       error: string | null,
-      gatepasses: GatepassType[] | null,
-      gatepassTypes: any;
+      visitorPasses: VisitorsPassType[] | null,
     }
-    const props: PropsType = {error: null, gatepasses: null, gatepassTypes: null};
+    const props: PropsType = {error: null, visitorPasses: null};
     const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
     const jwt: string = context?.req?.cookies?.token;
     const user = authorizeUser(jwt);
@@ -46,18 +45,17 @@ export async function getServerSideProps(context: any){
     }
     const token = `${user.token}:tenant`
   
-    const getGatepassesProps: ParamGetServiceRequestType = {
+    const getVisitorPassProps: ParamGetServiceRequestType = {
       accountcode: accountCode,
       userId: user.tenantId,
       // limit: 10,
     }
   
-    const gatepasses = await api.requests.getGatepasses(getGatepassesProps, token, context);
-    typeof gatepasses != 'string' ? props.gatepasses = gatepasses : props.error = gatepasses;
+    const visitorPasses = await api.requests.getVisitorPasses(getVisitorPassProps, token, context);
+    typeof visitorPasses != 'string' ? props.visitorPasses = visitorPasses : props.error = visitorPasses;
     return {
       props
     }
   }
   
-
 export default VisitorPass
