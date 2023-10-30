@@ -51,7 +51,6 @@ const LoginForm = () => {
             name: 'email',
             label: 'Email Address',
             type: 'email',
-            onChange: handleInput,
             value: formData.email,
             // required: true,
         },
@@ -59,7 +58,6 @@ const LoginForm = () => {
             name: 'password',
             label: 'Password',
             type: 'password',
-            onChange: handleInput,
             value: formData.password,
             // required: true,
         }
@@ -80,8 +78,8 @@ const LoginForm = () => {
             </div>
             {/* Show the error message if there is one */}
             {error !== "" ? (<div>{error}</div>): null }
-            <InputGroup props={props.emailInput}/>
-            <InputGroup props={props.passwordInput}/>
+            <InputGroup props={props.emailInput} onChange={handleInput}/>
+            <InputGroup props={props.passwordInput} onChange={handleInput}/>
             <button className={styles.submitButton} type="submit">Submit</button>
         </form>
     )

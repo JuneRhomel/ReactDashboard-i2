@@ -5,18 +5,18 @@ import StandardInput from "./StandardInput";
 import SelectInput from "./SelectInput";
 import DateInput from "./DateInput";
 import TextArea from "./TextArea";
+import { ChangeEventHandler } from "react";
 
-const InputGroup = ({props}: {props: InputProps}) => {
+const InputGroup = ({props, onChange}: {props: InputProps, onChange: ChangeEventHandler}) => {
     // const inputType = new Map<string, JSX.Element>([['pass', <PasswordInput props={props}/> ], ['2', <PasswordInput props={props}/>]])
     // Use this kind of map instead
     const inputTypeMap: {[key: string]: JSX.Element} = {
-        password: <PasswordInput props={props}/>,
-        select: <SelectInput props={props} />,
-        date: <DateInput props={props} />,
-        textArea: <TextArea props={props}/>,
+        password: <PasswordInput props={props} onChange={onChange}/>,
+        select: <SelectInput props={props} onChange={onChange}/>,
+        textArea: <TextArea props={props} onChange={onChange}/>,
     }
 
-    const inputToRender = inputTypeMap[props.type] ? inputTypeMap[props.type] : <StandardInput props={props}/>;
+    const inputToRender = inputTypeMap[props.type] ? inputTypeMap[props.type] : <StandardInput props={props} onChange={onChange}/>;
 
 
     const inputGroupClassName = props.disabled ? `${styles.formInputGroup} ${styles.disabled}` : `${styles.formInputGroup}`;

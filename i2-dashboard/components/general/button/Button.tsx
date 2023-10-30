@@ -2,15 +2,11 @@ import { FaChevronLeft } from "react-icons/fa6";
 import styles from './Button.module.css'
 
 export default function Button({type, onClick}: {type: string, onClick: any}) {
-    const buttonContentMap: any = {
-        'back': <FaChevronLeft/>,
-        'addItem': '+ Add Item',
-        'submit': 'Submit',
-        'cancel': 'Cancel',
-    }
+
     const buttonContent = new Map<string, any>([
         ['back', <FaChevronLeft key={'faChevronLeftKey'}/>],
         ['addItem', '+ Add Item'],
+        ['addGuest', '+ Add Guest'],
         ['submit', 'Submit'],
         ['cancel', 'Cancel'],
     ])

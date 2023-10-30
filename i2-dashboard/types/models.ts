@@ -216,7 +216,6 @@ export interface InputProps {
     name: string,
     label: string,
     type: TypeOfInput,
-    onChange: any,
     value: any,
     required?: boolean,
     disabled?: boolean,
@@ -234,6 +233,14 @@ export interface GatepassItemType {
     itemQuantity: number | null,
     itemDescription: string | null,
 }
+
+export interface GuestListItemType {
+    guestName: string | null,
+    guestContact: string | null,
+    guestPurpose: string | null,
+}
+
+export type ItemizedListItemType = GatepassItemType | GuestListItemType;
 
 export interface CreateGatepassFormType {
     requestorName: string | null,

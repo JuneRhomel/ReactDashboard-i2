@@ -1,5 +1,5 @@
 import { InputProps } from "@/types/models";
-import { useState } from "react";
+import { ChangeEventHandler, useState } from "react";
 import styles from './InputGroup.module.css';
 import { BsEyeFill, BsEyeSlash } from "react-icons/bs";
 
@@ -10,7 +10,7 @@ const eyeIconStyle: object = {
     transition: "300ms ease all",
   }
 
-export default function PasswordInput({props}: {props: InputProps}) {
+export default function PasswordInput({props, onChange}: {props: InputProps, onChange: ChangeEventHandler}) {
     const [showPassword, setShowPassword] = useState(false);
 
     const toggleShowPassword = (event: any) => {
@@ -25,7 +25,7 @@ export default function PasswordInput({props}: {props: InputProps}) {
                 type={showPassword ? 'text' : 'password'}
                 name={props.name}
                 className={styles.inputField}
-                onChange={props.onChange}
+                onChange={onChange}
                 value={props.value}
                 required={props.required}
             />

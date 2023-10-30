@@ -1,13 +1,15 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { ChangeEventHandler, Dispatch, SetStateAction, useState } from 'react';
 import styles from './CreateServiceRequestForm.module.css';
 import { FaCaretDown, FaCaretUp } from "react-icons/fa6";
 import CreateGatepassForm from './createGatepassForm/CreateGatepassForm';
 import { CreateGatepassFormType, CreateVisitorPassFormDataType } from '@/types/models';
 import CreateVisitorPassForm from './createVisitorPassForm/CreateVisitorPassForm';
 
+// I want to change this as I don't think it needs to be written in this way. All this file really does is create a drop-down and put the relevant form as the content.
+// A better way is to make this function the dropdown function and simply pass the form to be rendered.
 export default function CreateServiceRequestForm({type, handleInput, formData, setFormData, onSubmit}: {
     type: string,
-    handleInput: Function,
+    handleInput: ChangeEventHandler,
     formData: CreateGatepassFormType | CreateVisitorPassFormDataType,
     setFormData: Dispatch<SetStateAction<CreateGatepassFormType | CreateVisitorPassFormDataType>>,
     onSubmit: Function,
@@ -29,13 +31,14 @@ export default function CreateServiceRequestForm({type, handleInput, formData, s
         setFormData={setFormData as Dispatch<SetStateAction<CreateGatepassFormType>>}
         onSubmit={onSubmit}
     />;
+
     const visitorPassForm = <CreateVisitorPassForm
         closeDropdown={closeDropdown}
         handleInput={handleInput}
         formData={formData as CreateVisitorPassFormDataType}
         setFormData={setFormData as Dispatch<SetStateAction<CreateVisitorPassFormDataType>>}
         onSubmit={onSubmit}
-    />
+    />;
 
     const formTypes = new Map<string, JSX.Element>([
         ['gatepass', gatepassForm],

@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
 import CreateServiceRequestForm from "@/components/general/form/forms/createServiceRequestForm/CreateServiceRequestForm";
+import ServiceRequestStatusFilter from "@/components/general/serviceRequestStatusFilter/ServiceRequestStatusFilter";
 
 const title = 'i2 - Visitor Pass'
 const testFormData = {
-    requestorName: '',
+    requestorName: 'Kevin',
     unit: 'Unit 5',
     contactNumber: '1234567894',
     arrivalDate: '2023-12-05',
@@ -99,9 +100,9 @@ const VisitorPass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
                 onSubmit={handleSubmit}
             />
 
-            {/* <ServiceRequestStatusFilter handler={serviceRequestStatusFilterHandler} counts={counts}/>
+            <ServiceRequestStatusFilter handler={serviceRequestStatusFilterHandler} counts={counts}/>
 
-            <div className={styles.dataContainer}>
+            {/* <div className={styles.dataContainer}>
                 {gatepassesToShow.length > 0 ? gatepassesToShow.map((gatepass: GatepassType, index: number) => (
                     <ServiceRequestCard key={index} request={gatepass} variant="Gate Pass"/>
                 )) : <div>No data to display</div>}

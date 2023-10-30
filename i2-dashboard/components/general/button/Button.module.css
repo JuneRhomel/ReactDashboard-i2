@@ -12,13 +12,13 @@
     height: 29px;
 }
 
-.addItem {
+.addItem, .addGuest {
     background-color: var(--inventi-blue);
     color: white;
     padding: 15px 10px;
     border-radius: 5px;
     border: none;
-    max-width: 100px;
+    max-width: 120px;
 }
 
 .submit {

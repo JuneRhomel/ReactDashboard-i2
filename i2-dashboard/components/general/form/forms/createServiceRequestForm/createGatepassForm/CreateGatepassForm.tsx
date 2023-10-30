@@ -1,7 +1,7 @@
 import { CreateGatepassFormType, GatepassTypeType, InputProps } from "@/types/models";
 import InputGroup from "../../../inputGroup/InputGroup";
 import styles from './CreateGatepassForm.module.css';
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { ChangeEventHandler, Dispatch, SetStateAction, useEffect, useState } from "react";
 import ItemizedDetailsSection from "../../../section/ItemizedDetailsSection";
 import Button from "@/components/general/button/Button";
 import api from "@/utils/api";
@@ -19,7 +19,7 @@ const emptyFormData = {
 
 export default function CreateGatepassForm({closeDropdown, handleInput, formData, setFormData, onSubmit}: {
     closeDropdown: any,
-    handleInput: Function,
+    handleInput: ChangeEventHandler,
     formData: CreateGatepassFormType,
     setFormData: Dispatch<SetStateAction<CreateGatepassFormType>>,
     onSubmit: Function,
@@ -46,7 +46,6 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             name: 'requestorName',
             label: 'Requestor Name',
             type: 'text',
-            onChange: handleInput,
             value: formData.requestorName,
             disabled: true,
             required: true,
@@ -55,7 +54,6 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             name: 'gatepassType',
             label: 'Gatepass Type',
             type: 'select',
-            onChange: handleInput,
             value: formData.gatepassType,
             required: true,
             options: gatepassTypes,
@@ -64,7 +62,6 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             name: 'forDate',
             label: 'Date',
             type: 'date',
-            onChange: handleInput,
             value: formData.forDate,
             required: true,
         },
@@ -72,7 +69,6 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             name: 'time',
             label: 'Time',
             type: 'time',
-            onChange: handleInput,
             value: formData.time,
             required: true,
         },
@@ -80,7 +76,6 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             name: 'unit',
             label: 'Unit #',
             type: 'text',
-            onChange: handleInput,
             value: formData.unit,
             required: true,
             disabled: true,
@@ -89,7 +84,6 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             name: 'contactNumber',
             label: 'Contact Number',
             type: 'text',
-            onChange: handleInput,
             value: formData.contactNumber,
             required: true,
         }
@@ -100,7 +94,6 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             name: 'courier',
             label: 'Courier / Company',
             type: 'text',
-            onChange: handleInput,
             value: formData.personnel?.courier || '',
             required: true
         },
@@ -108,7 +101,6 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             name: 'courierName',
             label: 'Name',
             type: 'text',
-            onChange: handleInput,
             value: formData.personnel?.courierName || '',
             required: true,
         },
@@ -116,7 +108,6 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             name: 'courierContact',
             label: 'Contact Details',
             type: 'text',
-            onChange: handleInput,
             value: formData.personnel?.courierContact || '',
             required: true,
         }
@@ -161,13 +152,13 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
         ) :
         (
             <form action="" onSubmit={handleSubmit} className={styles.form} id="createGatepassForm">
-                {baseFields.map((field, index) => (<InputGroup key={index} props={field}/>))}
+                {baseFields.map((field, index) => (<InputGroup key={index} props={field} onChange={handleInput}/>))}
                 
                 <ItemizedDetailsSection type='Item Details' formData={formData} setFormData={setFormData}/>
 
                 <div className={styles.personnelContainer}>
                     <h3>Personnel Details</h3>
-                    {personnelDetailsFields.map((field, index) => (<InputGroup key={index} props={field}/>))}
+                    {personnelDetailsFields.map((field, index) => (<InputGroup key={index} props={field} onChange={handleInput}/>))}
                 </div>
 
                 <div className={styles.footer}>
