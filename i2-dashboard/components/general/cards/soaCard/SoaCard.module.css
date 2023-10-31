@@ -21,7 +21,7 @@
     font-weight: 700;
 }
 
-.amount_due {
+.amountDue {
     color: var(--inventi-orange);
     text-align: right;
     font-size: 14px;
@@ -41,17 +41,19 @@
     font-size: 12px;
 }
 
-.view {
-    color: #000;
+.viewDetails {
     text-align: right;
     font-size: 12px;
-    font-style: normal;
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.048px;
+    text-decoration: underline;
 }
 
-.btn_pdf {
+.viewDetails:hover {
+    color: var(--inventi-blue);
+}
+.btnPdf {
     font-size: 14px;
     height: 45px;
     width: 50%;
@@ -61,13 +63,13 @@
     color: #ffffff;
 }
 
-.btn_container {
+.btnContainer {
     display: flex;
     gap: 15px;
     margin: 15px 0 0 0;
 }
 
-.pay_now {
+.payNow {
     font-size: 14px;
     height: 45px;
     width: 50%;
@@ -81,6 +83,6 @@
     color: var(--inventi-green);
 }
 
-.upaid {
+.unpaid {
     color: var(--inventi-red);
 }

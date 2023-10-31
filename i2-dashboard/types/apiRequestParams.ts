@@ -6,7 +6,7 @@ export type ParamGetSoaType = {
 
 export type ParamGetSoaDetailsType = {
     accountcode: string,
-    soaId: number,
+    soaId?: number,
     limit?: number,
 }
 

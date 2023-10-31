@@ -9,7 +9,6 @@ import Dashboard from "@/components/pages/dashboard/Dashboard";
 
 export async function getServerSideProps(context: any) {
   // Do the stuff to check if user is authenticated
-  let response;
   const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
   const jwt = context.req.cookies.token;
   const user = authorizeUser(jwt);
@@ -22,17 +21,16 @@ export async function getServerSideProps(context: any) {
     userId: user?.tenantId as number,
     limit: 1,
   }
-  response = await api.soa.getSoa(soaParams, token);
-  const soas: SoaType[] = await response?.json();
-  const soa: SoaType = mapObject(soas.shift() as SoaType) as SoaType;
-
+  const getSoaResponse = await api.soa.getSoa(soaParams, token);
+  const soas = getSoaResponse.success ? getSoaResponse.data as SoaType[]: undefined;
+  const soa = mapObject(soas?.shift() as SoaType) as SoaType;
   
   const soaDetailsParams: ParamGetSoaDetailsType = {
     accountcode: accountCode,
     soaId: parseInt(soa.id),
   }
-  response = await api.soa.getSoaDetails(soaDetailsParams, token);  // get soa details (transactions for this soa)
-  const soaDetails: SoaDetailsType[] = mapObject(await response?.json()) as SoaDetailsType[];
+  const getSoaDetailsResponse = await api.soa.getSoaDetails(soaDetailsParams, token);  // get soa details (transactions for this soa)
+  const soaDetails = getSoaDetailsResponse.success ? mapObject(getSoaDetailsResponse.data as SoaDetailsType[]) as SoaDetailsType[] : undefined;
   return {props: {user, soa, soaDetails}};
 }
 

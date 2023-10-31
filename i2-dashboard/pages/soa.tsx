@@ -11,42 +11,50 @@ export async function getServerSideProps(context: any) {
   const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
   const jwt = context.req.cookies.token;
   const user = authorizeUser(jwt);
+  if (!user) {
+    return {redirect : {destination: '/?error=accessDenied', permanent: false}};
+  }
 
   const token = `${user?.token}:tenant`;
   const soaParams: ParamGetSoaType = {
     accountcode: accountCode,
     userId: user?.tenantId as number,
   }
-  if (!user) {
-    return {redirect : {destination: '/?error=accessDenied', permanent: false}};
+  const soaDetailsParams: ParamGetSoaDetailsType = {
+    accountcode: accountCode,
+    limit: 20,
   }
-  const response = await api.soa.getSoa(soaParams, token);  // get all soas
-  const soas = mapObject(await response?.json());
-  
-  const soaDetails: SoaDetailsType[] = [];
-  await Promise.all(soas.map(async (element: SoaType) => {
-    const soaDetailsParams: ParamGetSoaDetailsType = {
-      accountcode: accountCode,
-      soaId: parseInt(element.id),
+  const getSoaPromise = api.soa.getSoa(soaParams, token);  // get all soas
+  const getSoaDetailsPromise = api.soa.getSoaDetails(soaDetailsParams, token);
+  const [soaResponse, soaDetailsResponse] = await Promise.all([getSoaPromise, getSoaDetailsPromise]);
+  const soas = soaResponse.success ? mapObject(soaResponse.data as SoaType[]) as SoaType[] : undefined;
+  const allSoaDetails = soaDetailsResponse.success ? mapObject(soaDetailsResponse.data as SoaDetailsType[]) as SoaDetailsType[] : undefined;
+  const soaIds = soas?.map((soa) => soa.id)
+  const userSoaDetails = allSoaDetails?.filter((soaDetail) => soaIds?.includes(soaDetail.soaId));
+  const filteredSoaDetails = userSoaDetails?.filter((detail: SoaDetailsType) => {
+    return !(detail.particular.includes("SOA Payment") && detail.status === "Successful") && !detail.particular.includes("Balance");
+  });
+
+  const firstTwoDetailsMap = filteredSoaDetails?.reduce((result, detail) => {
+    if (!result[detail.soaId]) {
+      result[detail.soaId] = [];
     }
-    const response = await api.soa.getSoaDetails(soaDetailsParams, token);  // get soa details (transactions for this soa)
-    const jsonResponse = await response.json();
-    const thisSoaDetails: SoaDetailsType[] = jsonResponse && mapObject(jsonResponse) as SoaDetailsType[];
-    if (thisSoaDetails) { 
-      const filtered = thisSoaDetails.filter(detail => {
-        return !(detail.particular.includes("SOA Payment") && detail.status === "Successful") && !detail.particular.includes("Balance");
-      })
-      filtered.splice(2);
-      soaDetails.push(...filtered)
-    };
-  }));
-  
-  const currentSoa = soas.shift();
-  const paidSoas = soas.filter((soa: SoaType) => 
-    soa.status === "Paid" && soa.id != currentSoa.id
+
+    if (result[detail.soaId].length < 2) {
+      result[detail.soaId].push(detail);
+    }
+
+    return result;
+  }, {} as {[key: string]: SoaDetailsType[]});
+
+  const soaDetails =  firstTwoDetailsMap ? Object.values(firstTwoDetailsMap).flat() : undefined;
+  soaDetails?.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+  const currentSoa = soas?.shift();
+  const paidSoas = soas?.filter((soa: SoaType) => 
+    soa.status === "Paid" && soa.id != currentSoa?.id
     );
-  const unpaidSoas = soas.filter((soa: SoaType) =>
-    (soa.status === "Unpaid" || soa.status === "Partially Paid") && soa.id != currentSoa.id
+  const unpaidSoas = soas?.filter((soa: SoaType) =>
+    (soa.status === "Unpaid" || soa.status === "Partially Paid") && soa.id != currentSoa?.id
     );
 
     return {

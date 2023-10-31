@@ -4,11 +4,12 @@ import SoaCard from '../cards/soaCard/SoaCard';
 import styles from './Section.module.css';
 import ServiceRequests from './serviceRequests/ServiceRequests';
 import ServiceRequestThumbnails from './serviceRequestThumbnails/ServiceRequestThumbnails';
+import { SoaDetailsType, SoaType } from '@/types/models';
 
 const Section = ({props}: {props: any}) => {
     const title = props?.title.toLowerCase();
     const cardMap: Record<string, ReactNode> = {
-        'soa': <SoaCard props={props.data}/>,
+        'soa': <SoaCard currentSoa={props.data.currentSoa} currentSoaDetails={props.data.currentSoaDetails}/>,
         'payment transactions': <PaymentTransactions transactions={props.data}/>,
         'my requests': <ServiceRequests serviceRequests={props.data}/>,
         'select service request': <ServiceRequestThumbnails/>,

@@ -5,12 +5,13 @@ import { SoaDetailsType, SoaType } from "./models";
 *
 */
 export type ApiResponse<T = never> = {
-    success?: number;
+    success?: number | boolean;
     description?: string;
     id?: string;
     data?: T;
     status?: number;
     message?: string;
+    error?: string;
 }
 
 export type GetSoaResponse = SoaType[] | ApiResponse;

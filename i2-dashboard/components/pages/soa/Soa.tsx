@@ -5,12 +5,15 @@ import Section from "@/components/general/section/Section"
 
 const Soa = ({currentSoa, soaDetails} : {
     currentSoa: SoaType,
-    soaDetails: SoaDetailsType
+    soaDetails: SoaDetailsType[]
 }) => {
+    const currentSoaDetails = soaDetails.filter((detail) => {
+        return detail.soaId === currentSoa.id;
+    })
     const soaProps = {
         title: 'SOA',
         headerAction: null,
-        data: currentSoa,
+        data: {currentSoa, currentSoaDetails},
     }
     const paymentTransactionsProps = {
         title: 'Payment Transactions',

@@ -1,5 +1,5 @@
-const formatCurrency = (amount: string) : string => {
-    const parsedAmount = parseFloat(amount);
+const formatCurrency = (amount: string | number) : string => {
+    const parsedAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
     // Ensure 'amount' is a number and not NaN
     if (typeof parsedAmount !== 'number' || isNaN(parsedAmount)) {
       return 'Invalid Amount';
