@@ -15,7 +15,6 @@ const SoaCard = ({ currentSoa, currentSoaDetails }: { currentSoa: SoaType, curre
     const amountDue = formatCurrency(statementAmount - totalCredits);
     const statusClass = status === 'Paid' ? `${styles.status} ${styles.paid}` : `${styles.status} ${styles.unpaid}`;
 
-console.log(currentSoa)
     return (
         <div className={styles.container}>
             <div className={styles.desciption}>
@@ -29,7 +28,7 @@ console.log(currentSoa)
                     <p className={styles.amount}>{amountDue}</p>
                 </div>
             </div>
-            <Link className={styles.viewDetails} href={'/'}>
+            <Link className={styles.viewDetails} href={'/viewsoa'}>
                 <p>View Details</p>
             </Link>
             <div className={styles.btnContainer}>

@@ -23,15 +23,15 @@ export async function getServerSideProps(context: any) {
   }
   const getSoaResponse = await api.soa.getSoa(soaParams, token);
   const soas = getSoaResponse.success ? getSoaResponse.data as SoaType[]: undefined;
-  const soa = mapObject(soas?.shift() as SoaType) as SoaType;
+  const currentSoa = mapObject(soas?.shift() as SoaType) as SoaType;
   
   const soaDetailsParams: ParamGetSoaDetailsType = {
     accountcode: accountCode,
-    soaId: parseInt(soa.id),
+    soaId: parseInt(currentSoa.id),
   }
   const getSoaDetailsResponse = await api.soa.getSoaDetails(soaDetailsParams, token);  // get soa details (transactions for this soa)
   const soaDetails = getSoaDetailsResponse.success ? mapObject(getSoaDetailsResponse.data as SoaDetailsType[]) as SoaDetailsType[] : undefined;
-  return {props: {user, soa, soaDetails}};
+  return {props: {user, currentSoa, soaDetails}};
 }
 
 export default Dashboard

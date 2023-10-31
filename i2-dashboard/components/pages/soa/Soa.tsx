@@ -3,22 +3,22 @@ import style from "./Soa.module.css"
 import { SoaDetailsType, SoaType } from "@/types/models"
 import Section from "@/components/general/section/Section"
 
-const Soa = ({currentSoa, soaDetails} : {
+const Soa = ({currentSoa, paymentTransactions} : {
     currentSoa: SoaType,
-    soaDetails: SoaDetailsType[]
+    paymentTransactions: SoaDetailsType[]
 }) => {
-    const currentSoaDetails = soaDetails.filter((detail) => {
-        return detail.soaId === currentSoa.id;
+    const soaDetails = paymentTransactions.filter((transaction: SoaDetailsType) => {
+        return transaction.soaId === currentSoa.id;
     })
     const soaProps = {
         title: 'SOA',
         headerAction: null,
-        data: {currentSoa, currentSoaDetails},
+        data: {currentSoa, soaDetails},
     }
     const paymentTransactionsProps = {
         title: 'Payment Transactions',
         headerAction: 'Show All',
-        data: soaDetails,
+        data: paymentTransactions,
     }
     return (
         <Layout title="i2 - SOA">

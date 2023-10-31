@@ -20,15 +20,15 @@ export async function getServerSideProps(context: any) {
     accountcode: accountCode,
     userId: user?.tenantId as number,
   }
-  const soaDetailsParams: ParamGetSoaDetailsType = {
+  const paymentTransactionsParams: ParamGetSoaDetailsType = {
     accountcode: accountCode,
     limit: 20,
   }
   const getSoaPromise = api.soa.getSoa(soaParams, token);  // get all soas
-  const getSoaDetailsPromise = api.soa.getSoaDetails(soaDetailsParams, token);
-  const [soaResponse, soaDetailsResponse] = await Promise.all([getSoaPromise, getSoaDetailsPromise]);
+  const getSoaDetailsPromise = api.soa.getSoaDetails(paymentTransactionsParams, token);
+  const [soaResponse, paymentTransactionsResponse] = await Promise.all([getSoaPromise, getSoaDetailsPromise]);
   const soas = soaResponse.success ? mapObject(soaResponse.data as SoaType[]) as SoaType[] : undefined;
-  const allSoaDetails = soaDetailsResponse.success ? mapObject(soaDetailsResponse.data as SoaDetailsType[]) as SoaDetailsType[] : undefined;
+  const allSoaDetails = paymentTransactionsResponse.success ? mapObject(paymentTransactionsResponse.data as SoaDetailsType[]) as SoaDetailsType[] : undefined;
   const soaIds = soas?.map((soa) => soa.id)
   const userSoaDetails = allSoaDetails?.filter((soaDetail) => soaIds?.includes(soaDetail.soaId));
   const filteredSoaDetails = userSoaDetails?.filter((detail: SoaDetailsType) => {
@@ -47,8 +47,8 @@ export async function getServerSideProps(context: any) {
     return result;
   }, {} as {[key: string]: SoaDetailsType[]});
 
-  const soaDetails =  firstTwoDetailsMap ? Object.values(firstTwoDetailsMap).flat() : undefined;
-  soaDetails?.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+  const paymentTransactions =  firstTwoDetailsMap ? Object.values(firstTwoDetailsMap).flat() : undefined;
+  paymentTransactions?.sort((a, b) => parseInt(b.id) - parseInt(a.id));
   const currentSoa = soas?.shift();
   const paidSoas = soas?.filter((soa: SoaType) => 
     soa.status === "Paid" && soa.id != currentSoa?.id
@@ -62,7 +62,7 @@ export async function getServerSideProps(context: any) {
       currentSoa,
       paidSoas,
       unpaidSoas,
-      soaDetails,
+      paymentTransactions,
     }
   }
 }

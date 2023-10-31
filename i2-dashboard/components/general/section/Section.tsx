@@ -9,7 +9,7 @@ import { SoaDetailsType, SoaType } from '@/types/models';
 const Section = ({props}: {props: any}) => {
     const title = props?.title.toLowerCase();
     const cardMap: Record<string, ReactNode> = {
-        'soa': <SoaCard currentSoa={props.data.currentSoa} currentSoaDetails={props.data.currentSoaDetails}/>,
+        'soa': <SoaCard currentSoa={props.data?.currentSoa as SoaType} currentSoaDetails={props.data?.soaDetails as SoaDetailsType[]}/>,
         'payment transactions': <PaymentTransactions transactions={props.data}/>,
         'my requests': <ServiceRequests serviceRequests={props.data}/>,
         'select service request': <ServiceRequestThumbnails/>,
