@@ -1,9 +1,9 @@
-import { SoaDetailsType } from '@/types/models';
+import { SoaPaymentsType } from '@/types/models';
 import style from './PaymentCard.module.css';
 import getDateTimeString from '@/utils/getDateTimeString';
 import formatCurrency from '@/utils/formatCurrency';
 
-export const PaymentCard = ({transaction} : {transaction: SoaDetailsType}) => {
+export const PaymentCard = ({transaction} : {transaction: SoaPaymentsType}) => {
   const transactionDate = getDateTimeString(transaction?.transactionDate);
   const amount = formatCurrency(transaction?.amount);
   const status = transaction?.status;

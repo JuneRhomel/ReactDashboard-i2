@@ -1,7 +1,7 @@
-import { SoaDetailsType } from '@/types/models';
+import { SoaPaymentsType } from '@/types/models';
 import style from './PaymentTransactions.module.css'
 import { PaymentCard } from '@/components/general/cards/paymentCard/PaymentCard'
-const PaymentTransactions = ({transactions} : {transactions: SoaDetailsType[]}) => {
+const PaymentTransactions = ({transactions} : {transactions: SoaPaymentsType[]}) => {
     if (transactions == undefined) {
         return (<div>Undefined</div>)
     }

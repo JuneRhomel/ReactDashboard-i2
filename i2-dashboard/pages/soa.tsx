@@ -1,9 +1,9 @@
 import Soa from "@/components/pages/soa/Soa";
-import { SoaDetailsType, SoaType } from "@/types/models";
+import { SoaPaymentsType, SoaType } from "@/types/models";
 import { ParamGetSoaDetailsType, ParamGetSoaType } from "@/types/apiRequestParams";
 import api from "@/utils/api";
 import authorizeUser from "@/utils/authorizeUser";
-import mapObject from "@/utils/mapObject";
+import encryptData from "@/utils/encryptData";
 
 export async function getServerSideProps(context: any) {
   // Need to update this function to address cases where the user is not authenticated therefor authorizeUser(jwt) returns null
@@ -25,17 +25,17 @@ export async function getServerSideProps(context: any) {
     limit: 20,
   }
   const getSoaPromise = api.soa.getSoa(soaParams, token);  // get all soas
-  const getSoaDetailsPromise = api.soa.getSoaDetails(paymentTransactionsParams, token);
-  const [soaResponse, paymentTransactionsResponse] = await Promise.all([getSoaPromise, getSoaDetailsPromise]);
-  const soas = soaResponse.success ? mapObject(soaResponse.data as SoaType[]) as SoaType[] : undefined;
-  const allSoaDetails = paymentTransactionsResponse.success ? mapObject(paymentTransactionsResponse.data as SoaDetailsType[]) as SoaDetailsType[] : undefined;
+  const getSoaPaymentsPromise = api.soa.getSoaPayments(paymentTransactionsParams, token);
+  const [soaResponse, paymentTransactionsResponse] = await Promise.all([getSoaPromise, getSoaPaymentsPromise]);
+  const soas = soaResponse.success ? soaResponse.data as SoaType[] : undefined;
+  const allSoaPayments = paymentTransactionsResponse.success ? paymentTransactionsResponse.data as SoaPaymentsType[] : undefined;
   const soaIds = soas?.map((soa) => soa.id)
-  const userSoaDetails = allSoaDetails?.filter((soaDetail) => soaIds?.includes(soaDetail.soaId));
-  const filteredSoaDetails = userSoaDetails?.filter((detail: SoaDetailsType) => {
+  const userSoaPayments = allSoaPayments?.filter((soaDetail) => soaIds?.includes(soaDetail.soaId));
+  const filteredSoaPayments = userSoaPayments?.filter((detail: SoaPaymentsType) => {
     return !(detail.particular.includes("SOA Payment") && detail.status === "Successful") && !detail.particular.includes("Balance");
   });
 
-  const firstTwoDetailsMap = filteredSoaDetails?.reduce((result, detail) => {
+  const firstTwoDetailsMap = filteredSoaPayments?.reduce((result, detail) => {
     if (!result[detail.soaId]) {
       result[detail.soaId] = [];
     }
@@ -45,11 +45,12 @@ export async function getServerSideProps(context: any) {
     }
 
     return result;
-  }, {} as {[key: string]: SoaDetailsType[]});
+  }, {} as {[key: string]: SoaPaymentsType[]});
 
   const paymentTransactions =  firstTwoDetailsMap ? Object.values(firstTwoDetailsMap).flat() : undefined;
   paymentTransactions?.sort((a, b) => parseInt(b.id) - parseInt(a.id));
-  const currentSoa = soas?.shift();
+  const currentSoa = soas?.shift() as SoaType;
+  currentSoa.encId = encryptData(currentSoa?.id); // This needs to be moved to the api call somehow
   const paidSoas = soas?.filter((soa: SoaType) => 
     soa.status === "Paid" && soa.id != currentSoa?.id
     );

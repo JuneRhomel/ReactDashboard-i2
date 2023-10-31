@@ -1,6 +1,6 @@
 import { ParamGetServiceRequestType, ServiceRequestTable } from "@/types/apiRequestParams";
 import api from "..";
-import mapObject from "@/utils/mapObject";
+import parseObject from "@/utils/parseObject";
 import { GatepassPersonnelType, GatepassType } from "@/types/models";
 
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
@@ -15,9 +15,9 @@ export async function getGatepasses(params: ParamGetServiceRequestType, token: s
     const getGatepassResponse = await api.requests.getServiceRequestDetails(params, 'gatepass', token, context);
     const getPersonnelResponse = await api.requests.getServiceRequestDetails(params, 'personnel', token, context);
     if (typeof getGatepassResponse != 'string') {
-        const gatepasses = mapObject(await getGatepassResponse.json()) as GatepassType[];
+        const gatepasses = parseObject(await getGatepassResponse.json()) as GatepassType[];
         if (typeof getPersonnelResponse != 'string') {
-            const personnel = mapObject(await getPersonnelResponse.json()) as GatepassPersonnelType[];
+            const personnel = parseObject(await getPersonnelResponse.json()) as GatepassPersonnelType[];
             gatepasses.map((gatepass)=> {
                 const gatepassPersonnel = personnel.find((record)=> record.gatepassId === `${gatepass.id}`)
                 gatepass.personnel = gatepassPersonnel || null;

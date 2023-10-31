@@ -3,7 +3,7 @@ import authorizeUser from "@/utils/authorizeUser";
 import api from "@/utils/api";
 import { GatepassType} from "@/types/models";
 import Gatepass from "@/components/pages/gatepass/Gatepass";
-import mapObject from "@/utils/mapObject";
+import parseObject from "@/utils/parseObject";
 
 export async function getServerSideProps(context: any){
   type PropsType = {

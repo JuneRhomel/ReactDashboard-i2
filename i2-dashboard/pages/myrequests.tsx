@@ -2,7 +2,7 @@ import MyRequests from "@/components/pages/myrequests/MyRequests";
 import { ParamGetServiceRequestType, ServiceRequestTable } from "@/types/apiRequestParams";
 import authorizeUser from "@/utils/authorizeUser";
 import api from "@/utils/api";
-import mapObject from "@/utils/mapObject";
+import parseObject from "@/utils/parseObject";
 import { GatepassPersonnelType, GatepassType, GuestType, MyRequestDataType, ServiceIssueType, ServiceRequestType, ServiceRequestsType, VisitorsPassType, WorkDetailType, WorkPermitType } from "@/types/models";
 
 export async function getServerSideProps(context: any){
@@ -28,7 +28,7 @@ export async function getServerSideProps(context: any){
   let jsonResponse;
   let response = await api.requests.getServiceRequests(getServiceRequestProps, token);
   typeof response != 'string' ? jsonResponse = await response.json() : props.error = response;
-  const serviceRequests: ServiceRequestsType | null = jsonResponse ? mapObject(jsonResponse) as ServiceRequestsType : null;
+  const serviceRequests: ServiceRequestsType | null = jsonResponse ? parseObject(jsonResponse) as ServiceRequestsType : null;
   serviceRequests?.sort((a: any, b: any) => parseInt(b.id) - parseInt(a.id));
   const serviceRequestDetails: MyRequestDataType = {
     gatepasses: 'gatepass',
@@ -45,7 +45,7 @@ export async function getServerSideProps(context: any){
     const table= serviceRequestDetails[key as keyof MyRequestDataType] as string;
     const response = await api.requests.getServiceRequestDetails(getServiceRequestProps, table as ServiceRequestTable, token, context);
     const jsonResponse = typeof response != 'string' ? await response.json() : null;
-    const obj = jsonResponse ? mapObject(jsonResponse) : response;
+    const obj = jsonResponse ? parseObject(jsonResponse) : response;
     serviceRequestDetails[key as keyof MyRequestDataType] = obj as [];
   }))
 

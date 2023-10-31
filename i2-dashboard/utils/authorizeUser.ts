@@ -1,6 +1,6 @@
 import { UserType, UserTokenPayload } from "@/types/models";
 import jwt, { Secret } from "jsonwebtoken";
-import mapObject from "./mapObject";
+import mapObject from "./parseObject";
 const jwtSecret: Secret = process.env.JWT_SECRET as Secret;
 
 const authorizeUser = (token : string) => {

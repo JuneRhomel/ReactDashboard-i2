@@ -1,8 +1,8 @@
 import Section from "@/components/general/section/Section";
 import Layout from "@/components/layouts/layout";
-import { SoaDetailsType, SoaType } from "@/types/models";
+import { SoaPaymentsType, SoaType } from "@/types/models";
 
-export default function Dashboard({currentSoa, soaDetails}: {currentSoa: SoaType, soaDetails: SoaDetailsType}) {
+export default function Dashboard({currentSoa, soaDetails}: {currentSoa: SoaType, soaDetails: SoaPaymentsType}) {
     const soaProps = {
         title: 'SOA',
         headerAction: null,

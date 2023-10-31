@@ -64,7 +64,7 @@ export interface SoaType extends ChangeHistory {
     locationType: string | null,
 }
 
-export interface SoaDetailsType extends ChangeHistory {
+export interface SoaPaymentsType extends ChangeHistory {
     id: string,
     soaId: string,
     paymentType: string,
@@ -75,6 +75,15 @@ export interface SoaDetailsType extends ChangeHistory {
     checkAmount: number | string | null,
     status: string,
     transactionDate: string,
+}
+
+export interface SoaDetailsType extends ChangeHistory {
+    id: string,
+    soaId: string,
+    type: string,
+    particular: string,
+    amount: string,
+    amountBal: string,
 }
 
 export interface GatepassPersonnelType extends ChangeHistory {

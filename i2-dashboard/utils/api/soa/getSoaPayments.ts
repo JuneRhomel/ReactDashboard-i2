@@ -1,5 +1,5 @@
 import { ParamGetSoaDetailsType } from "@/types/apiRequestParams";
-import { SoaDetailsType } from "@/types/models";
+import { SoaPaymentsType } from "@/types/models";
 import { ApiResponse } from "@/types/responseWrapper";
 import parseObject from "@/utils/parseObject";
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
@@ -9,12 +9,12 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 * @param {ParamGetSoaDetailsType} params - This is a json object that has accountCode, dbTable, queryCondition, and resultLimit
 * @return {Promise<Response>} Returns a promise of a Response object.
 */
-export async function getSoaDetails(params: ParamGetSoaDetailsType, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<ApiResponse<SoaDetailsType[]>>{
+export async function getSoaPayments(params: ParamGetSoaDetailsType, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<ApiResponse<SoaPaymentsType[]>>{
     const url: string = `${process.env.API_URL}/tenant/get-list`;
     const method: string = 'POST';
     const body: string = JSON.stringify({
         accountcode: params.accountcode,
-        table: 'soa_detail',
+        table: 'soa_payment',
         condition: params.soaId ? `soa_id=${params.soaId}` : undefined,
         limit: params.limit,
     });
@@ -22,7 +22,7 @@ export async function getSoaDetails(params: ParamGetSoaDetailsType, token: strin
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
     };
-    const response: ApiResponse<SoaDetailsType[]> = {
+    const response: ApiResponse<SoaPaymentsType[]> = {
         success: false,
         data: undefined,
         error: undefined,
@@ -43,9 +43,8 @@ export async function getSoaDetails(params: ParamGetSoaDetailsType, token: strin
             throw new Error(`400 Bad Request! ${responseBody.description}`);
         }
         response.success = true;
-        response.data = parseObject(responseBody) as SoaDetailsType[];
+        response.data = parseObject(responseBody) as SoaPaymentsType[];
         return response;
-        
     } catch (error: any) {
         response.success = false;
         response.error = error.message;

@@ -1,13 +1,13 @@
 import Layout from "@/components/layouts/layout"
 import style from "./Soa.module.css"
-import { SoaDetailsType, SoaType } from "@/types/models"
+import { SoaPaymentsType, SoaType } from "@/types/models"
 import Section from "@/components/general/section/Section"
 
 const Soa = ({currentSoa, paymentTransactions} : {
     currentSoa: SoaType,
-    paymentTransactions: SoaDetailsType[]
+    paymentTransactions: SoaPaymentsType[]
 }) => {
-    const soaDetails = paymentTransactions.filter((transaction: SoaDetailsType) => {
+    const soaDetails = paymentTransactions.filter((transaction: SoaPaymentsType) => {
         return transaction.soaId === currentSoa.id;
     })
     const soaProps = {

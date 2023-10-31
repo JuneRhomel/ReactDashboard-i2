@@ -1,8 +1,8 @@
 
 
-export default function mapObject(obj: Record<string, any> | Record<string, any>[]): Record<string, any> | Record<string, any>[]{
+export default function parseObject(obj: Record<string, any> | Record<string, any>[]): Record<string, any> | Record<string, any>[]{
   if (Array.isArray(obj))  {
-    return obj.map((obj) => mapObject(obj));
+    return obj.map((obj) => parseObject(obj));
   }
   
   const result: Record<string, any> = {};

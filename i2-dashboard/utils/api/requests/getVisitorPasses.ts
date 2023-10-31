@@ -1,6 +1,6 @@
 import { ParamGetServiceRequestType } from "@/types/apiRequestParams";
 import api from "..";
-import mapObject from "@/utils/mapObject";
+import parseObject from "@/utils/parseObject";
 import { GatepassPersonnelType, GatepassType, GuestType, VisitorsPassType } from "@/types/models";
 
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
@@ -15,9 +15,9 @@ export async function getVisitorPasses(params: ParamGetServiceRequestType, token
     const getVisitorPassResponse = await api.requests.getServiceRequestDetails(params, 'visitor_pass', token, context);
     const getGuestListResponse = await api.requests.getServiceRequestDetails(params, 'vp_guest', token, context);
     if (typeof getVisitorPassResponse != 'string') {
-        const visitorPasses = mapObject(await getVisitorPassResponse.json()) as VisitorsPassType[];
+        const visitorPasses = parseObject(await getVisitorPassResponse.json()) as VisitorsPassType[];
         if (typeof getGuestListResponse != 'string') {
-            const guests = mapObject(await getGuestListResponse.json()) as GuestType[];
+            const guests = parseObject(await getGuestListResponse.json()) as GuestType[];
             visitorPasses.map((visitorPass)=> {
                 const vpGuests = guests.filter((record)=> record.guestId === `${visitorPass.id}`)
                 visitorPass.guests = vpGuests || null;
