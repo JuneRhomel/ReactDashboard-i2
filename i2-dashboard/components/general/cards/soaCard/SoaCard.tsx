@@ -3,6 +3,7 @@ import Link from 'next/link'
 import getDateString from '@/utils/getDateString';
 import { SoaPaymentsType, SoaType } from '@/types/models';
 import formatCurrency from '@/utils/formatCurrency';
+import SoaButtons from '../../button/SoaButtons';
 const SoaCard = ({ currentSoa, currentSoaPayments }: { currentSoa: SoaType, currentSoaPayments: SoaPaymentsType[] }) => {
     const status = currentSoa.status;
     const statementDate = getDateString(null, parseInt(currentSoa.monthOf), parseInt(currentSoa.yearOf));
@@ -30,10 +31,7 @@ const SoaCard = ({ currentSoa, currentSoaPayments }: { currentSoa: SoaType, curr
             <Link className={styles.viewDetails} href={`/viewsoa?id=${currentSoa.encId}`}>
                 <p>View Details</p>
             </Link>
-            <div className={styles.btnContainer}>
-                <button className={styles.btnPdf}>SOA PDF</button>
-                <button className={styles.payNow}>PAY NOW</button>
-            </div>
+            <SoaButtons/>
         </div>
     )
 }
