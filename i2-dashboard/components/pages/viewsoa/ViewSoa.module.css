@@ -2,14 +2,25 @@
     font-size: calc(1.325rem + .9vw);
 }
 
-.tableTitle {
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
 .statementDate {
     font-size: 1rem;
     margin-right: 7px;
+    margin-bottom: 20px;
+}
+
+.soaStatus {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f4f7fa;
+    padding: 10px 7px;
+}
+
+.paid {
+    color: var(--inventi-green);
+}
+
+.unpaid {
+    color: var(--inventi-red);
 }
 
 .summary {
@@ -17,7 +28,7 @@
     font-weight: 800;
 }
 
-.soaContainer {
+.container {
     background-color: white;
     padding: .5rem;
     border-radius: .25rem;
@@ -32,19 +43,21 @@
 }
 
 .table tr:nth-child(even) {
-    background-color: transparent;
-}
-
-.table tr:nth-child(odd) {
     background-color: #f4f7fa;
 }
 
+.table tr:nth-child(odd) {
+    background-color: transparent;
+}
+
 .table td {
-    padding: 5px 10px 5px 20px;
+    padding: 5px 20px;
+    height: 40px;
 }
 
 .table td:nth-child(2) {
     text-align: right;
+    padding-right: 10px !important;
 }
 
 .table th {
@@ -55,6 +68,11 @@
 .table th:nth-child(2) {
     text-align: end;
     padding-right: 10px;
+}
+
+.particular {
+    width: 75%;
+    font-size: 13px;
 }
 
 .buttonContainer {
@@ -75,4 +93,34 @@
 .pdfButton {
     background-color: var(--inventi-blue);
     color: white;
+}
+
+.paymentContainer {
+    padding: 1.5rem 1rem;
+    margin-top: 1.5rem;
+}
+
+.fileInputContainer {
+    background-color: green;
+    display: flex;
+}
+
+.fileInput {
+    display: none;
+}
+
+.attachFileButton {
+    background: var(--inventi-blue);
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    height: 45px;
+    border: 0;
+    border-radius: 6px;
+    color: #ffffff;
+    width: 100%;
+    margin: 1rem 0;
 }

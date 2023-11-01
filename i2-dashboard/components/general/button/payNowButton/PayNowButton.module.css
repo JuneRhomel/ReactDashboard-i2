@@ -1,0 +1,10 @@
+.payNow {
+    background: var(--inventi-red);
+    cursor: pointer;
+    font-size: 14px;
+    height: 45px;
+    border: 0;
+    border-radius: 6px;
+    color: #ffffff;
+    width: 100%;
+}

@@ -31,7 +31,7 @@ const SoaCard = ({ currentSoa, currentSoaPayments }: { currentSoa: SoaType, curr
             <Link className={styles.viewDetails} href={`/viewsoa?id=${currentSoa.encId}`}>
                 <p>View Details</p>
             </Link>
-            <SoaButtons/>
+            <SoaButtons payAction={()=>{}}/>
         </div>
     )
 }

@@ -43,6 +43,7 @@
 
 .viewDetails {
     text-align: right;
+    color: black;
     font-size: 12px;
     font-weight: 500;
     line-height: 20px;
@@ -51,7 +52,7 @@
 }
 
 .viewDetails:hover {
-    color: var(--inventi-blue);
+    color: var(--link-hover);
 }
 
 
