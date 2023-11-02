@@ -11,7 +11,12 @@ export type ApiResponse<T = never> = {
     data?: T;
     status?: number;
     message?: string;
-    error?: string;
+    error?: ErrorType[];
+}
+
+export type ErrorType = {
+    message: string,
+    data: any,
 }
 
 export type GetSoaResponse = SoaType[] | ApiResponse;

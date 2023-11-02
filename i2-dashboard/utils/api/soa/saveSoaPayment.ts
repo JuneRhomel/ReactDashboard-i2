@@ -1,31 +1,23 @@
-import { ParamGatepassItemType, ParamGatepassPersonnelType, ParamSaveGatepassType } from "@/types/apiRequestParams";
-import { CreateGatepassFormType, GatepassItemType, PersonnelDetailsType, SaveGatePassDataType } from "@/types/models";
-import api from "..";
+import { saveSoaPaymentType } from "@/types/models";
 import { ApiResponse, ErrorType } from "@/types/responseWrapper";
+import chunkSplitBase64Encode from "@/utils/chunkSplitBase64Encode";
 
-const url: string = '/api/requests/saveServiceRequest';
-const method: string = 'POST';
-const nameId = '1';
-const unitId = '5';
-const token = "c8c69a475a9715c2f2c6194bc1974fae:tenant";
+export default async function saveSoaPayment(formData: any) {
+    let chunkedFileData: string | null = null;
+    console.log('inside api');
+    console.log(formData);
+    const amount: number = formData.amount;
+    const file: File | undefined = formData.file;
+    const fileData = file && await processFile(file);
+    console.log(fileData);
 
-/** 
-* Saves the user's Gatepass request. It makes at least 3 api fetch requests.
-* @param {CreateGatepassFormType} formData
-* @return {Promise<ApiResponse>} Returns a promise of a Response object.
-*/
-export default async function saveGatepass(formData: CreateGatepassFormType, user=null): Promise<ApiResponse<SaveGatePassDataType>> {
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const module = 'gatepass';
-    const personnel = formData.personnel as PersonnelDetailsType;
-    const items = formData.items as GatepassItemType[];
-    const error: ErrorType[] = [];
-    const response: ApiResponse<SaveGatePassDataType> = {
+    const errors: ErrorType[] = [];
+    const response: ApiResponse<saveSoaPaymentType> = {
         success: false,
         data: {
-            personnelId: undefined,
-            itemIds: [],
-            gatepass: undefined,
+            id: undefined,
         },
         error: undefined,
     }
@@ -69,7 +61,7 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
                     module: module,
                 }
                 const itemResponse = await postRequest(itemDataBody);
-                itemResponse.id ? itemIds.push(itemResponse.id) : error.push(getErrorObject(itemDataBody as ParamGatepassItemType, itemResponse));
+                itemResponse.id ? itemIds.push(itemResponse.id) : errors.push(getErrorObject(itemDataBody as ParamGatepassItemType, itemResponse));
                 console.log(itemResponse.id ? "Item Saved" : "Item not saved");
             }))
         });
@@ -79,16 +71,16 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
         const personnelResponsePromise = (async () => {
             console.log("Submitting Personnel save request");
             const personnelResponse = await postRequest(personnelDataBody);
-            personnelResponse.id ? response.data ? response.data.personnelId = personnelResponse.id : null : error.push(getErrorObject(personnelDataBody as ParamGatepassPersonnelType, personnelResponse));
+            personnelResponse.id ? response.data ? response.data.personnelId = personnelResponse.id : null : errors.push(getErrorObject(personnelDataBody as ParamGatepassPersonnelType, personnelResponse));
             console.log(personnelResponse.id ? "personnel saved" : "personnel not saved");
         })
         await Promise.all([processItemsPromise(), personnelResponsePromise()]);
         response.data ? response.data.itemIds = itemIds : null;
     } else {
-        error.push(getErrorObject(gatepassDataBody as ParamSaveGatepassType, gatepassResponse));
+        errors.push(getErrorObject(gatepassDataBody as ParamSaveGatepassType, gatepassResponse));
     }
-    response.success = error.length == 0;
-    response.error = error;
+    response.success = errors.length == 0;
+    response.errors = errors;
     const getGatepassParams = {
         accountcode: 'adminmailinatorcom',
         id: gatepassId,
@@ -99,30 +91,33 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
     
     console.log(response);
     return response;
+
 }
 
-const getErrorObject = (requestBody: ParamSaveGatepassType | ParamGatepassItemType | ParamGatepassPersonnelType, response: string) => {
-    const newError = {
-        message: response,
-        data: requestBody,
-    }
-    return newError;
-}
+const processFile = async (file: File) : Promise<string> => {
+    let chunkedFileData = '';
+    const reader = new FileReader();
 
-const postRequest = (async (body: any) => {
+    // Create a promise that resolves when the file is read
+    const fileReadPromise = new Promise<void>((resolve, reject) => {
+        reader.onload = (e) => {
+            const base64Data = (e.target?.result as string | undefined)?.split(',')[1]; // Extract the base64-encoded part
+            chunkedFileData = chunkSplitBase64Encode(base64Data || ''); // Split into chunks
+            console.log(chunkedFileData); // Log within the callback to see the updated value
+            resolve();
+        };
+        reader.onerror = (e) => {
+            reject(e);
+        };
+    });
+
+    reader.readAsDataURL(file); // Read the file as a data URL (base64-encoded)
+
     try {
-        const response: Response = await fetch(url, {
-            method: method,
-            body: JSON.stringify(body),
-            referrerPolicy: "unsafe-url"
-        });
-        if (!response.ok) {
-            //Need to fix this error handling here so that I can pass the error message to the screen instead of just here
-            throw new Error(`HTTP error! Status: ${response.status}, Response: ${JSON.stringify(await response.json())}`);
-        }
-        return await response.json();
-        
-    } catch (error: any) {
-        return error.message ? error.message : "Something went wrong";
+        await fileReadPromise; // Wait for the file to be read
+    } catch (error) {
+        console.error("Error reading the file:", error);
     }
-})
+
+    return chunkedFileData;
+}

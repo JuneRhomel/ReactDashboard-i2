@@ -1,6 +1,7 @@
 import { ParamSaveGuestListType, ParamSaveVisitorPassType, RequestBodyType } from "@/types/apiRequestParams";
-import { CreateVisitorPassFormDataType, GuestDataType, SaveServiceRequestResponseType, SaveVisitorPassDataType } from "@/types/models";
+import { CreateVisitorPassFormDataType, GuestDataType, SaveVisitorPassDataType } from "@/types/models";
 import api from "..";
+import { ApiResponse, ErrorType } from "@/types/responseWrapper";
 
 const url: string = '/api/requests/saveServiceRequest';
 const method: string = 'POST';
@@ -11,20 +12,20 @@ const token = "c8c69a475a9715c2f2c6194bc1974fae:tenant";
 /** 
 * Saves the user's Visitor Pass request.
 * @param {CreateVisitorPassFormDataType} formData
-* @return {Promise<SaveServiceRequestResponseType<SaveVisitorPassDataType>>} Returns a promise of a SaveServiceRequestResponse where the data is SaveVisitorPassData object.
+* @return {Promise<ApiResponse<SaveVisitorPassDataType>>} Returns a promise of a SaveServiceRequestResponse where the data is SaveVisitorPassData object.
 */
-export default async function saveVisitorPass(formData: CreateVisitorPassFormDataType, user=null): Promise<SaveServiceRequestResponseType<SaveVisitorPassDataType>> {
+export default async function saveVisitorPass(formData: CreateVisitorPassFormDataType, user=null): Promise<ApiResponse<SaveVisitorPassDataType>> {
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const module = 'visitorpass';
     const guests = formData.guests as GuestDataType[];
-    const errors = [];
-    const response: SaveServiceRequestResponseType<SaveVisitorPassDataType> = {
+    const errors: ErrorType[] = [];
+    const response: ApiResponse<SaveVisitorPassDataType> = {
         success: false,
         data: {
             guestIds: undefined,
             visitorPass: undefined,
         },
-        errors: undefined,
+        error: undefined,
     }
     const visitorPassDataBody: ParamSaveVisitorPassType = {
         date: currentDate,
@@ -60,19 +61,19 @@ export default async function saveVisitorPass(formData: CreateVisitorPassFormDat
             console.log(guestResponse.id ? "Guest Saved" : "Guest not saved");
         }));
 
-        response.data.guestIds = guestIds;
+        (response.data as SaveVisitorPassDataType).guestIds = guestIds;
     } else {
         errors.push(getErrorObject(visitorPassDataBody as ParamSaveVisitorPassType, visitorPassResponse));
     }
     response.success = errors.length == 0;
-    response.errors = errors;
+    response.error = errors;
     const getVisitorPassParams = {
         accountcode: 'adminmailinatorcom',
         id: visitorPassId,
     }
     const newVisitorPassResponse = await api.requests.getVisitorPasses(getVisitorPassParams);
     const newVisitorPass = typeof newVisitorPassResponse !== 'string' ? newVisitorPassResponse.pop() : undefined;
-    response.data.visitorPass = newVisitorPass;
+    (response.data as SaveVisitorPassDataType).visitorPass = newVisitorPass;
     
     console.log(response);
     return response;

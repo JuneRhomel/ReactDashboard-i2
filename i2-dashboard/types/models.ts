@@ -304,8 +304,6 @@ export interface SaveVisitorPassDataType {
     guestIds?: number[],
 }
 
-export interface SaveServiceRequestResponseType<T> {
-    success: boolean,
-    data: T, 
-    errors?: any,
+export interface saveSoaPaymentType {
+    id?: string,
 }

@@ -7,7 +7,8 @@ import styles from './ViewSoa.module.css';
 import SoaButtons from "@/components/general/button/SoaButtons";
 import InputGroup from "@/components/general/form/inputGroup/InputGroup";
 import PayNowButton from "@/components/general/button/payNowButton/PayNowButton";
-import { useState } from "react";
+import { ChangeEvent, MouseEventHandler, useState } from "react";
+import api from "@/utils/api";
 
 export default function ViewSoa({soa, soaDetails, soaPayments, error}: {
 soa: SoaType | undefined,
@@ -18,32 +19,49 @@ error: any}) {
     if (error) {
         // handle error
     }
-    const [formData, setFormData] = useState<{[key: string]: any}>({
-        amount: '',
-        file: '',
-    })
 
-    const showPaymentContainer = () => {
+    const [amount, setAmount] = useState('');
+    const [fileToUpload, setFileToUpload] = useState(null);
+    const [fee, setFee] = useState('');
 
+    const showPaymentContainer = (e: MouseEvent) => {
+        const paymentContainer = document.getElementById('paymentContainer') as HTMLElement;
+        const button = e.currentTarget as HTMLButtonElement;
+        paymentContainer.hidden = false;
+        window.scrollTo(0, document.body.scrollHeight);
+        button.style.display = 'none';
     }
     
     const inputProps: InputProps = {
         name: 'amount',
         label: 'Amount',
         type: 'text',
-        value: formData.amount,
+        value: amount,
     }
 
-    const handleInput = ((event: any) => {
-        const name = event.target.name;
+    const handleInput = (event: any) => {
         const value = event.target.value;
-        const newFormData = {...formData};
-        newFormData[name] = value;
-        setFormData(newFormData);
-    })
+        setAmount(value);
+    }
 
-    const submitForm = () => {
+    const handleFileSelection = (event: any) => {
+        console.log(event.target.files[0])
+        const file = event.target.files[0];
+        setFileToUpload(file);
+    }
 
+    const submitForm = async (event: any) => {
+        event.preventDefault();
+        const amountInput = document.getElementById('amount') as HTMLInputElement;
+        const amount = amountInput.value;
+        const fileInput = document.getElementById('file') as HTMLInputElement;
+        const file = (fileInput.files as FileList)[0];
+        const formData: {[key: string]: any} = {
+            amount: amount,
+            file: file,
+        }
+        const response = await api.soa.saveSoaPayment(formData);
+        setFee(response);
     }
 
     const statementDate = getDateString(null, parseInt(soa?.monthOf as string), parseInt(soa?.yearOf as string));
@@ -105,7 +123,7 @@ error: any}) {
                 <SoaButtons payAction={showPaymentContainer}/>
             </div>
             
-            <div className={`${styles.container} ${styles.paymentContainer}`}>
+            <div className={`${styles.container} ${styles.paymentContainer}`} id='paymentContainer' hidden>
                 <h3>Choose your payment method</h3>
                 <input type="radio" name="bankTransfer" id="bankTransfer" />
                 <label htmlFor="bankTransfer">Bank transfer/Over the counter</label>
@@ -117,8 +135,9 @@ error: any}) {
 
                     <h4>Proof of payment</h4>
                     
-                    <input className={styles.fileInput} type="file" name="paymentProof" id="paymentProof"/>
-                    <label className={styles.attachFileButton} htmlFor="paymentProof">
+                    <input className={styles.fileInput} type="file" name="file" id="file" onChange={handleFileSelection}/>
+                    {fileToUpload && <p>{(fileToUpload as File).name}</p>}
+                    <label className={styles.attachFileButton} htmlFor="file">
                         Attach File/Photo
                     </label>
                     
