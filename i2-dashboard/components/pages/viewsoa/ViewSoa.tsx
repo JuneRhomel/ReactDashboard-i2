@@ -1,6 +1,6 @@
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
 import Layout from "@/components/layouts/layout";
-import { InputProps, SoaDetailsType, SoaPaymentsType, SoaType } from "@/types/models";
+import { InputProps, SaveSoaPaymentFormData, SoaDetailsType, SoaPaymentsType, SoaType } from "@/types/models";
 import formatCurrency from "@/utils/formatCurrency";
 import getDateString from "@/utils/getDateString";
 import styles from './ViewSoa.module.css';
@@ -56,12 +56,14 @@ error: any}) {
         const amount = amountInput.value;
         const fileInput = document.getElementById('file') as HTMLInputElement;
         const file = (fileInput.files as FileList)[0];
-        const formData: {[key: string]: any} = {
+        const formData: SaveSoaPaymentFormData = {
+            soaId: soa?.id as string,
             amount: amount,
             file: file,
+            paymentType: 'Bank Transfer/ Over the Counter',
         }
         const response = await api.soa.saveSoaPayment(formData);
-        setFee(response);
+        // Need to handle this response. Give the user a message depending on success of the response.
     }
 
     const statementDate = getDateString(null, parseInt(soa?.monthOf as string), parseInt(soa?.yearOf as string));

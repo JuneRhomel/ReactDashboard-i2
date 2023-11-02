@@ -82,7 +82,7 @@ const VisitorPass = ({visitorPasses}: {visitorPasses: VisitorsPassType[]}) => {
         } else {
             const response = await api.requests.saveVisitorPass(formData);
             if (response.success) {
-                pendingVisitorPasses.unshift(response.data.visitorPass as VisitorsPassType);
+                pendingVisitorPasses.unshift(response.data?.visitorPass as VisitorsPassType);
                 setFilteredVisitorPasses({...filteredVisitorPasses, pending: pendingVisitorPasses})
                 return response;
             }

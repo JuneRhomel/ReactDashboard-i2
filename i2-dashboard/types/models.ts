@@ -279,6 +279,13 @@ export interface CreateVisitorPassFormDataType {
     guests: GuestDataType[],
 }
 
+export interface SaveSoaPaymentFormData {
+    soaId: string,
+    amount: string,
+    file: File,
+    paymentType: string,
+}
+
 export interface GatepassTypeType extends ChangeHistory{
     id: string,
     categoryName: string,
@@ -304,6 +311,6 @@ export interface SaveVisitorPassDataType {
     guestIds?: number[],
 }
 
-export interface saveSoaPaymentType {
+export interface SaveSoaPaymentType {
     id?: string,
 }

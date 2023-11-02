@@ -20,10 +20,10 @@ export interface ParamGetServiceRequestType {
 
 export type ServiceRequestTable = 'personnel' | 'vp_guest' | 'work_details' | 'gatepass' | 'visitor_pass' | 'report_issue' | 'workpermit'
 
-export type ModuleType = 'gatepass' | 'visitorpass';
+export type ModuleType = 'gatepass' | 'visitorpass' | 'soa_payment';
 export type VisitorPassTables = 'visitorpass' | 'vp_guest';
 export type GatepassTables = 'gatepass' | 'gatepass_personnel' | 'gatepass_items';
-export type TableType = GatepassTables | VisitorPassTables;
+export type TableType = GatepassTables | VisitorPassTables | 'soa_payment';
 
 export interface BaseSaveParams {
     date: string,
@@ -73,4 +73,18 @@ export interface ParamSaveGuestListType {
     guest_purpose: string,
 }
 
-export type RequestBodyType = ParamSaveGatepassType | ParamGatepassItemType | ParamGatepassPersonnelType | ParamSaveGuestListType | ParamSaveVisitorPassType
+export interface FileDataType {
+    filename: string,
+    data: string,
+}
+
+export interface ParamSaveSoaPayment {
+    module: ModuleType,
+    table: TableType,
+    soa_id: string,
+    payment_type: string,
+    status: string,
+    particular: string,
+    amount: string,
+    attachments: FileDataType[],
+}

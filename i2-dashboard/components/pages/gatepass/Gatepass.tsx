@@ -92,7 +92,7 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
         } else {
             const response = await api.requests.saveGatepass(formData);
             if (response.success) {
-                pendingGatepasses.unshift(response.data.gatepass as GatepassType);
+                pendingGatepasses.unshift(response.data?.gatepass as GatepassType);
                 setFilteredGatepasses({...filteredGatepasses, pending: pendingGatepasses})
                 return response;
             }

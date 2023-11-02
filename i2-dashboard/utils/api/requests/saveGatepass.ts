@@ -2,6 +2,8 @@ import { ParamGatepassItemType, ParamGatepassPersonnelType, ParamSaveGatepassTyp
 import { CreateGatepassFormType, GatepassItemType, PersonnelDetailsType, SaveGatePassDataType } from "@/types/models";
 import api from "..";
 import { ApiResponse, ErrorType } from "@/types/responseWrapper";
+import getErrorObject from "../getErrorObject";
+import postRequest from "../postRequest";
 
 const url: string = '/api/requests/saveServiceRequest';
 const method: string = 'POST';
@@ -52,7 +54,7 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
     }
     
     console.log("Submitting Gatepass Request...")
-    const gatepassResponse = await postRequest(gatepassDataBody);
+    const gatepassResponse = await postRequest(gatepassDataBody, url);
     const gatepassId = gatepassResponse.id;
     if (gatepassId) {
         console.log("Gatepass was saved");
@@ -68,7 +70,7 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
                     table: 'gatepass_items',
                     module: module,
                 }
-                const itemResponse = await postRequest(itemDataBody);
+                const itemResponse = await postRequest(itemDataBody, url);
                 itemResponse.id ? itemIds.push(itemResponse.id) : error.push(getErrorObject(itemDataBody as ParamGatepassItemType, itemResponse));
                 console.log(itemResponse.id ? "Item Saved" : "Item not saved");
             }))
@@ -78,7 +80,7 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
 
         const personnelResponsePromise = (async () => {
             console.log("Submitting Personnel save request");
-            const personnelResponse = await postRequest(personnelDataBody);
+            const personnelResponse = await postRequest(personnelDataBody, url);
             personnelResponse.id ? response.data ? response.data.personnelId = personnelResponse.id : null : error.push(getErrorObject(personnelDataBody as ParamGatepassPersonnelType, personnelResponse));
             console.log(personnelResponse.id ? "personnel saved" : "personnel not saved");
         })
@@ -100,29 +102,3 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
     console.log(response);
     return response;
 }
-
-const getErrorObject = (requestBody: ParamSaveGatepassType | ParamGatepassItemType | ParamGatepassPersonnelType, response: string) => {
-    const newError = {
-        message: response,
-        data: requestBody,
-    }
-    return newError;
-}
-
-const postRequest = (async (body: any) => {
-    try {
-        const response: Response = await fetch(url, {
-            method: method,
-            body: JSON.stringify(body),
-            referrerPolicy: "unsafe-url"
-        });
-        if (!response.ok) {
-            //Need to fix this error handling here so that I can pass the error message to the screen instead of just here
-            throw new Error(`HTTP error! Status: ${response.status}, Response: ${JSON.stringify(await response.json())}`);
-        }
-        return await response.json();
-        
-    } catch (error: any) {
-        return error.message ? error.message : "Something went wrong";
-    }
-})

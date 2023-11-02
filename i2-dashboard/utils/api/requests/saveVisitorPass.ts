@@ -1,7 +1,9 @@
-import { ParamSaveGuestListType, ParamSaveVisitorPassType, RequestBodyType } from "@/types/apiRequestParams";
+import { ParamSaveGuestListType, ParamSaveVisitorPassType } from "@/types/apiRequestParams";
 import { CreateVisitorPassFormDataType, GuestDataType, SaveVisitorPassDataType } from "@/types/models";
 import api from "..";
 import { ApiResponse, ErrorType } from "@/types/responseWrapper";
+import getErrorObject from "../getErrorObject";
+import postRequest from "../postRequest";
 
 const url: string = '/api/requests/saveServiceRequest';
 const method: string = 'POST';
@@ -41,7 +43,7 @@ export default async function saveVisitorPass(formData: CreateVisitorPassFormDat
     }
 
     console.log("Submitting Visitor Pass Request...")
-    const visitorPassResponse = await postRequest(visitorPassDataBody);
+    const visitorPassResponse = await postRequest(visitorPassDataBody, url);
     const visitorPassId = visitorPassResponse.id;
     if (visitorPassId) {
         console.log("Visitor Pass was saved");
@@ -56,7 +58,7 @@ export default async function saveVisitorPass(formData: CreateVisitorPassFormDat
                 guest_purpose: guest.guestPurpose as string,
                 guest_no: guest.guestContact as string
             }
-            const guestResponse = await postRequest(guestDataBody);
+            const guestResponse = await postRequest(guestDataBody, url);
             guestResponse.id ? guestIds.push(guestResponse.id) : errors.push(getErrorObject(guestDataBody as ParamSaveGuestListType, guestResponse));
             console.log(guestResponse.id ? "Guest Saved" : "Guest not saved");
         }));
@@ -78,29 +80,3 @@ export default async function saveVisitorPass(formData: CreateVisitorPassFormDat
     console.log(response);
     return response;
 }
-
-const getErrorObject = (requestBody: RequestBodyType, response: string) => {
-    const newError = {
-        message: response,
-        data: requestBody,
-    }
-    return newError;
-}
-
-const postRequest = (async (body: any) => {
-    try {
-        const response: Response = await fetch(url, {
-            method: method,
-            body: JSON.stringify(body),
-            referrerPolicy: "unsafe-url"
-        });
-        if (!response.ok) {
-            //Need to fix this error handling here so that I can pass the error message to the screen instead of just here
-            throw new Error(`HTTP error! Status: ${response.status}, Response: ${JSON.stringify(await response.json())}`);
-        }
-        return await response.json();
-        
-    } catch (error: any) {
-        return error.message ? error.message : "Something went wrong";
-    }
-})
