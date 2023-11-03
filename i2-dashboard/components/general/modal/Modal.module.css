@@ -1,0 +1,33 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal {
+    background: white;
+    width: 400px;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modalHeader {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.25rem 1rem;
+  }
+  
+  .closeButton {
+    cursor: pointer;
+    font-size: 2rem;
+  }
+  
+  .modalContent {
+    padding: 1rem;
+  }

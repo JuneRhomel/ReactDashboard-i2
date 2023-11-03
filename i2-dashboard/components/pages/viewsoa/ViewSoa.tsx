@@ -7,29 +7,70 @@ import styles from './ViewSoa.module.css';
 import SoaButtons from "@/components/general/button/SoaButtons";
 import InputGroup from "@/components/general/form/inputGroup/InputGroup";
 import PayNowButton from "@/components/general/button/payNowButton/PayNowButton";
-import { ChangeEvent, MouseEventHandler, useState } from "react";
+import { useState } from "react";
 import api from "@/utils/api";
+import Modal from "@/components/general/modal/Modal";
+import { useRouter } from "next/router";
 
 export default function ViewSoa({soa, soaDetails, soaPayments, error}: {
 soa: SoaType | undefined,
 soaDetails: SoaDetailsType[] | undefined,
 soaPayments: SoaPaymentsType[] | undefined,
 error: any}) {
-
-    if (error) {
-        // handle error
-    }
-
+    const router = useRouter()
+    const [amountErrorMessage, setAmountErrorMessage] = useState('');
+    const [fileErrorMessage, setFileErrorMessage] = useState('');
+    const [status, setStatus] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [amount, setAmount] = useState('');
     const [fileToUpload, setFileToUpload] = useState(null);
-    const [fee, setFee] = useState('');
+    
+    if (error) {
+        // handle error
+        return (
+            <Layout title='Statement of Account'>
+                <h2>There was an error fetching your statement of account. Please try again</h2>
+                <h3>If the error persists, please contact your building administrator</h3>
+            </Layout>
+        )
+    }
+    const backToPaymentForm = () => {
+        setIsModalOpen(false);
+        setAmount('');
+        setFileToUpload(null);
+    }
+
+    const formSubmitMessage = new Map<string, any>([
+        ['submitting',
+            <h3 key='submittingForm'>Please wait while we submit your payment...</h3>
+        ],
+        ['success',
+            <div className={styles.submitMessage} key='successfulSubmit'>
+                <h3>Thank you for making a SOA Payment</h3>
+                <div>Your payment was sucessfully saved</div>
+                <button className={styles.toDashboardButton} onClick={() => router.push('/dashboard')}>Return to Dashboard</button>
+            </div>
+        ],
+        ['failed',
+            <div className={styles.submitMessage} key='failedSubmit'>
+                <h3>Payment Unsuccessful</h3>
+                <div>Please try again...</div>
+                <button className={styles.tryAgainButton} onClick={backToPaymentForm}>Try again</button>
+            </div>
+        ]
+    ])
 
     const showPaymentContainer = (e: MouseEvent) => {
         const paymentContainer = document.getElementById('paymentContainer') as HTMLElement;
         const button = e.currentTarget as HTMLButtonElement;
-        paymentContainer.hidden = false;
+        paymentContainer.style.display = 'flex';
         window.scrollTo(0, document.body.scrollHeight);
         button.style.display = 'none';
+    }
+
+    const showForm = () => {
+        const paymentForm = document.getElementById('paymentForm') as HTMLElement;
+        paymentForm.style.display = 'flex';
     }
     
     const inputProps: InputProps = {
@@ -42,12 +83,14 @@ error: any}) {
     const handleInput = (event: any) => {
         const value = event.target.value;
         setAmount(value);
+        setAmountErrorMessage('');
     }
 
     const handleFileSelection = (event: any) => {
         console.log(event.target.files[0])
         const file = event.target.files[0];
         setFileToUpload(file);
+        setFileErrorMessage('');
     }
 
     const submitForm = async (event: any) => {
@@ -56,14 +99,24 @@ error: any}) {
         const amount = amountInput.value;
         const fileInput = document.getElementById('file') as HTMLInputElement;
         const file = (fileInput.files as FileList)[0];
-        const formData: SaveSoaPaymentFormData = {
-            soaId: soa?.id as string,
-            amount: amount,
-            file: file,
-            paymentType: 'Bank Transfer/ Over the Counter',
+        isNaN(parseFloat(amount)) && setAmountErrorMessage('Please enter a valid amount.');
+        !file && setFileErrorMessage('Proof of payment must be included with payment. Please select a file to upload');
+        if (file) {
+            const fileSizeInMB = file.size / (1024 * 1024);
+            fileSizeInMB > 1 && setFileErrorMessage('File size is too large. The maximum file size is 1 MB');
         }
-        const response = await api.soa.saveSoaPayment(formData);
-        // Need to handle this response. Give the user a message depending on success of the response.
+        if (fileErrorMessage === '' && amountErrorMessage === '') {
+            setStatus('submitting');
+            setIsModalOpen(true);
+            const formData: SaveSoaPaymentFormData = {
+                soaId: soa?.id as string,
+                amount: amount,
+                file: file,
+                paymentType: 'Bank Transfer/ Over the Counter',
+            }
+            const response = await api.soa.saveSoaPayment(formData);
+            response.success ? setStatus('success') : setStatus('failed');
+        }
     }
 
     const statementDate = getDateString(null, parseInt(soa?.monthOf as string), parseInt(soa?.yearOf as string));
@@ -73,7 +126,7 @@ error: any}) {
     const amountDue = total - totalPayments;
     const statusClass = soa?.status === 'Paid' ? `${styles.status} ${styles.paid}` : `${styles.status} ${styles.unpaid}`;
     return (
-        <Layout title='View Soa'>
+        <Layout title='Statement of Account'>
             <ServiceRequestPageHeader title="Back"/>
             <h1 className={styles.title}>Statement Of Account</h1>
             <h3 className={styles.statementDate}>{`for ${statementDate}`}</h3>
@@ -82,6 +135,8 @@ error: any}) {
                     <h3>Status</h3>
                     <h3 className={statusClass}>For Verification</h3>
                 </div>
+
+                {/* SOA Table */}
                 <table className={styles.table}>
                     <tbody>
                         <tr>
@@ -122,31 +177,46 @@ error: any}) {
                         </tr>
                     </tbody>
                 </table>
+
                 <SoaButtons payAction={showPaymentContainer}/>
             </div>
             
+            {/* Payment Container */}
             <div className={`${styles.container} ${styles.paymentContainer}`} id='paymentContainer' hidden>
                 <h3>Choose your payment method</h3>
-                <input type="radio" name="bankTransfer" id="bankTransfer" />
-                <label htmlFor="bankTransfer">Bank transfer/Over the counter</label>
-                <form action="/">
-                    <InputGroup props={inputProps} onChange={handleInput}/>
+                <div className={styles.radioInput}>
+                    <input type="radio" name="bankTransfer" id="bankTransfer" onChange={showForm}/>
+                    <label htmlFor="bankTransfer"><strong>Bank transfer/Over the counter</strong></label>
+                </div>
+                <form action="/" className={styles.paymentForm} id='paymentForm'>
+                    <div className={styles.amount}>
+                        <InputGroup props={inputProps} onChange={handleInput}/>
+                        <p className={styles.errorMessage}>{amountErrorMessage}</p>
+                    </div>
                     <p>
                         <strong>NOTE:</strong> Please upload a clear picture of the proof of payment.
                     </p>
 
-                    <h4>Proof of payment</h4>
-                    
-                    <input className={styles.fileInput} type="file" name="file" id="file" onChange={handleFileSelection}/>
-                    {fileToUpload && <p>{(fileToUpload as File).name}</p>}
-                    <label className={styles.attachFileButton} htmlFor="file">
-                        Attach File/Photo
-                    </label>
+                    <div className={styles.fileInputContainer}>
+                        <div className={styles.proofOfPayment}>
+                            <h4>Proof of payment</h4>
+                            <p>{fileToUpload ? (fileToUpload as File).name : 'No file selected'}</p>
+                        </div>
+                        <input className={styles.fileInput} type="file" name="file" id="file" onChange={handleFileSelection}/>
+                        <p className={styles.fileErrorMessage}>{fileErrorMessage}</p>
+                        <label className={styles.attachFileButton} htmlFor="file">
+                            Attach File/Photo
+                        </label>
+
+                    </div>
                     
                     <PayNowButton onClick={submitForm}/>
-                    
                 </form>
             </div>
+
+            <Modal isOpen={isModalOpen}>
+                {formSubmitMessage.get(status)}
+            </Modal>
 
         </Layout>
 

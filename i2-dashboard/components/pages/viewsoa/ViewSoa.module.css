@@ -98,11 +98,55 @@
 .paymentContainer {
     padding: 1.5rem 1rem;
     margin-top: 1.5rem;
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.radioInput {
+    display: flex;
+    gap: 1rem;
+}
+
+.paymentForm {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.amount {
+    margin-bottom: 1rem;
+}
+
+.errorMessage {
+    color: red;
+    font-style: italic;
+    font-size: 12px;
+    position: absolute;
 }
 
 .fileInputContainer {
-    background-color: green;
+    position: relative;
+}
+
+.fileErrorMessage {
+    color: red;
+    font-style: italic;
+    font-size: 12px;
+    position: absolute;
+    top: 1.25rem;
+}
+
+.proofOfPayment{
     display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.proofOfPayment p {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .fileInput {
@@ -122,5 +166,28 @@
     border-radius: 6px;
     color: #ffffff;
     width: 100%;
-    margin: 1rem 0;
+    margin-top: .25rem;
+}
+
+.submitMessage {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.submitMessage button {
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    float: right;
+    cursor: pointer;
+}
+
+.tryAgainButton{
+    background-color: var(--inventi-red);
+}
+
+.toDashboardButton {
+    background-color: var(--inventi-green);
 }
