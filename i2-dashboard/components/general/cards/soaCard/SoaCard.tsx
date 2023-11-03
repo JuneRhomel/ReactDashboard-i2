@@ -4,7 +4,7 @@ import getDateString from '@/utils/getDateString';
 import { SoaPaymentsType, SoaType } from '@/types/models';
 import formatCurrency from '@/utils/formatCurrency';
 import SoaButtons from '../../button/SoaButtons';
-const SoaCard = ({ currentSoa, currentSoaPayments }: { currentSoa: SoaType, currentSoaPayments: SoaPaymentsType[] }) => {
+const SoaCard = ({ currentSoa, currentSoaPayments, children }: { currentSoa: SoaType, currentSoaPayments: SoaPaymentsType[], children?: any }) => {
     const status = currentSoa.status;
     const statementDate = getDateString(null, parseInt(currentSoa.monthOf), parseInt(currentSoa.yearOf));
     const dueDate = getDateString(currentSoa?.dueDate);
@@ -31,7 +31,8 @@ const SoaCard = ({ currentSoa, currentSoaPayments }: { currentSoa: SoaType, curr
             <Link className={styles.viewDetails} href={`/viewsoa?id=${currentSoa.encId}`}>
                 <p>View Details</p>
             </Link>
-            <SoaButtons payAction={()=>{}}/>
+            {/* <SoaButtons payAction={()=>{}}/> */}
+            {children && children}
         </div>
     )
 }

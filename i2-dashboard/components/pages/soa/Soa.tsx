@@ -3,13 +3,33 @@ import style from "./Soa.module.css"
 import { SoaPaymentsType, SoaType } from "@/types/models"
 import Section from "@/components/general/section/Section"
 
-const Soa = ({currentSoa, paymentTransactions} : {
+const Soa = ({currentSoa, paymentTransactions, unpaidSoas, paidSoas} : {
     currentSoa: SoaType,
-    paymentTransactions: SoaPaymentsType[]
+    paymentTransactions: SoaPaymentsType[],
+    unpaidSoas: SoaType[],
+    paidSoas: SoaType[],
 }) => {
     const soaDetails = paymentTransactions.filter((transaction: SoaPaymentsType) => {
         return transaction.soaId === currentSoa.id;
     })
+
+    console.log(paidSoas)
+
+    const firstTwoDetailsMap = paymentTransactions?.reduce((result, detail) => {
+        if (!result[detail.soaId]) {
+        result[detail.soaId] = [];
+        }
+
+        if (result[detail.soaId].length < 2) {
+        result[detail.soaId].push(detail);
+        }
+
+        return result;
+    }, {} as {[key: string]: SoaPaymentsType[]});
+
+    const firstTwoPaymentTransactions =  firstTwoDetailsMap ? Object.values(firstTwoDetailsMap).flat() : undefined;
+    firstTwoPaymentTransactions?.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+
     const soaProps = {
         title: 'SOA',
         headerAction: null,
@@ -18,7 +38,7 @@ const Soa = ({currentSoa, paymentTransactions} : {
     const paymentTransactionsProps = {
         title: 'Payment Transactions',
         headerAction: 'Show All',
-        data: paymentTransactions,
+        data: firstTwoPaymentTransactions,
     }
     return (
         <Layout title="i2 - SOA">

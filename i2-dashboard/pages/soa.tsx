@@ -35,20 +35,6 @@ export async function getServerSideProps(context: any) {
     return !(detail.particular.includes("SOA Payment") && detail.status === "Successful") && !detail.particular.includes("Balance");
   });
 
-  const firstTwoDetailsMap = filteredSoaPayments?.reduce((result, detail) => {
-    if (!result[detail.soaId]) {
-      result[detail.soaId] = [];
-    }
-
-    if (result[detail.soaId].length < 2) {
-      result[detail.soaId].push(detail);
-    }
-
-    return result;
-  }, {} as {[key: string]: SoaPaymentsType[]});
-
-  const paymentTransactions =  firstTwoDetailsMap ? Object.values(firstTwoDetailsMap).flat() : undefined;
-  paymentTransactions?.sort((a, b) => parseInt(b.id) - parseInt(a.id));
   const currentSoa = soas?.shift() as SoaType;
   currentSoa.encId = encryptData(currentSoa?.id); // This needs to be moved to the api call somehow
   const paidSoas = soas?.filter((soa: SoaType) => 
@@ -63,7 +49,7 @@ export async function getServerSideProps(context: any) {
       currentSoa,
       paidSoas,
       unpaidSoas,
-      paymentTransactions,
+      paymentTransactions: filteredSoaPayments,
     }
   }
 }

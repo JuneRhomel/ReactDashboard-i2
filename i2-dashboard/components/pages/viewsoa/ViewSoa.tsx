@@ -24,7 +24,7 @@ error: any}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [amount, setAmount] = useState('');
     const [fileToUpload, setFileToUpload] = useState(null);
-    
+
     if (error) {
         // handle error
         return (
@@ -95,17 +95,27 @@ error: any}) {
 
     const submitForm = async (event: any) => {
         event.preventDefault();
+        let isValid = true;
         const amountInput = document.getElementById('amount') as HTMLInputElement;
         const amount = amountInput.value;
         const fileInput = document.getElementById('file') as HTMLInputElement;
         const file = (fileInput.files as FileList)[0];
-        isNaN(parseFloat(amount)) && setAmountErrorMessage('Please enter a valid amount.');
-        !file && setFileErrorMessage('Proof of payment must be included with payment. Please select a file to upload');
+        if (isNaN(parseFloat(amount))) {
+            setAmountErrorMessage('Please enter a valid amount.');
+            isValid = false;
+        }
+        if (!file) {
+            setFileErrorMessage('Proof of payment must be included with payment. Please select a file to upload');
+            isValid = false;
+        }
         if (file) {
             const fileSizeInMB = file.size / (1024 * 1024);
-            fileSizeInMB > 1 && setFileErrorMessage('File size is too large. The maximum file size is 1 MB');
+            if (fileSizeInMB > 1) {
+                setFileErrorMessage('File size is too large. The maximum file size is 1 MB');
+                isValid = false;
+            }
         }
-        if (fileErrorMessage === '' && amountErrorMessage === '') {
+        if (isValid) {
             setStatus('submitting');
             setIsModalOpen(true);
             const formData: SaveSoaPaymentFormData = {
