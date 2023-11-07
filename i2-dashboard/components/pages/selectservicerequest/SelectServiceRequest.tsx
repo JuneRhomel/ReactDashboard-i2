@@ -23,7 +23,7 @@ const SelectServiceRequest = () => {
         {
             title: "Report Issue",
             img: '/reportissue.png',
-            link: '/'
+            link: '/reportissue'
         }
     ]
 

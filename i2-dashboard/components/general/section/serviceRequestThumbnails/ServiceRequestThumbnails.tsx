@@ -22,7 +22,7 @@ const ServiceRequestThumbnails = () => {
         {
             title: "Report Issue",
             img: '/reportissue.png',
-            link: '/'
+            link: '/reportissue'
         }
     ]
     return (

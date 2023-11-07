@@ -1,6 +1,5 @@
 import ServiceRequestCard from "@/components/general/cards/serviceRequestCard/ServiceRequestCard";
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
-import ServiceRequestStatusFilter from "@/components/general/serviceRequestStatusFilter/ServiceRequestStatusFilter";
 import Layout from "@/components/layouts/layout";
 import styles from './Gatepass.module.css';
 import { CreateGatepassFormType, GatepassType, PersonnelDetailsType } from "@/types/models";
@@ -9,7 +8,7 @@ import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
 import DropdownForm from "@/components/general/dropdownForm/DropdownForm";
 import CreateGatepassForm from "@/components/general/form/forms/createGatepassForm/CreateGatepassForm";
-
+import StatusFilter from "@/components/general/statusFilter/StatusFilter";
 const title = 'i2 - Gate Pass'
 const testFormData = {
     requestorName: 'Kevin',
@@ -52,9 +51,9 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
     })
 
     const counts = {
-        'pending': filteredGatepasses.pending.length,
-        'approved': filteredGatepasses.approved.length,
-        'denied': filteredGatepasses.denied.length,
+        'Pending': filteredGatepasses.pending.length,
+        'Approved': filteredGatepasses.approved.length,
+        'Denied': filteredGatepasses.denied.length,
     };
 
     const [gatepassesToShow, setGatepassesToShow] = useState<GatepassType[]>(filteredGatepasses.pending.slice(0, maxNumberToShow));
@@ -66,6 +65,7 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
     const serviceRequestStatusFilterHandler = (event: any) => {
         const filter = event?.target?.value;
         const filtered = filteredGatepasses[filter];
+        console.log(filter)
         setGatepassesToShow(filtered?.slice(0, maxNumberToShow) as GatepassType[])
     }
 
@@ -101,6 +101,8 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
         }
     }
 
+    const filterTitles = ['Pending', 'Approved', 'Denied']
+
     return (
         <Layout title={title}>
             <ServiceRequestPageHeader title='Gate Pass'/>
@@ -109,7 +111,7 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
                 <CreateGatepassForm handleInput={handleInput} formData={formData} setFormData={setFormData} onSubmit={handleSubmit}/>
             </DropdownForm>
 
-            <ServiceRequestStatusFilter handler={serviceRequestStatusFilterHandler} counts={counts}/>
+            <StatusFilter handler={serviceRequestStatusFilterHandler} counts={counts} titles={filterTitles}/>
 
             <div className={styles.dataContainer}>
                 {gatepassesToShow.length > 0 ? gatepassesToShow.map((gatepass: GatepassType, index: number) => (

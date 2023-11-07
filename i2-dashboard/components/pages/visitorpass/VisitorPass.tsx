@@ -4,7 +4,7 @@ import { CreateVisitorPassFormDataType, GuestDataType, VisitorsPassType } from "
 import { useEffect, useState } from "react";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
-import ServiceRequestStatusFilter from "@/components/general/serviceRequestStatusFilter/ServiceRequestStatusFilter";
+import StatusFilter from "@/components/general/statusFilter/StatusFilter";
 import styles from './VisitorPass.module.css';
 import ServiceRequestCard from "@/components/general/cards/serviceRequestCard/ServiceRequestCard";
 import DropdownForm from "@/components/general/dropdownForm/DropdownForm";
@@ -42,9 +42,9 @@ const VisitorPass = ({visitorPasses}: {visitorPasses: VisitorsPassType[]}) => {
     })
 
     const counts = {
-        'pending': filteredVisitorPasses.pending.length,
-        'approved': filteredVisitorPasses.approved.length,
-        'denied': filteredVisitorPasses.denied.length,
+        'Pending': filteredVisitorPasses.pending.length,
+        'Approved': filteredVisitorPasses.approved.length,
+        'Denied': filteredVisitorPasses.denied.length,
     };
 
     const [gatepassesToShow, setVisitorPassesToShow] = useState<VisitorsPassType[]>(filteredVisitorPasses.pending.slice(0, maxNumberToShow));
@@ -91,6 +91,8 @@ const VisitorPass = ({visitorPasses}: {visitorPasses: VisitorsPassType[]}) => {
         }
     }
 
+    const statusTitles = ['Pending', 'Approved', 'Denied'];
+
     return (
         <Layout title={title}>
             <ServiceRequestPageHeader title='Visitor Pass'/>
@@ -99,7 +101,7 @@ const VisitorPass = ({visitorPasses}: {visitorPasses: VisitorsPassType[]}) => {
                 <CreateVisitorPassForm handleInput={handleInput} formData={formData} setFormData={setFormData} onSubmit={handleSubmit}/>
             </DropdownForm>
 
-            <ServiceRequestStatusFilter handler={serviceRequestStatusFilterHandler} counts={counts}/>
+            <StatusFilter handler={serviceRequestStatusFilterHandler} counts={counts} titles={statusTitles}/>
 
             <div className={styles.dataContainer}>
                 {gatepassesToShow.length > 0 ? gatepassesToShow.map((visitorPass: VisitorsPassType, index: number) => (
