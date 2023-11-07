@@ -1,5 +1,4 @@
 import ServiceRequestCard from "@/components/general/cards/serviceRequestCard/ServiceRequestCard";
-import CreateServiceRequestForm from "@/components/general/form/forms/createServiceRequestForm/CreateServiceRequestForm";
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
 import ServiceRequestStatusFilter from "@/components/general/serviceRequestStatusFilter/ServiceRequestStatusFilter";
 import Layout from "@/components/layouts/layout";
@@ -8,6 +7,8 @@ import { CreateGatepassFormType, GatepassType, PersonnelDetailsType } from "@/ty
 import { useEffect, useState } from "react";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
+import DropdownForm from "@/components/general/dropdownForm/DropdownForm";
+import CreateGatepassForm from "@/components/general/form/forms/createGatepassForm/CreateGatepassForm";
 
 const title = 'i2 - Gate Pass'
 const testFormData = {
@@ -104,13 +105,9 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
         <Layout title={title}>
             <ServiceRequestPageHeader title='Gate Pass'/>
 
-            <CreateServiceRequestForm
-                type='gatepass'
-                handleInput={handleInput}
-                formData={formData}
-                setFormData={setFormData as any}
-                onSubmit={handleSubmit}
-            />
+            <DropdownForm>
+                <CreateGatepassForm handleInput={handleInput} formData={formData} setFormData={setFormData} onSubmit={handleSubmit}/>
+            </DropdownForm>
 
             <ServiceRequestStatusFilter handler={serviceRequestStatusFilterHandler} counts={counts}/>
 

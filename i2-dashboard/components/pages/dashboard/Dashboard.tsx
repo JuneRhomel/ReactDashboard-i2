@@ -3,7 +3,7 @@ import Layout from "@/components/layouts/layout";
 import { SoaPaymentsType, SoaType } from "@/types/models";
 
 export default function Dashboard({currentSoa, soaDetails}: {currentSoa: SoaType, soaDetails: SoaPaymentsType[]}) {
-    const first4SoaDetails = soaDetails.slice(0,4);
+    const first4SoaDetails = soaDetails !== null ? soaDetails.slice(0,4) : null;
 
     const soaProps = {
         title: 'SOA',

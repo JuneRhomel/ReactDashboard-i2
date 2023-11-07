@@ -32,8 +32,8 @@ export async function getServerSideProps(context: any) {
     soaDetails?.sort((a, b) => parseInt(a.id) - parseInt(b.id));
     const soaPayments = unfilteredSoaPayments?.filter((payment) => {
         return !(payment.particular.includes("SOA Payment") && ['Successful', 'Invalid'].includes(payment.status)) && !payment.particular.includes("Balance");
-    })
-    if (soa && soaDetails && soaPayments) {
+    }) || null;
+    if (soa && soaDetails) {
         return {
             props: {soa, soaDetails, soaPayments}
         }

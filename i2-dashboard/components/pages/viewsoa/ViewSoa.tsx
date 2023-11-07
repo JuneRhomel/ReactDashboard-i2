@@ -26,6 +26,7 @@ error: any}) {
     const [fileToUpload, setFileToUpload] = useState(null);
 
     if (error) {
+        console.log(error)
         // handle error
         return (
             <Layout title='Statement of Account'>
@@ -128,11 +129,10 @@ error: any}) {
             response.success ? setStatus('success') : setStatus('failed');
         }
     }
-
     const statementDate = getDateString(null, parseInt(soa?.monthOf as string), parseInt(soa?.yearOf as string));
-    const subTotal = soaDetails?.reduce((sum, detail) => sum + parseFloat(detail.amount), 0) as number;
-    const total = subTotal - parseFloat(soa?.balance as string);
-    const totalPayments = soaPayments?.reduce((sum, payment) => sum + parseFloat(payment.amount), 0) as number;
+    const subTotal = soaDetails?.reduce((sum, detail) => detail.type !== 'Balance' ? sum + parseFloat(detail.amount) : sum + 0, 0) as number;
+    const total = subTotal + parseFloat(soa?.balance as string);
+    const totalPayments = soaPayments?.reduce((sum, payment) => sum + parseFloat(payment.amount), 0) as number || 0;
     const amountDue = total - totalPayments;
     const statusClass = soa?.status === 'Paid' ? `${styles.status} ${styles.paid}` : `${styles.status} ${styles.unpaid}`;
     return (
@@ -154,10 +154,12 @@ error: any}) {
                             <th>Amount</th>
                         </tr>
                         {soaDetails?.map((detail: SoaDetailsType) => (
-                            <tr key={detail.id}>
-                                <td>{detail.type}</td>
-                                <td>{formatCurrency(detail.amount)}</td>
-                            </tr>
+                            detail.type !== 'Balance' ? (
+                                <tr key={detail.id}>
+                                    <td>{detail.type}</td>
+                                    <td>{formatCurrency(detail.amount)}</td>
+                                </tr>
+                            ) : null
                         ))}
                         <tr>
                             <th>Sub Total</th>
@@ -173,7 +175,7 @@ error: any}) {
                         </tr>
                         <tr>
                             <th>Less</th>
-                            <th></th>
+                            <th>{totalPayments == 0 ? 0 : null}</th>
                         </tr>
                         {soaPayments?.map((payment: SoaPaymentsType) => (
                             <tr key={payment.id}>

@@ -3,7 +3,7 @@ import style from './PaymentTransactions.module.css'
 import { PaymentCard } from '@/components/general/cards/paymentCard/PaymentCard'
 const PaymentTransactions = ({transactions} : {transactions: SoaPaymentsType[]}) => {
     if (transactions == undefined) {
-        return (<div>Undefined</div>)
+        return (<div>No payments have been made for this SOA</div>)
     }
     const array: number[] = [1, 2, 3];
     return (

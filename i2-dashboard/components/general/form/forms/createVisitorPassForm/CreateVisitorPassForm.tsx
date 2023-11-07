@@ -1,45 +1,30 @@
-import { CreateGatepassFormType, GatepassTypeType, InputProps } from "@/types/models";
-import InputGroup from "../../../inputGroup/InputGroup";
-import styles from './CreateGatepassForm.module.css';
+import { CreateVisitorPassFormDataType, InputProps } from "@/types/models";
+import InputGroup from "../../inputGroup/InputGroup";
+import styles from './CreateVisitorPassForm.module.css';
 import { ChangeEventHandler, Dispatch, SetStateAction, useEffect, useState } from "react";
-import ItemizedDetailsSection from "../../../section/ItemizedDetailsSection";
+import ItemizedDetailsSection from "../../section/ItemizedDetailsSection";
 import Button from "@/components/general/button/Button";
-import api from "@/utils/api";
 
 const emptyFormData = {
     requestorName: '',
-    gatepassType: null,
-    forDate: '',
-    time: '',
     unit: '',
     contactNumber: '',
-    items: null,
-    personnel: null,
+    arrivalDate: '',
+    arrivalTime: '',
+    departureDate: '',
+    departureTime: '',
+    guests: []
 }
 
 export default function CreateGatepassForm({closeDropdown, handleInput, formData, setFormData, onSubmit}: {
-    closeDropdown: any,
+    closeDropdown?: any,
     handleInput: ChangeEventHandler,
-    formData: CreateGatepassFormType,
-    setFormData: Dispatch<SetStateAction<CreateGatepassFormType>>,
+    formData: CreateVisitorPassFormDataType,
+    setFormData: Dispatch<SetStateAction<CreateVisitorPassFormDataType>>,
     onSubmit: Function,
     }) {
-    const [gatepassTypes, setGatepassTypes] = useState<GatepassTypeType[]>([]);
+        
     const [status, setStatus] = useState<string>('');
-
-    useEffect(() => {
-        const getGatepassTypes = async ()=> {
-            const response = await api.requests.getGatepassTypes();
-            if (typeof response !== 'string') {
-                const newGatepassTypes = [...gatepassTypes];
-                response.forEach((type: GatepassTypeType)=> {
-                    newGatepassTypes.push(type);
-                })
-                gatepassTypes.length == 0 && setGatepassTypes(newGatepassTypes);
-            }
-        }
-        getGatepassTypes();
-    }, [])
 
     const baseFields: InputProps[] = [
         {
@@ -48,28 +33,6 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             type: 'text',
             value: formData.requestorName,
             disabled: true,
-            required: true,
-        },
-        {
-            name: 'gatepassType',
-            label: 'Gatepass Type',
-            type: 'select',
-            value: formData.gatepassType,
-            required: true,
-            options: gatepassTypes,
-        },
-        {
-            name: 'forDate',
-            label: 'Date',
-            type: 'date',
-            value: formData.forDate,
-            required: true,
-        },
-        {
-            name: 'time',
-            label: 'Time',
-            type: 'time',
-            value: formData.time,
             required: true,
         },
         {
@@ -86,33 +49,37 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             type: 'text',
             value: formData.contactNumber,
             required: true,
-        }
+        },
+        {
+            name: 'arrivalDate',
+            label: 'Date of Arrival',
+            type: 'date',
+            value: formData.arrivalDate,
+            required: true,
+        },
+        {
+            name: 'arrivalTime',
+            label: 'Time of Arrival',
+            type: 'time',
+            value: formData.arrivalTime,
+            required: true,
+        },
+        {
+            name: 'departureDate',
+            label: 'Date of Departure',
+            type: 'date',
+            value: formData.departureDate,
+            required: true,
+        },
+        {
+            name: 'departureTime',
+            label: 'Time of Departure',
+            type: 'time',
+            value: formData.departureTime,
+            required: true,
+        },
     ]
     
-    const personnelDetailsFields: InputProps[] = [
-        {
-            name: 'courier',
-            label: 'Courier / Company',
-            type: 'text',
-            value: formData.personnel?.courier || '',
-            required: true
-        },
-        {
-            name: 'courierName',
-            label: 'Name',
-            type: 'text',
-            value: formData.personnel?.courierName || '',
-            required: true,
-        },
-        {
-            name: 'courierContact',
-            label: 'Contact Details',
-            type: 'text',
-            value: formData.personnel?.courierContact || '',
-            required: true,
-        }
-    ]
-
     const clearForm = () => {
         setFormData({...emptyFormData})
         setStatus('');
@@ -154,12 +121,8 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             <form action="" onSubmit={handleSubmit} className={styles.form} id="createGatepassForm">
                 {baseFields.map((field, index) => (<InputGroup key={index} props={field} onChange={handleInput}/>))}
                 
-                <ItemizedDetailsSection type='Item Details' formData={formData} setFormData={setFormData}/>
-
-                <div className={styles.personnelContainer}>
-                    <h3>Personnel Details</h3>
-                    {personnelDetailsFields.map((field, index) => (<InputGroup key={index} props={field} onChange={handleInput}/>))}
-                </div>
+                {/* Need to implement this part of it for creating visitor pass */}
+                <ItemizedDetailsSection type='Guest List' formData={formData} setFormData={setFormData}/>
 
                 <div className={styles.footer}>
                     <Button type='submit' onClick={null}/>

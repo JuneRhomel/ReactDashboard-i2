@@ -8,7 +8,7 @@ export type ApiResponse<T = never> = {
     success?: number | boolean;
     description?: string;
     id?: string;
-    data?: T;
+    data?: T | null;
     status?: number;
     message?: string;
     error?: ErrorType[];

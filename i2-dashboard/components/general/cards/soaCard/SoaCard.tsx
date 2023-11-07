@@ -9,10 +9,10 @@ const SoaCard = ({ currentSoa, currentSoaPayments, children }: { currentSoa: Soa
     const statementDate = getDateString(null, parseInt(currentSoa.monthOf), parseInt(currentSoa.yearOf));
     const dueDate = getDateString(currentSoa?.dueDate);
     const statementAmount = parseFloat(currentSoa.amountDue);
-    const credits = currentSoaPayments
+    const credits = currentSoaPayments !== null ? currentSoaPayments
         .filter((detail) => detail.particular.includes('SOA Payment') && detail.status !== 'Invalid')
-        .map((detail) => detail.amount);
-    const totalCredits = credits.reduce((total, amount) => total + parseFloat(amount), 0);
+        .map((detail) => detail.amount) : null;
+    const totalCredits = credits !== null ? credits.reduce((total, amount) => total + parseFloat(amount), 0) : 0;
     const amountDue = formatCurrency(statementAmount - totalCredits);
     const statusClass = status === 'Paid' ? `${styles.status} ${styles.paid}` : `${styles.status} ${styles.unpaid}`;
     return (

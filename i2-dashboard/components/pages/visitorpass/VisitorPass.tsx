@@ -1,13 +1,14 @@
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
 import Layout from "@/components/layouts/layout";
-import { CreateGatepassFormType, CreateVisitorPassFormDataType, GatepassType, GuestDataType, PersonnelDetailsType, VisitorsPassType } from "@/types/models";
+import { CreateVisitorPassFormDataType, GuestDataType, VisitorsPassType } from "@/types/models";
 import { useEffect, useState } from "react";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
-import CreateServiceRequestForm from "@/components/general/form/forms/createServiceRequestForm/CreateServiceRequestForm";
 import ServiceRequestStatusFilter from "@/components/general/serviceRequestStatusFilter/ServiceRequestStatusFilter";
 import styles from './VisitorPass.module.css';
 import ServiceRequestCard from "@/components/general/cards/serviceRequestCard/ServiceRequestCard";
+import DropdownForm from "@/components/general/dropdownForm/DropdownForm";
+import CreateVisitorPassForm from "@/components/general/form/forms/createVisitorPassForm/CreateVisitorPassForm";
 
 const title = 'i2 - Visitor Pass'
 const testFormData = {
@@ -94,13 +95,9 @@ const VisitorPass = ({visitorPasses}: {visitorPasses: VisitorsPassType[]}) => {
         <Layout title={title}>
             <ServiceRequestPageHeader title='Visitor Pass'/>
 
-            <CreateServiceRequestForm
-                type='visitorpass'
-                handleInput={handleInput}
-                formData={formData}
-                setFormData={setFormData as any} // Need to fix the Typing for this
-                onSubmit={handleSubmit}
-            />
+            <DropdownForm>
+                <CreateVisitorPassForm handleInput={handleInput} formData={formData} setFormData={setFormData} onSubmit={handleSubmit}/>
+            </DropdownForm>
 
             <ServiceRequestStatusFilter handler={serviceRequestStatusFilterHandler} counts={counts}/>
 
