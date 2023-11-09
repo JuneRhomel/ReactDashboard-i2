@@ -11,7 +11,7 @@ export type ApiResponse<T = never> = {
     data?: T | null;
     status?: number;
     message?: string;
-    error?: ErrorType[] | string[];
+    error?: (ErrorType | string)[];
 }
 
 export type ErrorType = {
