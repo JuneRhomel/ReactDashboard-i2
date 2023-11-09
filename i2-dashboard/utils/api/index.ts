@@ -13,6 +13,8 @@ import saveVisitorPass from "./requests/saveVisitorPass";
 import { getSoaDetails } from "./soa/getSoaDetails";
 import saveSoaPayment from "./soa/saveSoaPayment";
 import { getIssues } from "./requests/getIssues";
+import { getIssueCategories } from "./requests/getIssueCategories";
+import saveReportIssue from "./requests/saveReportIssue";
 
 /**
 * This object contains all the API functions for the client to make user related requests
@@ -36,8 +38,10 @@ const requests = {
     getGatepassTypes: getGatepassTypes,
     getVisitorPasses: getVisitorPasses,
     getIssues: getIssues,
+    getIssueCategories: getIssueCategories,
     saveGatepass: saveGatepass,
     saveVisitorPass: saveVisitorPass,
+    saveReportIssue: saveReportIssue,
 }
 
 const api = {

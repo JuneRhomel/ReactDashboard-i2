@@ -3,11 +3,12 @@ import { ApiResponse } from "@/types/responseWrapper";
 import authorizeUser from "@/utils/authorizeUser";
 
 const baseURL: string = "http://apii2-sandbox.inventiproptech.com";
-const url: string = `${baseURL}/tenant/save`;
 const accountCode = process.env.TEST_ACCOUNT_CODE;
 // const accountCode = 'fee';
 
 const saveServiceRequest = async (req: NextApiRequest, res: NextApiResponse) => {
+    const {query: {type}} = req;
+    const url: string = `${baseURL}/tenant/${type === 'issue' ? 'tenant-report-issue-save' : 'save'}`;
     const jwt = req.cookies.token as string;
     const user = authorizeUser(jwt);
     const token = `${user?.token}:tenant`;

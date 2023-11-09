@@ -4,57 +4,58 @@ import DropdownForm from "@/components/general/dropdownForm/DropdownForm";
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
 import StatusFilter from "@/components/general/statusFilter/StatusFilter";
 import Layout from "@/components/layouts/layout";
-import { ServiceIssueType } from '@/types/models';
-import { useState } from 'react';
+import {  ServiceIssueType } from '@/types/models';
+import { useEffect, useState } from 'react';
+import CreateReportIssueForm from '@/components/general/form/forms/createReportIssueForm/CreateReportIssueForm';
 
 const title = 'Report Issue';
 const maxNumberToShow = 4;
+
+
+
 export default function ReportIssue({issues, error}: {issues: ServiceIssueType[], error: any}) {
-    if (error) {
-        return (
-            <Layout title={title}>
-                <h1>{error}</h1>
-            </Layout>
-        )
-    }
+    const [openIssues, setOpenIssues] = useState(issues.filter((issue) => issue.status === 'Open'));
+    const [ongoingIssues, setOngoingIssues] = useState(issues.filter((issue) => issue.status === 'Ongoing'));
+    const [closedIssues, setClosedIssues] = useState(issues.filter((issue) => issue.status === 'Closed'));
     
-    const counts: {[key: string]: number} = {
-        'Open': 0,
-        'Ongoing': 0,
-        'Closed': 0,
-    }
+    const [counts, setCounts] = useState<{[key: string]: number}>({
+        'open': openIssues.length,
+        'ongoing': ongoingIssues.length,
+        'closed': closedIssues.length,
+    });
     
-    // Change this to a useEffect()
-    const processIssues = async (issues: ServiceIssueType[]) => {
-        const serviceIssues: {[key: string]: ServiceIssueType[]}= {
-            'Open': [],
-            'Ongoing': [],
-            'Closed': [],
-        };
-        await Promise.all(issues.map((issue) => {
-            serviceIssues[issue.status].push(issue);
-            counts[issue.status]++;
-        }));
+    const serviceIssues = new Map<string, ServiceIssueType[]>([
+        ['open', openIssues],
+        ['ongoing', ongoingIssues],
+        ['closed', closedIssues],
+    ])
 
-        console.log(serviceIssues)
-        setServiceIssues(serviceIssues);
-    }
-    const [serviceIssues, setServiceIssues] = useState<{[key: string]: ServiceIssueType[]} | null>(null);
-
-
-    const [serviceIssuesToShow, setServiceIssuesToShow] = useState(serviceIssues?.Open.slice(0, maxNumberToShow))
+    const [serviceIssuesToShow, setServiceIssuesToShow] = useState(serviceIssues.get('open')?.slice(0, maxNumberToShow))
     const statusTitles = ['Open', 'Ongoing', 'Closed']
+
+    useEffect(() => {
+        setCounts({...counts, open: openIssues.length});
+        setServiceIssuesToShow(openIssues.slice(0,maxNumberToShow));
+    },[openIssues])
+
+    const filterHandler = (event: any) => {
+        const filter = event.target.value;
+        const toShow = serviceIssues.get(filter);
+        setServiceIssuesToShow(toShow?.slice(0,maxNumberToShow));
+    }
+
+    const addServiceIssue = (newIssue: ServiceIssueType) => {
+        setOpenIssues([newIssue, ...openIssues]);
+    }
 
     return (
         <Layout title={title}>
             <ServiceRequestPageHeader title={title}/>
-
             <DropdownForm>
-                {/* <CreateReportIssueForm /> */}
-                Report Issue Form
+                <CreateReportIssueForm addServiceIssue={addServiceIssue}/>
             </DropdownForm>
 
-            <StatusFilter handler={()=>{}} counts={counts} titles={statusTitles}/>
+            <StatusFilter handler={filterHandler} counts={counts} titles={statusTitles}/>
 
             <div className={styles.dataContainer}>
                 {serviceIssuesToShow?.map((issue) => (

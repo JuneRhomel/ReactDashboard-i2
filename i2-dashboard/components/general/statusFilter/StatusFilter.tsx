@@ -17,7 +17,7 @@ export default function ServiceRequestStatusFilter({handler, titles, counts}: {h
                                 :
                             <input className={styles.radioInput} onChange={handler} type='radio' name='filterOption' id={`radio${id}`} value={value}/>
                             }
-                            <label className={styles.radioLabel} htmlFor={`radio${id}`}>{title}<span className={styles.quantityDisplay}>{counts[title] || 0}</span></label>
+                            <label className={styles.radioLabel} htmlFor={`radio${id}`}>{title}<span className={styles.quantityDisplay}>{counts[value] || 0}</span></label>
                         </Fragment>
                     )
                 })}

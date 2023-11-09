@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import copyHeaders from "@/utils/copyHeaders";
 import { ApiResponse } from "@/types/responseWrapper";
-import { GatepassTypeType } from "@/types/models";
+import { SelectDataType } from "@/types/models";
 
 const baseURL: string = "http://apii2-sandbox.inventiproptech.com";
 const url: string = `${baseURL}/tenant/get-listnew`;
@@ -17,9 +17,9 @@ const getGatepassTypes = async (req: NextApiRequest, res: NextApiResponse) => {
             headers: headers,
             referrerPolicy: "unsafe-url"
         })
-        const jsonResponse: ApiResponse<GatepassTypeType[]> = await response.json()
+        const jsonResponse: ApiResponse<SelectDataType[]> = await response.json()
         if (Array.isArray(jsonResponse)) {
-            const payload= jsonResponse as GatepassTypeType[];
+            const payload= jsonResponse as SelectDataType[];
             res.status(200)
                 .json(payload);
         } else {

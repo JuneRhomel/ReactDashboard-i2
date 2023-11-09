@@ -1,0 +1,34 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 10px 0 20px 0;
+}
+
+.personnelContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.personnelContainer h3 {
+    margin-bottom: 10px;
+}
+
+.fileInputContainer {
+    position: relative;
+}
+
+.fileErrorMessage {
+    color: red;
+    font-style: italic;
+    font-size: 12px;
+    position: absolute;
+    top: 1.25rem;
+}

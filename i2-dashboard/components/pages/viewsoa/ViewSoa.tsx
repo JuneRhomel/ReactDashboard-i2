@@ -7,10 +7,12 @@ import styles from './ViewSoa.module.css';
 import SoaButtons from "@/components/general/button/SoaButtons";
 import InputGroup from "@/components/general/form/inputGroup/InputGroup";
 import PayNowButton from "@/components/general/button/payNowButton/PayNowButton";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import api from "@/utils/api";
 import Modal from "@/components/general/modal/Modal";
 import { useRouter } from "next/router";
+import FileInput from "@/components/general/form/inputGroup/FileInput";
+import checkFileIsValid from "@/utils/checkFileIsValid";
 
 export default function ViewSoa({soa, soaDetails, soaPayments, error}: {
 soa: SoaType | undefined,
@@ -74,11 +76,19 @@ error: any}) {
         paymentForm.style.display = 'flex';
     }
     
-    const inputProps: InputProps = {
-        name: 'amount',
-        label: 'Amount',
-        type: 'text',
-        value: amount,
+    const inputProps: {[key: string]: InputProps} = {
+        amount: {
+            name: 'amount',
+            label: 'Amount',
+            type: 'text',
+            value: amount,
+        },
+        proof: {
+            name: 'file',
+            label: 'Attach File/Photo',
+            type: 'file',
+            value: null
+        }
     }
 
     const handleInput = (event: any) => {
@@ -105,17 +115,9 @@ error: any}) {
             setAmountErrorMessage('Please enter a valid amount.');
             isValid = false;
         }
-        if (!file) {
-            setFileErrorMessage('Proof of payment must be included with payment. Please select a file to upload');
-            isValid = false;
-        }
-        if (file) {
-            const fileSizeInMB = file.size / (1024 * 1024);
-            if (fileSizeInMB > 1) {
-                setFileErrorMessage('File size is too large. The maximum file size is 1 MB');
-                isValid = false;
-            }
-        }
+        const fileError = checkFileIsValid(file);
+        isValid = fileError === '';
+        setFileErrorMessage(fileError);
         if (isValid) {
             setStatus('submitting');
             setIsModalOpen(true);
@@ -135,6 +137,7 @@ error: any}) {
     const totalPayments = soaPayments?.reduce((sum, payment) => sum + parseFloat(payment.amount), 0) as number || 0;
     const amountDue = total - totalPayments;
     const statusClass = soa?.status === 'Paid' ? `${styles.status} ${styles.paid}` : `${styles.status} ${styles.unpaid}`;
+
     return (
         <Layout title='Statement of Account'>
             <ServiceRequestPageHeader title="Back"/>
@@ -202,7 +205,7 @@ error: any}) {
                 </div>
                 <form action="/" className={styles.paymentForm} id='paymentForm'>
                     <div className={styles.amount}>
-                        <InputGroup props={inputProps} onChange={handleInput}/>
+                        <InputGroup props={inputProps.amount} onChange={handleInput}/>
                         <p className={styles.errorMessage}>{amountErrorMessage}</p>
                     </div>
                     <p>
@@ -214,11 +217,9 @@ error: any}) {
                             <h4>Proof of payment</h4>
                             <p>{fileToUpload ? (fileToUpload as File).name : 'No file selected'}</p>
                         </div>
-                        <input className={styles.fileInput} type="file" name="file" id="file" onChange={handleFileSelection}/>
+
+                        <FileInput onChange={handleFileSelection}/>
                         <p className={styles.fileErrorMessage}>{fileErrorMessage}</p>
-                        <label className={styles.attachFileButton} htmlFor="file">
-                            Attach File/Photo
-                        </label>
 
                     </div>
                     

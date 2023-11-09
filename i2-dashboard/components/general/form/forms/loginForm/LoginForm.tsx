@@ -4,7 +4,7 @@ import api from '@/utils/api';
 import { useState } from 'react';
 import InputGroup from '../../inputGroup/InputGroup';
 import { NextRouter, useRouter } from 'next/router';
-import { InputProps } from '@/types/models';
+import { InputProps, UserType } from '@/types/models';
 
 const iconStyle: object = {
   color: "#1C5196",
@@ -15,7 +15,7 @@ const iconStyle: object = {
 
 const LoginForm = () => {
     const router: NextRouter = useRouter();
-    const [formData, setFormData] = useState({email: '', password: ''});
+    const [formData, setFormData] = useState({email: 'admin@mailinator.com', password: '12345'});
     const [error, setError] = useState("");
 
     const handleInput = (event: any) => {
@@ -32,8 +32,8 @@ const LoginForm = () => {
         const email = (document.getElementById("email") as HTMLInputElement).value;
     
         const params = {
-            email: "admin@mailinator.com",
-            password: "12345",
+            email: email,
+            password: password,
             accountcode: "adminmailinatorcom",
             // accountcode: "UDEya0JuMWcyQjhKOHc3WVNwMWNQT1Rja2ozdkVyNWdjYWwxV21vNzNyWT0.7b6f916e21476e8c401e23b41150cf45",
         }

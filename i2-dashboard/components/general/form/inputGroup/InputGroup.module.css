@@ -101,3 +101,37 @@
 .textArea:focus{
   outline: none;
 }
+
+/* For Files */
+.fileInput {
+  display: none;
+}
+
+.attachFileButton {
+  background: var(--inventi-blue);
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  height: 45px;
+  border: 0;
+  border-radius: 6px;
+  color: #ffffff;
+  width: 100%;
+  margin-top: .25rem;
+}
+
+.selectedFile{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.selectedFile p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* End For Files */

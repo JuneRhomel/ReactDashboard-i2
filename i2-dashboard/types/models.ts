@@ -219,7 +219,7 @@ export interface ServiceRequestsThumbnailData {
     link: string,
 }
 
-export type TypeOfInput = 'text' | 'password' | 'email' | 'date' | 'select' | 'number' | 'time' | 'textArea'
+export type TypeOfInput = 'text' | 'password' | 'email' | 'date' | 'select' | 'number' | 'time' | 'textArea' | 'file'
 
 export interface InputProps {
     name: string,
@@ -286,9 +286,18 @@ export interface SaveSoaPaymentFormData {
     paymentType: string,
 }
 
-export interface GatepassTypeType extends ChangeHistory{
+export interface SelectDataType {
     id: string,
-    categoryName: string,
+    name: string,
+}
+
+export interface ReportIssueFormDataType {
+    requestorName: string,
+    unit: string,
+    contactNumber: string,
+    issueCategory: string,
+    description: string,
+    file?: File,
 }
 
 export interface GatepassDisplayType {

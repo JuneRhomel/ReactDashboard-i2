@@ -1,4 +1,4 @@
-import { GatepassTypeType } from "@/types/models";
+import { SelectDataType } from "@/types/models";
 
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 /** 
@@ -6,7 +6,7 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 * @param {ParamGetServiceRequestDetailsType} params - This is a json object that has accountCode, queryCondition, and resultLimit
 * @return {Promise<Response>} Returns a promise of a Response object.
 */
-export async function getGatepassTypes(token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant", context: any = undefined): Promise<GatepassTypeType[] | string>{
+export async function getGatepassTypes(token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant", context: any = undefined): Promise<SelectDataType[] | string>{
     const host = context?.req?.headers?.host || 'localhost:3000';
     console.log(host)
     const protocol = host === 'localhost:3000' ? 'http' : 'https';

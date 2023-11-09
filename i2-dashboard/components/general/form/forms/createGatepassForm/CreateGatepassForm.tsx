@@ -1,4 +1,4 @@
-import { CreateGatepassFormType, GatepassTypeType, InputProps } from "@/types/models";
+import { CreateGatepassFormType, InputProps, SelectDataType } from "@/types/models";
 import InputGroup from "../../inputGroup/InputGroup";
 import styles from './CreateGatepassForm.module.css';
 import { ChangeEventHandler, Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -24,7 +24,7 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
     setFormData: Dispatch<SetStateAction<CreateGatepassFormType>>,
     onSubmit: Function,
     }) {
-    const [gatepassTypes, setGatepassTypes] = useState<GatepassTypeType[]>([]);
+    const [gatepassTypes, setGatepassTypes] = useState<SelectDataType[]>([]);
     const [status, setStatus] = useState<string>('');
 
     useEffect(() => {
@@ -32,7 +32,7 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             const response = await api.requests.getGatepassTypes();
             if (typeof response !== 'string') {
                 const newGatepassTypes = [...gatepassTypes];
-                response.forEach((type: GatepassTypeType)=> {
+                response.forEach((type: SelectDataType)=> {
                     newGatepassTypes.push(type);
                 })
                 gatepassTypes.length == 0 && setGatepassTypes(newGatepassTypes);

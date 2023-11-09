@@ -6,6 +6,7 @@ import SelectInput from "./SelectInput";
 import DateInput from "./DateInput";
 import TextArea from "./TextArea";
 import { ChangeEventHandler } from "react";
+import FileInput from "./FileInput";
 
 const InputGroup = ({props, onChange}: {props: InputProps, onChange: ChangeEventHandler}) => {
     // const inputType = new Map<string, JSX.Element>([['pass', <PasswordInput props={props}/> ], ['2', <PasswordInput props={props}/>]])
@@ -15,7 +16,6 @@ const InputGroup = ({props, onChange}: {props: InputProps, onChange: ChangeEvent
         select: <SelectInput props={props} onChange={onChange}/>,
         textArea: <TextArea props={props} onChange={onChange}/>,
     }
-
     const inputToRender = inputTypeMap[props.type] ? inputTypeMap[props.type] : <StandardInput props={props} onChange={onChange}/>;
 
 
