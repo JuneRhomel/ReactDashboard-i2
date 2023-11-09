@@ -31,7 +31,7 @@ export async function getServerSideProps(context: any) {
   }
   const getSoaPaymentsResponse = await api.soa.getSoaPayments(soaDetailsParams, token);  // get soa details (transactions for this soa)
   const soaDetails = getSoaPaymentsResponse.success ? getSoaPaymentsResponse.data as SoaPaymentsType[] : null;
-  return {props: {user, currentSoa, soaDetails}};
+  return {props: {authorizedUser: user, currentSoa, soaDetails}};
 }
 
 export default Dashboard
