@@ -6,12 +6,6 @@ import Gatepass from "@/components/pages/gatepass/Gatepass";
 import parseObject from "@/utils/parseObject";
 
 export async function getServerSideProps(context: any){
-  type PropsType = {
-    error: string | null,
-    gatepasses: GatepassType[] | null,
-    gatepassTypes: any;
-  }
-  const props: PropsType = {error: null, gatepasses: null, gatepassTypes: null};
   const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
   const jwt: string = context?.req?.cookies?.token;
   const user = authorizeUser(jwt);
@@ -26,10 +20,11 @@ export async function getServerSideProps(context: any){
     // limit: 10,
   }
 
-  const gatepasses = await api.requests.getGatepasses(getGatepassesProps, token, context);
-  typeof gatepasses != 'string' ? props.gatepasses = gatepasses : props.error = gatepasses;
+  const gatepassesResponse = await api.requests.getGatepasses(getGatepassesProps, token, context);
+  const gatepasses = gatepassesResponse.data || null;
+  const errors = gatepassesResponse.error || null;
   return {
-    props
+    props: {authorizedUser: user, gatepasses, errors}
   }
 }
 

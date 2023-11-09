@@ -2,13 +2,14 @@ import ServiceRequestCard from "@/components/general/cards/serviceRequestCard/Se
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
 import Layout from "@/components/layouts/layout";
 import styles from './Gatepass.module.css';
-import { CreateGatepassFormType, GatepassType, PersonnelDetailsType } from "@/types/models";
+import { CreateGatepassFormType, GatepassType, PersonnelDetailsType, UserType } from "@/types/models";
 import { useEffect, useState } from "react";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
 import DropdownForm from "@/components/general/dropdownForm/DropdownForm";
 import CreateGatepassForm from "@/components/general/form/forms/createGatepassForm/CreateGatepassForm";
 import StatusFilter from "@/components/general/statusFilter/StatusFilter";
+import { useUserContext } from "@/context/userContext";
 const title = 'i2 - Gate Pass'
 const testFormData = {
     requestorName: 'Kevin',
@@ -37,35 +38,43 @@ const newPersonnel = {
     courierContact: '',
 }
 
+type GatepassProps = {
+    authorizedUser: UserType,
+    gatepasses: GatepassType[],
+    error : any[] | null,
+}
+
 //TODO Update the counts onSubmit
-const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
+const Gatepass = ({authorizedUser, gatepasses, error}: GatepassProps) => {
     const maxNumberToShow = 4;
+    const {user, setUser} = useUserContext();
+    setUser(authorizedUser);
     const [formData, setFormData] = useState<CreateGatepassFormType>(testFormData);
-    const pendingGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Pending');
-    const approvedGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Approved');
-    const deniedGatepasses = gatepasses.filter((gatepass) => gatepass.status === 'Disapproved');
-    const [filteredGatepasses, setFilteredGatepasses] = useState<{[key: string]: GatepassType[]}>({
-        pending: pendingGatepasses,
-        approved: approvedGatepasses,
-        denied: deniedGatepasses,
-    })
+    const [pendingGatepasses, setPendingGatepasses] = useState(gatepasses?.filter((gatepass) => gatepass.status === 'Pending'));
+    const [approvedGatepasses, setApprovedGatepasses] = useState(gatepasses?.filter((gatepass) => gatepass.status === 'Approved'));
+    const [deniedGatepasses, setDeniedGatepasses] = useState(gatepasses?.filter((gatepass) => gatepass.status === 'Disapproved'));
+    const [gatepassesToShow, setGatepassesToShow] = useState<GatepassType[]>(pendingGatepasses?.slice(0, maxNumberToShow));
 
-    const counts = {
-        'Pending': filteredGatepasses.pending.length,
-        'Approved': filteredGatepasses.approved.length,
-        'Denied': filteredGatepasses.denied.length,
-    };
+    const passes = new Map<string, GatepassType[]>([
+        ['pending', pendingGatepasses],
+        ['approved', approvedGatepasses],
+        ['denied', deniedGatepasses],
+    ])
 
-    const [gatepassesToShow, setGatepassesToShow] = useState<GatepassType[]>(filteredGatepasses.pending.slice(0, maxNumberToShow));
+    const [counts, setCounts] = useState({
+        'pending': pendingGatepasses?.length,
+        'approved': approvedGatepasses?.length,
+        'denied': deniedGatepasses?.length,
+    });
 
     useEffect(() => {
-        setGatepassesToShow(filteredGatepasses.pending.slice(0, maxNumberToShow));
-    }, [filteredGatepasses])
+        setGatepassesToShow(pendingGatepasses?.slice(0, maxNumberToShow));
+        setCounts({...counts, pending: pendingGatepasses?.length});
+    }, [pendingGatepasses])
 
     const serviceRequestStatusFilterHandler = (event: any) => {
         const filter = event?.target?.value;
-        const filtered = filteredGatepasses[filter];
-        console.log(filter)
+        const filtered = passes.get(filter);
         setGatepassesToShow(filtered?.slice(0, maxNumberToShow) as GatepassType[])
     }
 
@@ -93,8 +102,8 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
         } else {
             const response = await api.requests.saveGatepass(formData);
             if (response.success) {
-                pendingGatepasses.unshift(response.data?.gatepass as GatepassType);
-                setFilteredGatepasses({...filteredGatepasses, pending: pendingGatepasses})
+                const newPass = response.data?.gatepass as GatepassType;
+                setPendingGatepasses([newPass, ...pendingGatepasses])
                 return response;
             }
             return null;
@@ -114,7 +123,7 @@ const Gatepass = ({gatepasses}: {gatepasses: GatepassType[]}) => {
             <StatusFilter handler={serviceRequestStatusFilterHandler} counts={counts} titles={filterTitles}/>
 
             <div className={styles.dataContainer}>
-                {gatepassesToShow.length > 0 ? gatepassesToShow.map((gatepass: GatepassType, index: number) => (
+                {gatepassesToShow?.length > 0 ? gatepassesToShow.map((gatepass: GatepassType, index: number) => (
                     <ServiceRequestCard key={index} request={gatepass} variant="Gate Pass"/>
                 )) : <div>No data to display</div>}
             </div>

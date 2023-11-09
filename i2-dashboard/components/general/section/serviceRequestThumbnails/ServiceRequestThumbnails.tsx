@@ -17,7 +17,7 @@ const ServiceRequestThumbnails = () => {
         {
             title: "Work Permit",
             img: '/workpermit.png',
-            link: '/'
+            link: '/workpermit'
         },
         {
             title: "Report Issue",

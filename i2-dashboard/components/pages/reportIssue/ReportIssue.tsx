@@ -4,24 +4,28 @@ import DropdownForm from "@/components/general/dropdownForm/DropdownForm";
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
 import StatusFilter from "@/components/general/statusFilter/StatusFilter";
 import Layout from "@/components/layouts/layout";
-import {  ServiceIssueType } from '@/types/models';
+import {  ServiceIssueType, UserType } from '@/types/models';
 import { useEffect, useState } from 'react';
 import CreateReportIssueForm from '@/components/general/form/forms/createReportIssueForm/CreateReportIssueForm';
 
 const title = 'Report Issue';
 const maxNumberToShow = 4;
 
+type ReportIssueProps = {
+    authorizedUser: UserType,
+    issues: ServiceIssueType[],
+    errors: any
+}
 
-
-export default function ReportIssue({issues, error}: {issues: ServiceIssueType[], error: any}) {
-    const [openIssues, setOpenIssues] = useState(issues.filter((issue) => issue.status === 'Open'));
-    const [ongoingIssues, setOngoingIssues] = useState(issues.filter((issue) => issue.status === 'Ongoing'));
-    const [closedIssues, setClosedIssues] = useState(issues.filter((issue) => issue.status === 'Closed'));
+export default function ReportIssue({authorizedUser, issues, errors}: ReportIssueProps) {
+    const [openIssues, setOpenIssues] = useState(issues?.filter((issue) => issue.status === 'Open'));
+    const [ongoingIssues, setOngoingIssues] = useState(issues?.filter((issue) => issue.status === 'Ongoing'));
+    const [closedIssues, setClosedIssues] = useState(issues?.filter((issue) => issue.status === 'Closed'));
     
     const [counts, setCounts] = useState<{[key: string]: number}>({
-        'open': openIssues.length,
-        'ongoing': ongoingIssues.length,
-        'closed': closedIssues.length,
+        'open': openIssues?.length,
+        'ongoing': ongoingIssues?.length,
+        'closed': closedIssues?.length,
     });
     
     const serviceIssues = new Map<string, ServiceIssueType[]>([
@@ -34,8 +38,8 @@ export default function ReportIssue({issues, error}: {issues: ServiceIssueType[]
     const statusTitles = ['Open', 'Ongoing', 'Closed']
 
     useEffect(() => {
-        setCounts({...counts, open: openIssues.length});
-        setServiceIssuesToShow(openIssues.slice(0,maxNumberToShow));
+        setCounts({...counts, open: openIssues?.length});
+        setServiceIssuesToShow(openIssues?.slice(0,maxNumberToShow));
     },[openIssues])
 
     const filterHandler = (event: any) => {

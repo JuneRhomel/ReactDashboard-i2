@@ -1,12 +1,14 @@
 import { ParamGetServiceRequestType, ServiceRequestTable } from "@/types/apiRequestParams";
+import { ApiResponse } from "@/types/responseWrapper";
 
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
+
 /** 
  * Fetches all the user's Gate Passes
  * @param {ParamGetServiceRequestDetailsType} params - This is a json object that has accountCode, queryCondition, and resultLimit
- * @return {Promise<Response>} Returns a promise of a Response object.
+ * @return {Promise<ApiResponse<any[]>>} Returns a promise of a Response object.
 */
-export async function getServiceRequestDetails(params: ParamGetServiceRequestType, table: ServiceRequestTable, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant", context: any = undefined): Promise<Response>{
+export async function getServiceRequestDetails(params: ParamGetServiceRequestType, table: ServiceRequestTable, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant", context: any = undefined): Promise<ApiResponse<any[]>>{
     const host = context?.req?.headers?.host || 'localhost:3000';
     const protocol = host === 'localhost:3000' ? 'http' : 'https';
     const apiUrl = '/api/requests/getservicerequestdetails';
@@ -26,21 +28,30 @@ export async function getServiceRequestDetails(params: ParamGetServiceRequestTyp
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
     };
+
+    const response: ApiResponse<any[]> = {
+        success: false,
+        data: undefined,
+        error: undefined,
+    }
+
     try {
-        const response: Response = await fetch(url, {
+        const fetchResponse: Response = await fetch(url, {
             method: method,
             headers: headers,
             body: body,
             referrerPolicy: "unsafe-url"
         });
-        if (!response.ok) {
+        const responseBody = await fetchResponse.json();
+        if (!fetchResponse.ok) {
             //Need to fix this error handling here so that I can pass the error message to the screen instead of just here
-            throw new Error(`HTTP error! Status: ${response.status}, Response: ${JSON.stringify(await response.json())}`);
+            throw new Error(`HTTP error! Status: ${response.status}, Response: ${JSON.stringify(responseBody)}`);
         }
-        return response;
-        
+        response.data = responseBody;
     } catch (error: any) {
-        console.log(error.message)
-        return error.message ? error.message : "Something went wrong";
+        response.error = [error.message || "Unable to fetch service request details"];
     }
+
+    response.success = !response.error
+    return response;
 }

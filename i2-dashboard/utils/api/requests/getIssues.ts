@@ -19,17 +19,12 @@ export async function getIssues(params: ParamGetServiceRequestType, token: strin
     }
 
     const getIssuesResponse = await api.requests.getServiceRequestDetails(params, 'report_issue', token, context);
-    const responseBody = await getIssuesResponse.json();
-    if (getIssuesResponse.ok) {
-        response.success = true;
-        if (responseBody !== null) {
-            const serviceIssues = parseObject(responseBody) as ServiceIssueType[];
-            response.data = serviceIssues;
-        } else {
-            response.data = null;
-        }
+    if (getIssuesResponse.success) {
+        const serviceIssues = parseObject(getIssuesResponse.data as ServiceIssueType[]);
+        response.data = serviceIssues as ServiceIssueType[];
     } else {
-        response.error = responseBody;
+        getIssuesResponse.error ? response.error = [...getIssuesResponse.error as string[]] : null;
     }
+    response.success = !response.error;
     return response;
 }

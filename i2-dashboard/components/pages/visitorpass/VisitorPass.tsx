@@ -1,6 +1,6 @@
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
 import Layout from "@/components/layouts/layout";
-import { CreateVisitorPassFormDataType, GuestDataType, VisitorsPassType } from "@/types/models";
+import { CreateVisitorPassFormDataType, GuestDataType, UserType, VisitorsPassType } from "@/types/models";
 import { useEffect, useState } from "react";
 import parseFormErrors from "@/utils/parseFormErrors";
 import api from "@/utils/api";
@@ -9,6 +9,7 @@ import styles from './VisitorPass.module.css';
 import ServiceRequestCard from "@/components/general/cards/serviceRequestCard/ServiceRequestCard";
 import DropdownForm from "@/components/general/dropdownForm/DropdownForm";
 import CreateVisitorPassForm from "@/components/general/form/forms/createVisitorPassForm/CreateVisitorPassForm";
+import { useUserContext } from "@/context/userContext";
 
 const title = 'i2 - Visitor Pass'
 const testFormData = {
@@ -28,34 +29,44 @@ const newGuest: GuestDataType = {
     guestPurpose: '',
 }
 
-const VisitorPass = ({visitorPasses}: {visitorPasses: VisitorsPassType[]}) => {
+type VisitorPassProps = {
+    authorizedUser: UserType,
+    visitorPasses: VisitorsPassType[],
+    errors: any[],
+}
+
+const VisitorPass = ({authorizedUser, visitorPasses, errors}: VisitorPassProps) => {
     const maxNumberToShow = 4;
+    const {user, setUser} = useUserContext();
+    setUser(authorizedUser);
     const [formData, setFormData] = useState<CreateVisitorPassFormDataType>(testFormData);
     const [guestData, setGuestData] = useState<GuestDataType>(newGuest);
-    const pendingVisitorPasses = visitorPasses.filter((visitorPass) => visitorPass.status === 'Pending');
-    const approvedVisitorPasses = visitorPasses.filter((visitorPass) => visitorPass.status === 'Approved');
-    const deniedVisitorPasses = visitorPasses.filter((visitorPass) => visitorPass.status === 'Disapproved');
-    const [filteredVisitorPasses, setFilteredVisitorPasses] = useState<{[key: string]: VisitorsPassType[]}>({
-        pending: pendingVisitorPasses,
-        approved: approvedVisitorPasses,
-        denied: deniedVisitorPasses,
-    })
+    const [pendingVisitorPasses, setPendingVisitorPasses] = useState(visitorPasses?.filter((visitorPass) => visitorPass.status === 'Pending'));
+    const [approvedVisitorPasses, setApprovedVisitorPasses] = useState(visitorPasses?.filter((visitorPass) => visitorPass.status === 'Approved'));
+    const [deniedVisitorPasses, setDeniedVisitorPasses] = useState(visitorPasses?.filter((visitorPass) => visitorPass.status === 'Disapproved'));
 
-    const counts = {
-        'Pending': filteredVisitorPasses.pending.length,
-        'Approved': filteredVisitorPasses.approved.length,
-        'Denied': filteredVisitorPasses.denied.length,
-    };
+    const [counts, setCounts] = useState({
+        pending: pendingVisitorPasses?.length,
+        approved: approvedVisitorPasses?.length,
+        denied: deniedVisitorPasses?.length,
+    });
 
-    const [gatepassesToShow, setVisitorPassesToShow] = useState<VisitorsPassType[]>(filteredVisitorPasses.pending.slice(0, maxNumberToShow));
+    const passes = new Map<string, VisitorsPassType[]>([
+        ['pending', pendingVisitorPasses],
+        ['approved', approvedVisitorPasses],
+        ['denied', deniedVisitorPasses],
+    ])
+
+    const [gatepassesToShow, setVisitorPassesToShow] = useState<VisitorsPassType[]>(pendingVisitorPasses?.slice(0, maxNumberToShow));
 
     useEffect(() => {
-        setVisitorPassesToShow(filteredVisitorPasses.pending.slice(0, maxNumberToShow));
-    }, [filteredVisitorPasses])
+        setVisitorPassesToShow(pendingVisitorPasses?.slice(0, maxNumberToShow));
+        setCounts({...counts, pending: pendingVisitorPasses?.length});
+    }, [pendingVisitorPasses])
 
     const serviceRequestStatusFilterHandler = (event: any) => {
         const filter = event?.target?.value;
-        const filtered = filteredVisitorPasses[filter];
+        const filtered = passes.get(filter);
         setVisitorPassesToShow(filtered?.slice(0, maxNumberToShow) as VisitorsPassType[])
     }
 
@@ -83,8 +94,8 @@ const VisitorPass = ({visitorPasses}: {visitorPasses: VisitorsPassType[]}) => {
         } else {
             const response = await api.requests.saveVisitorPass(formData);
             if (response.success) {
-                pendingVisitorPasses.unshift(response.data?.visitorPass as VisitorsPassType);
-                setFilteredVisitorPasses({...filteredVisitorPasses, pending: pendingVisitorPasses})
+                const newVisitorPass = response.data?.visitorPass as VisitorsPassType;
+                setPendingVisitorPasses([newVisitorPass, ...pendingVisitorPasses]);
                 return response;
             }
             return null;
@@ -104,7 +115,7 @@ const VisitorPass = ({visitorPasses}: {visitorPasses: VisitorsPassType[]}) => {
             <StatusFilter handler={serviceRequestStatusFilterHandler} counts={counts} titles={statusTitles}/>
 
             <div className={styles.dataContainer}>
-                {gatepassesToShow.length > 0 ? gatepassesToShow.map((visitorPass: VisitorsPassType, index: number) => (
+                {gatepassesToShow?.length > 0 ? gatepassesToShow.map((visitorPass: VisitorsPassType, index: number) => (
                     <ServiceRequestCard key={index} request={visitorPass} variant="Visitor Pass"/>
                 )) : <div>No data to display</div>}
             </div>

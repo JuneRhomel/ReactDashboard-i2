@@ -18,11 +18,9 @@ export async function getServerSideProps(context:any) {
         // limit: 10,
       }
     const issuesResponse = await api.requests.getIssues(getIssuesProps, token, context);
-    if (!issuesResponse.success) {
-        return {props: {error: issuesResponse.error}}
-    }
-    const issues = issuesResponse.data as ServiceIssueType[];
-    return {props: {issues}}
+    const issues = issuesResponse.data || null;
+    const errors = issuesResponse.error || null;
+    return {props: {authorizedUser: user, issues, errors}}
 }
 
 export default ReportIssue;

@@ -15,6 +15,7 @@ import saveSoaPayment from "./soa/saveSoaPayment";
 import { getIssues } from "./requests/getIssues";
 import { getIssueCategories } from "./requests/getIssueCategories";
 import saveReportIssue from "./requests/saveReportIssue";
+import { getWorkPermits } from "./requests/getWorkPermits";
 
 /**
 * This object contains all the API functions for the client to make user related requests
@@ -39,6 +40,7 @@ const requests = {
     getVisitorPasses: getVisitorPasses,
     getIssues: getIssues,
     getIssueCategories: getIssueCategories,
+    getWorkPermits: getWorkPermits,
     saveGatepass: saveGatepass,
     saveVisitorPass: saveVisitorPass,
     saveReportIssue: saveReportIssue,
