@@ -7,7 +7,7 @@ import styles from './ViewSoa.module.css';
 import SoaButtons from "@/components/general/button/SoaButtons";
 import InputGroup from "@/components/general/form/inputGroup/InputGroup";
 import PayNowButton from "@/components/general/button/payNowButton/PayNowButton";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import api from "@/utils/api";
 import Modal from "@/components/general/modal/Modal";
 import { useRouter } from "next/router";
@@ -22,7 +22,9 @@ soaDetails: SoaDetailsType[] | undefined,
 soaPayments: SoaPaymentsType[] | undefined,
 error: any}) {
     const {user, setUser} = useUserContext();
-    setUser(authorizedUser);
+    useEffect(()=> {
+        setUser(authorizedUser);
+    },[])
     const router = useRouter()
     const [amountErrorMessage, setAmountErrorMessage] = useState('');
     const [fileErrorMessage, setFileErrorMessage] = useState('');

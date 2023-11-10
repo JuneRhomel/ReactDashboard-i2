@@ -20,10 +20,11 @@ export interface ParamGetServiceRequestType {
 
 export type ServiceRequestTable = 'personnel' | 'vp_guest' | 'work_details' | 'gatepass' | 'visitor_pass' | 'report_issue' | 'workpermit'
 
-export type ModuleType = 'gatepass' | 'visitorpass' | 'soa_payment' | 'reportissue'
+export type ModuleType = 'gatepass' | 'visitorpass' | 'soa_payment' | 'reportissue' | 'workpermit'
 export type VisitorPassTables = 'visitorpass' | 'vp_guest';
 export type GatepassTables = 'gatepass' | 'gatepass_personnel' | 'gatepass_items';
-export type TableType = GatepassTables | VisitorPassTables | 'soa_payment' | 'report_issue';
+export type WorkPermitTables = 'work_details' | 'workers' | 'work_materials' | 'work_tools' | 'workpermit';
+export type TableType = GatepassTables | VisitorPassTables | 'soa_payment' | 'report_issue' | WorkPermitTables;
 
 export interface BaseSaveParams {
     date: string,
@@ -95,4 +96,52 @@ export interface ParamSaveSoaPayment {
     particular: string,
     amount: string,
     attachments: FileDataType[],
+}
+
+export interface ParamSaveWorkDetailsType {
+    module: ModuleType,
+    table: WorkPermitTables,
+    name_contractor: string,
+    scope_work: string,
+    person_charge: string,
+    contact_number: string
+}
+
+export interface ParamSaveWorkPersonnelType {
+    module: ModuleType,
+    table: WorkPermitTables,
+    workpermit_id: string,
+    personnel_name: string,
+    personnel_description: string,
+}
+
+export interface ParamSaveWorkMaterialsType {
+    module: ModuleType,
+    table: WorkPermitTables,
+    workpermit_id: string,
+    materials_name: string,
+    quantity_materials: string,
+    description_materials: string,
+}
+
+export interface ParamSaveWorkToolsType {
+    module: ModuleType,
+    table: WorkPermitTables,
+    workpermit_id: string,
+    tools_name: string,
+    tools_qty: string,
+    tools_desc: string,
+}
+
+export interface ParamSaveWorkPermitType {
+    date: string,
+    module: ModuleType,
+    table: WorkPermitTables,
+    name_id: string,
+    unit_id: string,
+    work_details_id: string,
+    workpermitcategory_id: string,
+    start_date: string,
+    end_date: string,
+    contact_no: string,
 }

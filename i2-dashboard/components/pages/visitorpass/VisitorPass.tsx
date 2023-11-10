@@ -38,7 +38,9 @@ type VisitorPassProps = {
 const VisitorPass = ({authorizedUser, visitorPasses, errors}: VisitorPassProps) => {
     const maxNumberToShow = 4;
     const {user, setUser} = useUserContext();
-    setUser(authorizedUser);
+    useEffect(()=>{
+        setUser(authorizedUser);
+    },[])
     const [formData, setFormData] = useState<CreateVisitorPassFormDataType>(testFormData);
     const [guestData, setGuestData] = useState<GuestDataType>(newGuest);
     const [pendingVisitorPasses, setPendingVisitorPasses] = useState(visitorPasses?.filter((visitorPass) => visitorPass.status === 'Pending'));

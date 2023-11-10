@@ -18,7 +18,7 @@ export async function getServerSideProps(context: any) {
   const token = `${user?.token}:tenant`;
   const soaParams: ParamGetSoaType = {
     accountcode: accountCode,
-    userId: user?.tenantId as number,
+    userId: user?.id,
     limit: 1,
   }
   const getSoaResponse = await api.soa.getSoa(soaParams, token);

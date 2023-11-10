@@ -2,11 +2,18 @@ import { z } from "zod";
 import { ApiResponse } from "./responseWrapper";
 
 export type UserType = {
+    id: number,
     token: string;
-    tenantName: string;
-    tenantId: number;
-    email: string;
-    mobile: number;
+    firstName: string;
+    lastName: string,
+    companyName: string,
+    type: string,
+    address: string,
+    contactNumber: string,
+    email: string,
+    unitId: string,
+    unitName: string,
+    status: string
     db: string;
     tmp?: null | string;
     isAuthorized: boolean
@@ -279,6 +286,44 @@ export interface CreateVisitorPassFormDataType {
     guests: GuestDataType[],
 }
 
+export type CreateWorkPermitFormType = {
+    requestorName: string | null,
+    unit: string | null,
+    contactNumber: string | null,
+    workPermitCategory: string | null,
+    startDate: string | null,
+    endDate: string | null,
+    workDetails: WorkDetailsType | null,
+    workPersonnel: WorkPersonnelType[] | null,
+    workMaterials: WorkMaterialsType[] | null,
+    workTools: WorkToolsType[] | null,
+    isCreateGatepass: boolean | null,
+}
+
+export type WorkDetailsType = {
+    contractorName: string | null,
+    scopeOfWork: string | null,
+    personInCharge: string | null,
+    contractorContact: string | null
+}
+
+export type WorkPersonnelType = {
+    personnelName: string | null,
+    personnelDescription: string | null,
+}
+
+export type WorkMaterialsType = {
+    materialName: string | null,
+    materialQuantity: string | null,
+    materialDescription: string | null,
+}
+
+export type WorkToolsType = {
+    toolName: string | null,
+    toolQuantity: string | null,
+    toolDescription: string | null
+}
+
 export interface SaveSoaPaymentFormData {
     soaId: string,
     amount: string,
@@ -322,4 +367,12 @@ export interface SaveVisitorPassDataType {
 
 export interface SaveSoaPaymentType {
     id?: string,
+}
+
+export interface SaveWorkPermitDataType {
+    personnelIds?: number[],
+    materialIds?: number[],
+    toolsIds?: number[],
+    workDetailsId?: number,
+    workPermit?: WorkPermitType
 }

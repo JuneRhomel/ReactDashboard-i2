@@ -42,6 +42,7 @@ export async function getSoa(params: ParamGetSoaType, token: string = "c8c69a475
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${JSON.stringify(await fetchResponse.json())}`);
         }
         const responseBody = await fetchResponse.json();
+        console.log(responseBody)
         if (responseBody.success == 0) {
             throw new Error(`400 Bad Request! ${responseBody.description}`);
         }

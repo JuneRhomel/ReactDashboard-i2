@@ -2,12 +2,15 @@ import Section from "@/components/general/section/Section";
 import Layout from "@/components/layouts/layout";
 import { useUserContext } from "@/context/userContext";
 import { SoaPaymentsType, SoaType, UserType } from "@/types/models";
+import { useEffect } from "react";
 
 export default function Dashboard({authorizedUser, currentSoa, soaDetails}: {authorizedUser: UserType, currentSoa: SoaType, soaDetails: SoaPaymentsType[]}) {
     const first4SoaDetails = soaDetails !== null ? soaDetails.slice(0,4) : null;
     const {user, setUser} = useUserContext();
-    setUser(authorizedUser);
-    console.log(user)
+
+    useEffect(() => {
+        setUser(authorizedUser);
+    }, [])
     const soaProps = {
         title: 'SOA',
         headerAction: null,

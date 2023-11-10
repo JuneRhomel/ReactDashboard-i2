@@ -5,8 +5,11 @@ export default function Button({type, onClick}: {type: string, onClick: any}) {
 
     const buttonContent = new Map<string, any>([
         ['back', <FaChevronLeft key={'faChevronLeftKey'}/>],
-        ['addItem', '+ Add Item'],
-        ['addGuest', '+ Add Guest'],
+        ['Item Details', '+ Add Item'],
+        ['Guest List', '+ Add Guest'],
+        ['List of Workers/Personnel', '+ Add Workers/Personnel'],
+        ['List of Materials', '+ Add Materials'],
+        ['List of Tools', '+ Add Tools'],
         ['submit', 'Submit'],
         ['cancel', 'Cancel'],
     ])
@@ -15,7 +18,7 @@ export default function Button({type, onClick}: {type: string, onClick: any}) {
 
     // const toDiplay = buttonContentMap[type] ? buttonContentMap[type] : 'No Button Yet';
     const toDisplay = buttonContent.get(type) ? buttonContent.get(type) : "No Button Yet";
-    const buttonClassName = styles[type]
+    const buttonClassName = typeof toDisplay === 'string' && toDisplay[0] === '+' ? styles.addItem : styles[type]
 
     return (
         <button onClick={onClick} className={`${styles.button} ${buttonClassName}`}>{toDisplay}</button>

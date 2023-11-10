@@ -38,10 +38,11 @@ export async function getGatepassTypes(token: string = "c8c69a475a9715c2f2c6194b
         jsonResponse.forEach((element: any) => {
             const gatepassType = {
                 id: element.id,
-                categoryName: element.category_name,
+                name: element.category_name,
             }
             gatepassTypes.push(gatepassType);
         });
+        console.log(gatepassTypes)
         return gatepassTypes;
         
     } catch (error: any) {

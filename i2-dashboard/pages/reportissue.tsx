@@ -14,7 +14,7 @@ export async function getServerSideProps(context:any) {
     const token = `${user.token}:tenant`
     const getIssuesProps: ParamGetServiceRequestType = {
         accountcode: accountCode,
-        userId: user.tenantId,
+        userId: user.id,
         // limit: 10,
       }
     const issuesResponse = await api.requests.getIssues(getIssuesProps, token, context);

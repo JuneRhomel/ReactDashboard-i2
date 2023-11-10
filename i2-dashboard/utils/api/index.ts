@@ -16,6 +16,8 @@ import { getIssues } from "./requests/getIssues";
 import { getIssueCategories } from "./requests/getIssueCategories";
 import saveReportIssue from "./requests/saveReportIssue";
 import { getWorkPermits } from "./requests/getWorkPermits";
+import { getWorkPermitTypes } from "./requests/getWorkPermitTypes";
+import saveWorkPermit from "./requests/saveWorkPermit";
 
 /**
 * This object contains all the API functions for the client to make user related requests
@@ -41,9 +43,11 @@ const requests = {
     getIssues: getIssues,
     getIssueCategories: getIssueCategories,
     getWorkPermits: getWorkPermits,
+    getWorkPermitTypes: getWorkPermitTypes,
     saveGatepass: saveGatepass,
     saveVisitorPass: saveVisitorPass,
     saveReportIssue: saveReportIssue,
+    saveWorkPermit: saveWorkPermit,
 }
 
 const api = {

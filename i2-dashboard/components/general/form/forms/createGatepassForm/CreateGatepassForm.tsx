@@ -39,6 +39,7 @@ export default function CreateGatepassForm({closeDropdown, handleInput, formData
             }
         }
         getGatepassTypes();
+        console.log(gatepassTypes)
     }, [])
 
     const baseFields: InputProps[] = [

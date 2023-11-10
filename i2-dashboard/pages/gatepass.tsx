@@ -16,7 +16,7 @@ export async function getServerSideProps(context: any){
 
   const getGatepassesProps: ParamGetServiceRequestType = {
     accountcode: accountCode,
-    userId: user.tenantId,
+    userId: user.id,
     // limit: 10,
   }
 

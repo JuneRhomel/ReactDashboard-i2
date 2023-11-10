@@ -12,7 +12,7 @@ export async function getServerSideProps(context: any) {
 
     const getParams = {
       accountcode: process.env.TEST_ACCOUNT_CODE as string,
-      userId: user.tenantId,
+      userId: user.id,
     }
     const workPermitsResponse = await api.requests.getWorkPermits(getParams, token, context);
     const workPermits = workPermitsResponse.data;

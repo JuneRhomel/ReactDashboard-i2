@@ -48,7 +48,9 @@ type GatepassProps = {
 const Gatepass = ({authorizedUser, gatepasses, error}: GatepassProps) => {
     const maxNumberToShow = 4;
     const {user, setUser} = useUserContext();
-    setUser(authorizedUser);
+    useEffect(()=> {
+        setUser(authorizedUser);
+    },[])
     const [formData, setFormData] = useState<CreateGatepassFormType>(testFormData);
     const [pendingGatepasses, setPendingGatepasses] = useState(gatepasses?.filter((gatepass) => gatepass.status === 'Pending'));
     const [approvedGatepasses, setApprovedGatepasses] = useState(gatepasses?.filter((gatepass) => gatepass.status === 'Approved'));

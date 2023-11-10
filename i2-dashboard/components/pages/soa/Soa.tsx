@@ -3,6 +3,7 @@ import style from "./Soa.module.css"
 import { SoaPaymentsType, SoaType, UserType } from "@/types/models"
 import Section from "@/components/general/section/Section"
 import { useUserContext } from "@/context/userContext"
+import { useEffect } from "react"
 
 const Soa = ({authorizedUser, currentSoa, paymentTransactions, unpaidSoas, paidSoas} : {
     authorizedUser: UserType,
@@ -12,12 +13,12 @@ const Soa = ({authorizedUser, currentSoa, paymentTransactions, unpaidSoas, paidS
     paidSoas: SoaType[],
 }) => {
     const {user, setUser} = useUserContext();
-    setUser(authorizedUser);
+    useEffect(()=>{
+        setUser(authorizedUser);
+    },[])
     const soaDetails = paymentTransactions.filter((transaction: SoaPaymentsType) => {
         return transaction.soaId === currentSoa.id;
     })
-
-    console.log(paidSoas)
 
     const firstTwoDetailsMap = paymentTransactions?.reduce((result, detail) => {
         if (!result[detail.soaId]) {

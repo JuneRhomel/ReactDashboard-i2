@@ -4,6 +4,7 @@ import Link from "next/link"
 import { ServiceRequestType, UserType } from "@/types/models"
 import Section from "@/components/general/section/Section"
 import { useUserContext } from "@/context/userContext"
+import { useEffect } from "react"
 
 type MyRequestProps = {
     authorizedUser: UserType,
@@ -14,7 +15,9 @@ type MyRequestProps = {
 const MyRequest = ( {authorizedUser, serviceRequests, errors}: MyRequestProps ) => {
     const title = "i2 - My Requests"
     const {user, setUser} = useUserContext();
-    setUser(authorizedUser);
+    useEffect(()=> {
+        setUser(authorizedUser);
+    }, [])
     if (errors) {
         return (
             <Layout title={title}>

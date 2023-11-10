@@ -20,7 +20,9 @@ type ReportIssueProps = {
 
 export default function ReportIssue({authorizedUser, issues, errors}: ReportIssueProps) {
     const {user, setUser} = useUserContext();
-    setUser(authorizedUser);
+    useEffect(()=> {
+        setUser(authorizedUser);
+    },[])
     const [openIssues, setOpenIssues] = useState(issues?.filter((issue) => issue.status === 'Open'));
     const [ongoingIssues, setOngoingIssues] = useState(issues?.filter((issue) => issue.status === 'Ongoing'));
     const [closedIssues, setClosedIssues] = useState(issues?.filter((issue) => issue.status === 'Closed'));

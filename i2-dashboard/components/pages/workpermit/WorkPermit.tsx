@@ -7,6 +7,7 @@ import Layout from "@/components/layouts/layout";
 import { useUserContext } from '@/context/userContext';
 import { UserType, WorkPermitType } from '@/types/models';
 import { useEffect, useState } from 'react';
+import CreateWorkPermitForm from '@/components/general/form/forms/createWorkPermitForm/CreateWorkPermitForm';
 
 const title = "Work Permit";
 
@@ -20,7 +21,9 @@ const maxNumberToShow = 4;
 
 export default function WorkPermit({authorizedUser, workPermits, errors}: WorkPermitProps) {
     const {user, setUser} = useUserContext();
-    setUser(authorizedUser);
+    useEffect(()=> {
+        setUser(authorizedUser);
+    },[authorizedUser, setUser])
     const statusTitles = ['Open', 'Ongoing', 'Closed']
     const [openRequests, setOpenRequests] = useState(workPermits?.filter((permit) => permit.status === 'Open'));
     const [ongoingRequests, setOngoingRequests] = useState(workPermits?.filter((permit) => permit.status === 'Ongoing'));
@@ -58,7 +61,7 @@ export default function WorkPermit({authorizedUser, workPermits, errors}: WorkPe
             <ServiceRequestPageHeader title={title}/>
 
             <DropdownForm>
-                Work Permit Request Form
+                <CreateWorkPermitForm key={user?.id} addWorkPermit={addWorkPermitRequest}/>
             </DropdownForm>
 
             <StatusFilter handler={workPermitFilterHandler} titles={statusTitles} counts={counts}/>

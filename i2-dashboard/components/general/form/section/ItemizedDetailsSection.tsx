@@ -17,12 +17,36 @@ const detailsInitializer = new Map<string, any>([
         guestContact: '',
         guestPurpose: '',
     }],
+    ['List of Workers/Personnel', {
+        personnelName: '',
+        personnelDescription: '',
+    }],
+    ['List of Materials', {
+        materialName: '',
+        materialQuantity: 0,
+        materialDescription: '',
+    }],
+    ['List of Tools', {
+        toolName: '',
+        toolQuantity: 0,
+        toolDescription: '',
+    }]
 ])
+
 
 export default function ItemizedDetailsSection({type, formData, setFormData}: {type: string, formData: any, setFormData: any}) {
     const emptyDetails = detailsInitializer.get(type);
     // const [items, setItems] = useState<GatepassItemType[]>([]);
-    const [items, setItems] = useState<ItemizedListItemType[]>(formData.items || []);
+    // This map determines which key of formData needs to be updated based on the type of this section
+    const keysInFormData = new Map<string, string>([
+        ['Item Details', 'items'],
+        ['Guest List', 'guests'],
+        ['List of Workers/Personnel', 'workPersonnel'],
+        ['List of Materials', 'workMaterials'],
+        ['List of Tools', 'workTools']
+    ])
+    const keyToBeUpdated = keysInFormData.get(type) as string;
+    const [items, setItems] = useState<ItemizedListItemType[]>(formData[keyToBeUpdated] || []);
     const [itemDetails, setItemDetails] = useState<any>({...emptyDetails});
     const [error, setError] = useState('');
 
@@ -33,46 +57,89 @@ export default function ItemizedDetailsSection({type, formData, setFormData}: {t
             name: 'itemName',
             label: 'Item Name',
             type: 'text',
-            value: itemDetails['itemName'],
+            value: itemDetails.itemName,
         },
         {
             name: 'itemQuantity',
             label: 'Item Quantity',
             type: 'number',
-            value: itemDetails['itemQuantity'],
+            value: itemDetails.itemQuantity,
         },
         {
             name: 'itemDescription',
             label: 'Description',
             type: 'textArea',
-            value: itemDetails['itemDescription']
+            value: itemDetails.itemDescription
         }]],
         ['Guest List', [{
             name: 'guestName',
             label: 'Name',
             type: 'text',
-            value: itemDetails['guestName']
+            value: itemDetails.guestName
         },
         {
             name: 'guestContact',
             label: 'Contact #',
             type: 'text',
-            value: itemDetails['guestContact']
+            value: itemDetails.guestContact
         },
         {
             name: 'guestPurpose',
             label: 'Visit Purpose',
             type: 'textArea',
-            value: itemDetails['guestPurpose']
+            value: itemDetails.guestPurpose
         }
         ]],
+        ['List of Workers/Personnel', [{
+            name: 'personnelName',
+            label: 'Name',
+            type: 'text',
+            value: itemDetails.personnelName,
+        },
+        {
+            name: 'personnelDescription',
+            label: 'Description',
+            type: 'text',
+            value: itemDetails.personnelDescription,
+        }]],
+        ['List of Materials', [{
+            name: 'materialName',
+            label: 'Name',
+            type: 'text',
+            value: itemDetails.materialName,
+        },
+        {
+            name: 'materialQuantity',
+            label: 'Quantity',
+            type: 'number',
+            value: itemDetails.materialQuantity
+        },
+        {
+            name: 'materialDescription',
+            label: 'Description',
+            type: 'text',
+            value: itemDetails.materialDescription,
+        }]],
+        ['List of Tools', [{
+            name: 'toolName',
+            label: 'Name',
+            type: 'text',
+            value: itemDetails.toolName,
+        },
+        {
+            name: 'toolQuantity',
+            label: 'Quantity',
+            type: 'number',
+            value: itemDetails.toolQuantity
+        },
+        {
+            name: 'toolDescription',
+            label: 'Description',
+            type: 'text',
+            value: itemDetails.toolDescription,
+        }]],
     ])
-    // This map determines which key of formData needs to be updated based on the type of this section
-    const keysInFormData = new Map<string, string>([
-        ['Item Details', 'items'],
-        ['Guest List', 'guests'],
-    ])
-    const keyToBeUpdated = keysInFormData.get(type) as string;
+
     const inputFields = fieldList.get(type) as InputProps[];
     const labels = inputFields.map((field) => field.label);
 
@@ -105,7 +172,7 @@ export default function ItemizedDetailsSection({type, formData, setFormData}: {t
         }
         // Validate if the newItem has all its fields filled before adding the item to the list
         if (Object.keys(newItem).length == inputFields.length) {
-            // net to set the type to unknown first before typing it to ItemizedListItemType
+            // need to set the type to unknown first before typing it to ItemizedListItemType
             setItems((previousItems) => [...previousItems, newItem as unknown as ItemizedListItemType]);
             setItemDetails({...emptyDetails})
         } else {
@@ -124,7 +191,7 @@ export default function ItemizedDetailsSection({type, formData, setFormData}: {t
                 {inputFields.map((field, index) => <InputGroup props={field} key={index} onChange={handleChange}/>)}
             </div>
             <div className={styles.footer}>
-                <Button onClick={handleAddItem} type='addGuest'/>
+                <Button onClick={handleAddItem} type={type}/>
                 {error ? <p className={styles.error}>{error}</p> : <></>}
             </div>
         </div>

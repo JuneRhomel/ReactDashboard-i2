@@ -4,7 +4,6 @@ import { FaCaretDown } from "react-icons/fa6";
 import { ChangeEventHandler } from "react";
 
 export default function SelectInput({props, onChange}: {props: InputProps, onChange: ChangeEventHandler}) {
-
     return (
         <>
             <select name={props.name} id={props.name} className={style.select} onChange={onChange} defaultValue='0'>
