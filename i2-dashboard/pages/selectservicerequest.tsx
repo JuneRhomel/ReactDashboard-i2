@@ -8,7 +8,7 @@ export const getServerSideProps = (context: any) => {
         return {redirect : {destination: '/?error=accessDenied', permanent: false}};
     }
     return {
-        props: {}
+        props: {authorizedUser: user}
     }
 }
 

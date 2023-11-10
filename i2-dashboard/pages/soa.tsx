@@ -46,6 +46,7 @@ export async function getServerSideProps(context: any) {
 
     return {
     props: {
+      authorizedUser: user,
       currentSoa,
       paidSoas,
       unpaidSoas,

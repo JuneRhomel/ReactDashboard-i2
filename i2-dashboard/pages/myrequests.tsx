@@ -3,8 +3,14 @@ import { ParamGetServiceRequestType, ServiceRequestTable } from "@/types/apiRequ
 import authorizeUser from "@/utils/authorizeUser";
 import api from "@/utils/api";
 import parseObject from "@/utils/parseObject";
-import { GatepassPersonnelType, GatepassType, GuestType, MyRequestDataType, ServiceIssueType, ServiceRequestType, ServiceRequestsType, VisitorsPassType, WorkDetailType, WorkPermitType } from "@/types/models";
+import { GatepassPersonnelType, GatepassType, GuestType, MyRequestDataType, ServiceIssueType, ServiceRequestDataType, ServiceRequestType, ServiceRequestsType, UserType, VisitorsPassType, WorkDetailType, WorkPermitType } from "@/types/models";
 import { ApiResponse, ErrorType } from "@/types/responseWrapper";
+
+type MyRequestProps = {
+  authorizedUser: UserType,
+  serviceRequests: ServiceRequestType[] | null,
+  errors: any[] | null,
+}
 
 export async function getServerSideProps(context: any){
   const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
@@ -16,15 +22,15 @@ export async function getServerSideProps(context: any){
   const token = `${user.token}:tenant`
 
   const getServiceRequestProps: ParamGetServiceRequestType = {
-    accountcode: 'accountCode',
+    accountcode: accountCode,
     userId: user.tenantId,
-    limit: 10,
+    limit: 50,
   }
 
-  const response: ApiResponse<ServiceRequestType[]> = {
-    success: false,
-    data: undefined,
-    error: undefined,
+  const props: MyRequestProps = {
+    authorizedUser: user,
+    serviceRequests: null,
+    errors: null,
   }
 
   const serviceRequestPromise = api.requests.getServiceRequests(getServiceRequestProps, token);
@@ -46,99 +52,50 @@ export async function getServerSideProps(context: any){
       serviceIssuePromise
   ]);
 
+  const responses = [serviceRequestResponse, gatepassResponse, workPermitResponse, visitorPassResponse, serviceIssueResponse]
   const errors: (ErrorType | string)[] = [];
 
-  if (serviceRequestResponse.success == 0) {
-    const error = serviceRequestResponse.error?.pop();
-    errors.push(error as ErrorType);
-  }
-  if (gatepassResponse.success == 0) {
-    const error = gatepassResponse.error?.pop();
-    errors.push(error as string);
-  }
-  if (workPermitResponse.success == 0) {
-    const error = workPermitResponse.error?.pop();
-    errors.push(error as string);
-  }
-  if (visitorPassResponse.success == 0) {
-    const error = visitorPassResponse.error?.pop();
-    errors.push(error as string);
-  }
-  if (serviceIssueResponse.success == 0) {
-    const error = serviceIssueResponse.error?.pop();
-    errors.push(error as string);
-  }
-  console.log(errors)
+  responses.forEach((apiResponse) => {
+    if (!apiResponse.success) {
+      const error = apiResponse.error as (ErrorType | string)[];
+      error && errors.push(...error);
+    }
+  })
 
-  response.error = errors;
-  const serviceRequests = parseObject(serviceRequestResponse.data as ServiceRequestType[]);
+  if (errors.length == 0) {
+    // no errors
+    const serviceRequests = parseObject(responses?.shift()?.data as ServiceRequestType[]) as ServiceRequestType[];
+    const gatepasses = parseObject(responses?.shift()?.data as GatepassType[]) as GatepassType[];
+    const workPermits = parseObject(responses?.shift()?.data as WorkPermitType[]) as WorkPermitType[];
+    const visitorPasses = parseObject(responses?.shift()?.data as VisitorsPassType[]) as VisitorsPassType[];
+    const serviceIssues = parseObject(responses?.shift()?.data as ServiceIssueType[]) as ServiceIssueType[];
+    serviceRequests.sort((a, b) => {
+      const aDate: Date = new Date(a.dateUpload);
+      const bDate: Date = new Date(b.dateUpload);
+      return bDate.getTime() - aDate.getTime();
+    });
+    serviceRequests.splice(10);
+    const requestDetails = new Map<string, ServiceRequestDataType[]>([
+      ['Gate Pass', gatepasses],
+      ['Work Permit', workPermits],
+      ['Visitor Pass', visitorPasses],
+      ['Report Issue', serviceIssues]
+    ]);
+    serviceRequests?.forEach((request: ServiceRequestType) => {
+      console.log(request);
+      const type = request.type;
+      const details = requestDetails.get(type);
+      const requestData = details?.find((detail: ServiceRequestDataType) => detail?.id === request.id);
+      request.data = requestData || null;
+    })
+    props.serviceRequests = serviceRequests;
+  } else {
+    // error case
+    props.errors = errors;
+  }
 
-  // typeof response != 'string' ? jsonResponse = await response.json() : props.error = response;
-  // const serviceRequests: ServiceRequestsType | null = jsonResponse ? parseObject(jsonResponse) as ServiceRequestsType : null;
-  // serviceRequests?.sort((a: any, b: any) => parseInt(b.id) - parseInt(a.id));
-  // const serviceRequestDetails: MyRequestDataType = {
-  //   gatepasses: 'gatepass',
-  //   personnel: 'personnel',
-  //   serviceIssues: 'report_issue',
-  //   workPermits: 'workpermit',
-  //   workDetails: 'work_details',
-  //   visitorPasses: 'visitor_pass',
-  //   guests: 'vp_guest',
-  // }
-  // const keys = Object.keys(serviceRequestDetails);
-
-  // await Promise.all(keys.map(async (key: string) => {
-  //   const table= serviceRequestDetails[key as keyof MyRequestDataType] as string;
-  //   const response = await api.requests.getServiceRequestDetails(getServiceRequestProps, table as ServiceRequestTable, token, context);
-  //   const jsonResponse = typeof response != 'string' ? await response.json() : null;
-  //   const obj = jsonResponse ? parseObject(jsonResponse) : response;
-  //   serviceRequestDetails[key as keyof MyRequestDataType] = obj as [];
-  // }))
-
-  // serviceRequests && await Promise.all(serviceRequests.map((request: ServiceRequestType) => {
-  //   if (request.type === "Gate Pass") {
-  //     const gatepasses: GatepassType[] = serviceRequestDetails.gatepasses as GatepassType[];
-  //     const personnel: GatepassPersonnelType[] = serviceRequestDetails.personnel as GatepassPersonnelType[];
-  //     const gatepass: GatepassType | undefined = gatepasses.find((gatepass: GatepassType) => gatepass.id == request.id);
-  //     // get the personnel details of the permit.
-  //     if (gatepass) {
-  //       const gatepassPersonnel: GatepassPersonnelType | undefined = personnel?.find((details: GatepassPersonnelType) => details.gatepassId === `${gatepass.id}`);
-  //       gatepass.personnel = gatepassPersonnel ? gatepassPersonnel : null;
-  //       request.data = gatepass;
-  //     } else {
-  //       request.data = null;
-  //     }
-  //   } else if (request.type === "Report Issue") {
-  //     const serviceIssues: ServiceIssueType[] = serviceRequestDetails.serviceIssues as ServiceIssueType[];
-  //     const serviceIssue: ServiceIssueType = serviceIssues?.find((serviceIssue: ServiceIssueType) => serviceIssue.id == request.id) as ServiceIssueType;
-  //     request.data = serviceIssue;
-  //   } else if (request.type === "Work Permit"){
-  //     const workPermits: WorkPermitType[] = serviceRequestDetails.workPermits as WorkPermitType[];
-  //     const workDetails: WorkDetailType[] = serviceRequestDetails.workDetails as WorkDetailType[];
-  //     const workPermit: WorkPermitType | undefined = workPermits?.find((permit: WorkPermitType) => permit.id == request.id);
-  //     if (workPermit) {
-  //       const workDetail: WorkDetailType | undefined = workDetails?.find((detail: WorkDetailType) => detail.id === workPermit.workDetailsId) as WorkDetailType;
-  //       workPermit.workDetail = workDetail ? workDetail : null;
-  //       request.data = workPermit;
-  //     } else {
-  //       request.data = null;
-  //     }
-  //   } else if (request.type == "Visitor Pass") {
-  //     const visitorPasses: VisitorsPassType[] = serviceRequestDetails.visitorPasses as VisitorsPassType[];
-  //     const passGuests: GuestType[] = serviceRequestDetails.guests as GuestType[];
-  //     const visitorPass: VisitorsPassType | undefined = visitorPasses.find((pass: any) => pass.id == request.id);
-  //     if (visitorPass) {
-  //       const guests: GuestType[] = passGuests.filter((guest: GuestType) => guest.guestId === visitorPass.id);
-  //       visitorPass.guests = guests ? guests : null;
-  //       request.data = visitorPass;
-  //     } else {
-  //       request.data = null;
-  //     }
-  //   }
-  //   props.serviceRequests = serviceRequests as ServiceRequestsType;
-  // }))
   return {
-    props: {}
+    props: props
   }
 }
 

@@ -1,6 +1,6 @@
 import ServiceRequestPageHeader from "@/components/general/headers/serviceRequestPageHeader/ServiceRequestPageHeader";
 import Layout from "@/components/layouts/layout";
-import { InputProps, SaveSoaPaymentFormData, SoaDetailsType, SoaPaymentsType, SoaType } from "@/types/models";
+import { InputProps, SaveSoaPaymentFormData, SoaDetailsType, SoaPaymentsType, SoaType, UserType } from "@/types/models";
 import formatCurrency from "@/utils/formatCurrency";
 import getDateString from "@/utils/getDateString";
 import styles from './ViewSoa.module.css';
@@ -13,12 +13,16 @@ import Modal from "@/components/general/modal/Modal";
 import { useRouter } from "next/router";
 import FileInput from "@/components/general/form/inputGroup/FileInput";
 import checkFileIsValid from "@/utils/checkFileIsValid";
+import { useUserContext } from "@/context/userContext";
 
-export default function ViewSoa({soa, soaDetails, soaPayments, error}: {
+export default function ViewSoa({authorizedUser, soa, soaDetails, soaPayments, error}: {
+authorizedUser: UserType,
 soa: SoaType | undefined,
 soaDetails: SoaDetailsType[] | undefined,
 soaPayments: SoaPaymentsType[] | undefined,
 error: any}) {
+    const {user, setUser} = useUserContext();
+    setUser(authorizedUser);
     const router = useRouter()
     const [amountErrorMessage, setAmountErrorMessage] = useState('');
     const [fileErrorMessage, setFileErrorMessage] = useState('');

@@ -96,7 +96,7 @@ export default async function saveGatepass(formData: CreateGatepassFormType, use
         id: gatepassId,
     }
     const newGatepassResponse = await api.requests.getGatepasses(getGatepassParams)
-    const newGatepass = typeof newGatepassResponse !== 'string' ? newGatepassResponse.pop() : undefined;
+    const newGatepass = newGatepassResponse.success ? newGatepassResponse.data?.pop() : undefined;
     response.data ? response.data.gatepass = newGatepass : null;
     
     console.log(response);

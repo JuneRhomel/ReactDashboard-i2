@@ -1,15 +1,24 @@
 import Layout from "@/components/layouts/layout"
 import { MdAdd } from "react-icons/md"
 import Link from "next/link"
-import { RequestType } from "@/types/models"
+import { ServiceRequestType, UserType } from "@/types/models"
 import Section from "@/components/general/section/Section"
+import { useUserContext } from "@/context/userContext"
 
-const MyRequest = ( props: any ) => {
+type MyRequestProps = {
+    authorizedUser: UserType,
+    serviceRequests: ServiceRequestType[] | null,
+    errors: any[] | null,
+}
+
+const MyRequest = ( {authorizedUser, serviceRequests, errors}: MyRequestProps ) => {
     const title = "i2 - My Requests"
-    if (props.error) {
+    const {user, setUser} = useUserContext();
+    setUser(authorizedUser);
+    if (errors) {
         return (
             <Layout title={title}>
-                <h1>{props.error}</h1>
+                <h1>{errors}</h1>
             </Layout>
         )
     } else {
@@ -20,7 +29,7 @@ const MyRequest = ( props: any ) => {
                     <MdAdd />
                     Create New
                 </Link>,
-            data: props.serviceRequests,
+            data: serviceRequests,
         }
         return (
             <Layout title={title}>

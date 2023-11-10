@@ -7,6 +7,7 @@ import Layout from "@/components/layouts/layout";
 import {  ServiceIssueType, UserType } from '@/types/models';
 import { useEffect, useState } from 'react';
 import CreateReportIssueForm from '@/components/general/form/forms/createReportIssueForm/CreateReportIssueForm';
+import { useUserContext } from '@/context/userContext';
 
 const title = 'Report Issue';
 const maxNumberToShow = 4;
@@ -18,6 +19,8 @@ type ReportIssueProps = {
 }
 
 export default function ReportIssue({authorizedUser, issues, errors}: ReportIssueProps) {
+    const {user, setUser} = useUserContext();
+    setUser(authorizedUser);
     const [openIssues, setOpenIssues] = useState(issues?.filter((issue) => issue.status === 'Open'));
     const [ongoingIssues, setOngoingIssues] = useState(issues?.filter((issue) => issue.status === 'Ongoing'));
     const [closedIssues, setClosedIssues] = useState(issues?.filter((issue) => issue.status === 'Closed'));

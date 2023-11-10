@@ -35,11 +35,11 @@ export async function getServerSideProps(context: any) {
     }) || null;
     if (soa && soaDetails) {
         return {
-            props: {soa, soaDetails, soaPayments}
+            props: {authorizedUser: user, soa, soaDetails, soaPayments}
         }
     } else {
         return {
-            props: {error: '400 Bad Request: Could not fetch SOA Details'}
+            props: {authorizedUser: user, error: '400 Bad Request: Could not fetch SOA Details'}
         }
         // Handle error
     }

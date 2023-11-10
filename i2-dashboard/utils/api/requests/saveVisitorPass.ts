@@ -74,7 +74,7 @@ export default async function saveVisitorPass(formData: CreateVisitorPassFormDat
         id: visitorPassId,
     }
     const newVisitorPassResponse = await api.requests.getVisitorPasses(getVisitorPassParams);
-    const newVisitorPass = typeof newVisitorPassResponse !== 'string' ? newVisitorPassResponse.pop() : undefined;
+    const newVisitorPass = newVisitorPassResponse.success ? newVisitorPassResponse.data?.pop() : undefined;
     (response.data as SaveVisitorPassDataType).visitorPass = newVisitorPass;
     
     console.log(response);

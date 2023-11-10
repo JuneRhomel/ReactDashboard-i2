@@ -1,14 +1,18 @@
 import Layout from "@/components/layouts/layout"
 import style from "./Soa.module.css"
-import { SoaPaymentsType, SoaType } from "@/types/models"
+import { SoaPaymentsType, SoaType, UserType } from "@/types/models"
 import Section from "@/components/general/section/Section"
+import { useUserContext } from "@/context/userContext"
 
-const Soa = ({currentSoa, paymentTransactions, unpaidSoas, paidSoas} : {
+const Soa = ({authorizedUser, currentSoa, paymentTransactions, unpaidSoas, paidSoas} : {
+    authorizedUser: UserType,
     currentSoa: SoaType,
     paymentTransactions: SoaPaymentsType[],
     unpaidSoas: SoaType[],
     paidSoas: SoaType[],
 }) => {
+    const {user, setUser} = useUserContext();
+    setUser(authorizedUser);
     const soaDetails = paymentTransactions.filter((transaction: SoaPaymentsType) => {
         return transaction.soaId === currentSoa.id;
     })
