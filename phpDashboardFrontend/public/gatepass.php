@@ -2,33 +2,31 @@
 $module = "gatepass";
 $table = "gatepass";
 $view = "vw_gatepass";
-require_once "header.php";
-include "footerheader.php";
+require_once ("header.php");
+include ("footerheader.php");
+
 $api = apiSend('module', 'get-listnew', ['table' => 'vw_resident']);
 $list = json_decode($api, true);
-
-
 
 $result =  apiSend('module', 'get-listnew', ['table' => 'list_gatepasscategory',  'orderby' => 'category_name']);
 $category_name = json_decode($result, true);
 
-$data = [
-    'view' => 'users'
-];
+$data = ['view' => 'users'];
 $user = apiSend('tenant', 'get-user', $data);
 $user = json_decode($user);
-// var_dump($user);
-$result =  apiSend('tenant', 'get-list-sr', ['table' => 'vw_gatepass', 'condition' => 'created_by="' . $user->id . '" AND status = "Pending"']);
+
+$result =  apiSend('tenant', 'get-listnew', ['table' => 'vw_gatepass', 'condition' => 'created_by="' . $user->id . '" AND status = "Pending"']);
 $gatepass_pendding = json_decode($result);
-// var_dump($gatepass_pendding);
 $pendingtotal = count($gatepass_pendding);
 
-$result =  apiSend('tenant', 'get-list-sr', ['table' => 'vw_gatepass', 'condition' => 'created_by="' . $user->id . '" AND status = "Approved"']);
+$result =  apiSend('tenant', 'get-listnew', ['table' => 'vw_gatepass', 'condition' => 'created_by="' . $user->id . '" AND status = "Approved"']);
 $gatepass_approved = json_decode($result);
 $approvedtotal = count($gatepass_approved);
 
+$result =  apiSend('tenant', 'get-allsr', ['condition' => 'name_id="' . $user->id . '"']);
+$allsr = json_decode($result);
 
-$result =  apiSend('tenant', 'get-list-sr', ['table' => 'vw_gatepass', 'condition' => 'created_by="' . $user->id . '" AND status = "Denied"']);
+$result =  apiSend('tenant', 'get-list-sr', ['table' => 'vw_gatepass', 'condition' => 'created_by="' . $user->id . '" AND status = "Disapproved"']);
 $gatepass_denied = json_decode($result);
 $deniedtotal = count($gatepass_denied);
 ?>
@@ -56,7 +54,7 @@ $deniedtotal = count($gatepass_denied);
 
                         <div class="card-body " style="padding:24px 12px;">
                             <div class="forms">
-                                <form action="<?=WEB_ROOT ?>/gatepass-save.php" method="post" id="form-main">
+                                <form action="<?= WEB_ROOT ?>/gatepass-save.php" method="post" id="form-main">
                                     <input name="date" type="hidden" readonly value="<?= date('Y-m-d H:i:s') ?>">
                                     <input name="module" type="hidden" readonly value="<?= $module ?>">
                                     <input name="table" readonly type="hidden" value="<?= $table ?>">
@@ -74,11 +72,13 @@ $deniedtotal = count($gatepass_denied);
                                         <div class="w-100 form-group select">
                                             <select name="gp_type" class="select-text" required>
                                                 <option value="" disabled selected></option>
-                                                <?php foreach ($category_name as $key => $val) {; ?>
+                                                <?php foreach ($category_name as $key => $val) { 
+                                                    if ($val["category_name"] ==='Service' ) continue;
+                                                     ?>
                                                     <option value="<?= $val['id'] ?>"><?= $val["category_name"] ?></option>
                                                 <?php } ?>
                                             </select>
-                                            <label class="select-label">Gatepass Type <span class="text-danger">*</span></label>
+                                            <label class="select-label">Gate pass Type <span class="text-danger">*</span></label>
                                             <i class="fa-solid fa-sort-down"></i>
                                         </div>
                                     </div>
@@ -139,7 +139,7 @@ $deniedtotal = count($gatepass_denied);
                                     </div>
 
                                 </div>
-                                <form method="post" action="<?=WEB_ROOT ?>/gatepass-save.php" id="form-personnel">
+                                <form method="post" action="<?= WEB_ROOT ?>/gatepass-save.php" id="form-personnel">
 
 
                                     <input class="gatepass_id" name="gatepass_id" readonly type="hidden" class="form-control">
@@ -199,173 +199,299 @@ $deniedtotal = count($gatepass_denied);
             </div>
 
             <div>
-                <div class="history-container submitted">
-                    <?php
-                    $limit = 4; // Set the initial limit here
-                    $totalItems = count($gatepass_pendding);
-                    $showItems = min($limit, $totalItems);
+                <div class="history-container submitted ">
+                    <?php 
+                        $count = 0;
+                     foreach ($allsr as $key => $sr) :?>
+                        <?php if ($sr->type === "Gate Pass") :?>
+                            <?php
+                                $result =  apiSend('tenant', 'get-listnew', ['table' => $sr->table, 'condition' => 'id="' . $sr->id . '"and approve_id = 3']);
+                                $data = json_decode($result)[0];
+                                if($data->approve_id == 3) {
+                                     $count += 1;
+                                     if($count > 5) break;
+                                }
+                                if ($data) {
+                                    $result =  apiSend('tenant', 'get-listnew', ['table' => "gatepass_personnel", 'condition' => 'gatepass_id="' .  $data->id . '"']);
+                                    $personel = json_decode($result);
+                                    $result =  apiSend('tenant', 'get-listnew', ['table' => "comments", 'condition' => 'reference_id ="' . $sr->id . '" and  reference_table="' . $sr->main_table . '"', 'orderby' => 'id DESC', 'limit' => '1']);
+                                    $comment = json_decode($result);
+                            ?>
+                                <div class="p-2  ">
+                                        <div class="requests-card flex-column gap-2  w-100">
+                                            <div class="d-flex justify-content-between border-sr">
+                                                <div class="d-flex  gap-1">
+                                                    <b class="id">#<?= $data->id ?></b>
+                                                    <p class="status  m-0
+                                                <?php if ($data->status === "Approved") {
+                                                    echo "closed-status";
+                                                } elseif ($data->status === "Denied") {
+                                                    echo "open-status";
+                                                } else {
+                                                    echo "open-status acknowledged-btn";
+                                                } ?>"><?= $data->status ?></p>
+                                                </div>
+                                                <div class="date">
+                                                    <label><?= $data->date_upload ?></label>
+                                                </div>
+                                            </div>
+                                            <div class="w-100 mt-3">
+                                                <div class="row">
+                                                    <label class="fw-bold  col-6 label m-0 fs-6"><?= $sr->type ?></label><br>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="fw-bold col-6 label m-0">Type:</label><br>
+                                                    <label class="col-6 label m-0 "><?= $data->type  ?> </label>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="fw-bold col-6 label m-0">Personnel:</label><br>
+                                                    <label class="col-6 label m-0 "><?= $personel[0]->personnel_name ?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between mt-auto">
+                                                <div class="w-100">
+                                                    <?php if ($comment[0]->comment) : ?>
+                                                        <label class="label m-0 " for="">Updates:</label>
+                                                        <div class="comment">
+                                                            <div>
+                                                                <span class="date-comment">Date & Time: <?= formatDateTime($comment[0]->created_on) ?> </span>
+                                                                <div>
+                                                                    <span class="from-comment">-from admin-</span>
+                                                                    <p class="text-comment"><?= $comment[0]->comment ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php endif ?>
+                                                    <div class="text-end mt-2">
+                                                        <a href="myrequests-view.php?id=<?= $data->enc_id ?>&loc=<?= $sr->table ?>">View all</a>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                    for ($i = 0; $i < $showItems; $i++) {
-                        $item = $gatepass_pendding[$i];
-                        $result = apiSend('module', 'get-listnew', ['table' => 'gatepass_personnel', 'condition' => 'gatepass_id="' . $item->id . '"']);
-                        $personel = json_decode($result);
-                        // var_dump($item->id);
-                        foreach ($personel  as $personel) {
-                    ?>
-                            <div class="card-history">
-                                <div class="w-100">
-                                    <div class="head w-100">
-                                        <div class="d-flex gap-2">
-                                            <span>#<?= $item->id ?></span>
-                                            <div><?= $item->status ?></div>
                                         </div>
-                                        <label><?= $item->date_upload ?></label>
-                                    </div>
-                                    <div>
-                                        <p>Type: <?= $item->type   ?></label><br>
-                                        <p>Personel:<?= $personel->personnel_name  ?></label><br>
-                                        <p>Unit: <?= $item->unit ?></p>
-                                    </div>
                                 </div>
-                            </div>
-                        <?php }  ?>
-                    <?php
-                    }
-                    ?>
+                            <?php } ?>
+                        <?php endif ?>
+                    <?php endforeach; ?>
                 </div>
-
 
                 <div class="history-container acknowledged">
-                    <?php
-                    $limit = 4; // Set the initial limit here
-                    $totalItems = count($gatepass_approved);
-                    $showItems = min($limit, $totalItems);
+                    <?php 
+                        $count = 0;
+                        foreach ($allsr as $key => $sr) :?>
+                            <?php if ($sr->type === "Gate Pass") :?>
+                                <?php
+                                    $result =  apiSend('tenant', 'get-listnew', ['table' => $sr->table, 'condition' => 'id="' . $sr->id . '"and approve_id = 1']);
+                                    $data = json_decode($result)[0];
+                                    if($data->approve_id == 1) {
+                                        $count += 1;
+                                        if($count > 5) break;
+                                    }
+                                    if ($data) {
+                                        $result =  apiSend('tenant', 'get-listnew', ['table' => "gatepass_personnel", 'condition' => 'gatepass_id="' .  $data->id . '"']);
+                                        $personel = json_decode($result);
+                                        $result =  apiSend('tenant', 'get-listnew', ['table' => "comments", 'condition' => 'reference_id ="' . $sr->id . '" and  reference_table="' . $sr->main_table . '"', 'orderby' => 'id DESC', 'limit' => '1']);
+                                        $comment = json_decode($result);
+                                ?>
+                                <div class="p-2  ">
+                                        <div class="requests-card flex-column gap-2  w-100">
+                                            <div class="d-flex justify-content-between border-sr">
+                                                <div class="d-flex  gap-1">
+                                                    <b class="id">#<?= $data->id ?></b>
+                                                    <p class="status  m-0
+                                                <?php if ($data->status === "Approved") {
+                                                    echo "closed-status";
+                                                } elseif ($data->status === "Denied") {
+                                                    echo "open-status";
+                                                } else {
+                                                    echo "open-status acknowledged-btn";
+                                                } ?>"><?= $data->status ?></p>
+                                                </div>
+                                                <div class="date">
+                                                    <label><?= $data->date_upload ?></label>
+                                                </div>
+                                            </div>
+                                            <div class="w-100 mt-3">
+                                                <div class="row">
+                                                    <label class="fw-bold  col-6 label m-0 fs-6"><?= $sr->type ?></label><br>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="fw-bold col-6 label m-0">Type:</label><br>
+                                                    <label class="col-6 label m-0 "><?= $data->type  ?> </label>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="fw-bold col-6 label m-0">Personnel:</label><br>
+                                                    <label class="col-6 label m-0 "><?= $personel[0]->personnel_name ?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between mt-auto">
+                                                <div class="w-100">
+                                                    <?php if ($comment[0]->comment) : ?>
+                                                        <label class="label m-0 " for="">Updates:</label>
+                                                        <div class="comment">
+                                                            <div>
+                                                                <span class="date-comment">Date & Time: <?= formatDateTime($comment[0]->created_on) ?> </span>
+                                                                <div>
+                                                                    <span class="from-comment">-from admin-</span>
+                                                                    <p class="text-comment"><?= $comment[0]->comment ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php endif ?>
+                                                    <div class="text-end mt-2">
+                                                        <a href="myrequests-view.php?id=<?= $data->enc_id ?>&loc=<?= $sr->table ?>">View all</a>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                    for ($i = 0; $i < $showItems; $i++) {
-                        $item = $gatepass_approved[$i];
-                        $result = apiSend('module', 'get-listnew', ['table' => 'gatepass_personnel', 'condition' => 'gatepass_id="' . $item->id . '"']);
-                        $personel = json_decode($result);
-
-                        foreach ($personel  as $personel) {
-                    ?>
-                            <div class="card-history">
-                                <div class="w-100">
-                                    <div class="head w-100">
-                                        <div class="d-flex gap-2">
-                                            <span>#<?= $item->id ?></span>
-                                            <div><?= $item->status ?></div>
                                         </div>
-                                        <label><?= $item->date_upload ?></label>
-                                    </div>
-                                    <div>
-                                        <p>Type: <?= $item->type   ?></label><br>
-                                        <p>Personel:<?= $personel->personnel_name  ?></label><br>
-                                        <p>Unit: <?= $item->unit ?></p>
-                                    </div>
                                 </div>
-                            </div>
-                        <?php }  ?>
-                    <?php
-                    }
-                    ?>
+                            <?php } ?>
+                        <?php endif ?>
+                    <?php endforeach; ?>
                 </div>
+
                 <div class="history-container finishedwork">
-                    <?php
-                    $limit = 4; // Set the initial limit here
-                    $totalItems = count($gatepass_denied);
-                    $showItems = min($limit, $totalItems);
+                    <?php 
+                        $count = 0;
+                     foreach ($allsr as $key => $sr) :?>
+                        <?php if ($sr->type === "Gate Pass") :?>
+                            <?php
+                                $result =  apiSend('tenant', 'get-listnew', ['table' => $sr->table, 'condition' => 'id="' . $sr->id . '"and approve_id = 2']);
+                                $data = json_decode($result)[0];
+                                if($data->approve_id == 2) {
+                                     $count += 1;
+                                     if($count > 5) break;
+                                }
+                                if ($data) {
+                                    $result =  apiSend('tenant', 'get-listnew', ['table' => "gatepass_personnel", 'condition' => 'gatepass_id="' .  $data->id . '"']);
+                                    $personel = json_decode($result);
+                                    $result =  apiSend('tenant', 'get-listnew', ['table' => "comments", 'condition' => 'reference_id ="' . $sr->id . '" and  reference_table="' . $sr->main_table . '"', 'orderby' => 'id DESC', 'limit' => '1']);
+                                    $comment = json_decode($result);
+                            ?>
+                                <div class="p-2  ">
+                                        <div class="requests-card flex-column gap-2  w-100">
+                                            <div class="d-flex justify-content-between border-sr">
+                                                <div class="d-flex  gap-1">
+                                                    <b class="id">#<?= $data->id ?></b>
+                                                    <p class="status  m-0
+                                                <?php if ($data->status === "Approved") {
+                                                    echo "closed-status";
+                                                } elseif ($data->status === "Disapproved") {
+                                                    echo "open-status";
+                                                } else {
+                                                    echo "open-status acknowledged-btn";
+                                                } ?>"><?= $data->status ?></p>
+                                                </div>
+                                                <div class="date">
+                                                    <label><?= $data->date_upload ?></label>
+                                                </div>
+                                            </div>
+                                            <div class="w-100 mt-3">
+                                                <div class="row">
+                                                    <label class="fw-bold  col-6 label m-0 fs-6"><?= $sr->type ?></label><br>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="fw-bold col-6 label m-0">Type:</label><br>
+                                                    <label class="col-6 label m-0 "><?= $data->type  ?> </label>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="fw-bold col-6 label m-0">Personnel:</label><br>
+                                                    <label class="col-6 label m-0 "><?= $personel[0]->personnel_name ?>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between mt-auto">
+                                                <div class="w-100">
+                                                    <?php if ($comment[0]->comment) : ?>
+                                                        <label class="label m-0 " for="">Updates:</label>
+                                                        <div class="comment">
+                                                            <div>
+                                                                <span class="date-comment">Date & Time: <?= formatDateTime($comment[0]->created_on) ?> </span>
+                                                                <div>
+                                                                    <span class="from-comment">-from admin-</span>
+                                                                    <p class="text-comment"><?= $comment[0]->comment ?></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php endif ?>
+                                                    <div class="text-end mt-2">
+                                                        <a href="myrequests-view.php?id=<?= $data->enc_id ?>&loc=<?= $sr->table ?>">View all</a>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                    for ($i = 0; $i < $showItems; $i++) {
-                        $item = $gatepass_denied[$i];
-                        $result = apiSend('module', 'get-listnew', ['table' => 'gatepass_personnel', 'condition' => 'gatepass_id="' . $item->id . '"']);
-                        $personel = json_decode($result);
-
-                        foreach ($personel  as $personel) {
-                    ?>
-                            <div class="card-history">
-                                <div class="w-100">
-                                    <div class="head w-100">
-                                        <div class="d-flex gap-2">
-                                            <span>#<?= $item->id ?></span>
-                                            <div><?= $item->status ?></div>
                                         </div>
-                                        <label><?= $item->date_upload ?></label>
-                                    </div>
-                                    <div>
-                                        <p>Type: <?= $item->type   ?></label><br>
-                                        <p>Personel:<?= $personel->personnel_name  ?></label><br>
-                                        <p>Unit: <?= $item->unit ?></p>
-                                    </div>
                                 </div>
-                            </div>
-                        <?php }  ?>
-                    <?php
-                    }
-                    ?>
+                            <?php } ?>
+                        <?php endif ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
+
         </div>
 
     </div>
-
     <?php include('menu.php') ?>
 </div>
 
-</body>
+    </body>
 
-</html>
-<script>
-    $('.acknowledged').hide();
-    $('.finishedwork').hide();
-    $("#btnSubmit").on('click', function() {
-        $('.submitted').show();
+    </html>
+    <script>
         $('.acknowledged').hide();
         $('.finishedwork').hide();
-    })
-    $("#btnAcknowledged").on('click', function() {
-        $('.submitted').hide();
-        $('.acknowledged').show();
-        $('.finishedwork').hide();
-    })
-    $("#btnFinish").on('click', function() {
-        $('.submitted').hide();
-        $('.acknowledged').hide();
-        $('.finishedwork').show();
-    })
-    $('.back-button-sr').on('click', function() {
-        history.back();
-    });
-    $('.main-submit').click(function() {
-        // Check if inputs and selects have values
-        var isFormValid = true;
-        $('.main input[required], .main select[required]').each(function() {
-            if (!$(this).val()) {
-                isFormValid = false;
-                // $(this).addClass('error');
+        $("#btnSubmit").on('click', function() {
+            $('.submitted').show();
+            $('.acknowledged').hide();
+            $('.finishedwork').hide();
+        })
+        $("#btnAcknowledged").on('click', function() {
+            $('.submitted').hide();
+            $('.acknowledged').show();
+            $('.finishedwork').hide();
+        })
+        $("#btnFinish").on('click', function() {
+            $('.submitted').hide();
+            $('.acknowledged').hide();
+            $('.finishedwork').show();
+        })
+        $('.back-button-sr').on('click', function() {
+            history.back();
+        });
+        $('.main-submit').click(function() {
+            // Check if inputs and selects have values
+            var isFormValid = true;
+            $('.main input[required], .main select[required]').each(function() {
+                if (!$(this).val()) {
+                    isFormValid = false;
+                    // $(this).addClass('error');
 
+                }
+            });
+
+            if (isFormValid) {
+                $("#form-main").submit();
+            } else {
+                // Trigger HTML built-in validation pop-up for all elements
+                $('.main input[required], .main select[required]').each(function() {
+                    this.reportValidity();
+                });
             }
         });
 
-        if (isFormValid) {
-            $("#form-main").submit();
-        } else {
-            // Trigger HTML built-in validation pop-up for all elements
-            $('.main input[required], .main select[required]').each(function() {
-                this.reportValidity();
-            });
-        }
-    });
 
+        let items = []
+        $('#btn-add-item').on('click', function() {
+            let name = $('input[name="item_name[]"]').val()
+            let qty = $('input[name="item_qty[]"]').val()
+            let description = $('textarea[name="description[]"]').val()
 
-    let items = []
-    $('#btn-add-item').on('click', function() {
-        let name = $('input[name="item_name[]"]').val()
-        let qty = $('input[name="item_qty[]"]').val()
-        let description = $('textarea[name="description[]"]').val()
+            if (name && qty) {
 
-        if (name && qty) {
-
-            $('.add-ons').append(`
+                $('.add-ons').append(`
     <div class="description-form">
        <div class="description-label">
             <p>Item Name</p>
@@ -382,117 +508,117 @@ $deniedtotal = count($gatepass_denied);
     </div>
     `);
 
-            var item = {
-                item_name: name,
-                item_qty: qty,
-                description: description,
-            };
+                var item = {
+                    item_name: name,
+                    item_qty: qty,
+                    description: description,
+                };
 
-            // Push the item to the array
-            items.push(item);
-        }
-        $('input[name="item_name[]"]').val('')
-        $('input[name="item_qty[]"]').val('')
-        $('textarea[name="description[]"]').val('')
-
-        console.log(item)
-    });
-
-    $("#form-main").off('submit').on('submit', function(e) {
-        e.preventDefault();
-
-        $.ajax({
-            url: $(this).prop('action'),
-            type: 'POST',
-            data: $(this).serialize(),
-            dataType: 'JSON',
-            success: function(data) {
-                const res = JSON.parse(data)
-                console.log(res)
-                $('.gatepass_id').val(res.id)
-                $("#form-personnel").submit();
-                send_item(items)
-                popup({
-                    data: res,
-                    reload_time: 2000,
-                    redirect: location.href
-                })
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
+                // Push the item to the array
+                items.push(item);
             }
+            $('input[name="item_name[]"]').val('')
+            $('input[name="item_qty[]"]').val('')
+            $('textarea[name="description[]"]').val('')
+
+            console.log(item)
         });
-    });
 
+        $("#form-main").off('submit').on('submit', function(e) {
+            e.preventDefault();
 
-    const send_item = (items) => {
-        items = items.map(obj => ({
-            ...obj,
-            gatepass_id: Number($('.gatepass_id').val()),
-            table: 'gatepass_items'
-        }));
-
-        items.forEach(i => {
-            console.log(i)
             $.ajax({
-                url: '<?=WEB_ROOT ?>/gatepass-save.php',
-                method: 'POST',
-                data: i,
-                success: function(response) {
-                    console.log(response)
+                url: $(this).prop('action'),
+                type: 'POST',
+                data: $(this).serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    const res = JSON.parse(data)
+                    console.log(res)
+                    $('.gatepass_id').val(res.id)
+                    $("#form-personnel").submit();
+                    send_item(items)
+                    popup({
+                        data: res,
+                        reload_time: 2000,
+                        redirect: location.href
+                    })
                 },
-                error: function(xhr, status, error) {
-
-                    console.error(error);
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
                 }
             });
-        })
-    }
-
-
-    $("#form-personnel").off('submit').on('submit', function(e) {
-
-        e.preventDefault();
-        $.ajax({
-            url: $(this).prop('action'),
-            type: 'POST',
-            data: $(this).serialize(),
-            dataType: 'JSON',
-            success: function(data) {
-                console.log(data)
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-            }
         });
-    });
 
 
-    $(".close-btn").on('click', function() {
-        $('#collapse-status').collapse('toggle');
-    });
+        const send_item = (items) => {
+            items = items.map(obj => ({
+                ...obj,
+                gatepass_id: Number($('.gatepass_id').val()),
+                table: 'gatepass_items'
+            }));
 
-    $('.btn-status').off('click').on('click', function() {
-        $('#collapse-status').collapse('toggle');
+            items.forEach(i => {
+                console.log(i)
+                $.ajax({
+                    url: '<?= WEB_ROOT ?>/gatepass-save.php',
+                    method: 'POST',
+                    data: i,
+                    success: function(response) {
+                        console.log(response)
+                    },
+                    error: function(xhr, status, error) {
 
-    });
-    $('#up1').hide();
+                        console.error(error);
+                    }
+                });
+            })
+        }
 
-    $('#collapse-status').on('hidden.bs.collapse', function() {
+
+        $("#form-personnel").off('submit').on('submit', function(e) {
+
+            e.preventDefault();
+            $.ajax({
+                url: $(this).prop('action'),
+                type: 'POST',
+                data: $(this).serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    console.log(data)
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+        });
+
+
+        $(".close-btn").on('click', function() {
+            $('#collapse-status').collapse('toggle');
+        });
+
+        $('.btn-status').off('click').on('click', function() {
+            $('#collapse-status').collapse('toggle');
+
+        });
         $('#up1').hide();
-        $('#down1').show();
-        $('.main input:not([readonly]):not([disabled]):not([name="contact_no"]), .main select:not([readonly]):not([disabled]), .main textarea').each(function() {
-            $(this).val('');
+
+        $('#collapse-status').on('hidden.bs.collapse', function() {
+            $('#up1').hide();
+            $('#down1').show();
+            $('.main input:not([readonly]):not([disabled]):not([name="contact_no"]), .main select:not([readonly]):not([disabled]), .main textarea').each(function() {
+                $(this).val('');
+            });
+            items = []
+
+            $('.description-form').remove();
+
         });
-        items = []
-
-        $('.description-form').remove();
-
-    });
-    $('#collapse-status').on('show.bs.collapse', function() {
-        $('#up1').show();
-        $('#down1').hide();
+        $('#collapse-status').on('show.bs.collapse', function() {
+            $('#up1').show();
+            $('#down1').hide();
 
 
-    });
-</script>
+        });
+    </script>

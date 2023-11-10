@@ -31,7 +31,8 @@ $result =  apiSend('tenant', 'get-list-sr', ['table' => 'vw_workpermit', 'condit
 $closed = json_decode($result);
 $closedtotal = count($closed);
 
-
+$result =  apiSend('tenant', 'get-allsr', ['condition' => 'name_id="' . $user->id . '"']);
+$allsr = json_decode($result);
 
 ?>
 <div class="d-flex">
@@ -155,7 +156,7 @@ $closedtotal = count($closed);
                                         </div>
                                         <div class="form-group">
                                             <input id="request-form" type="text" name="personnel_description[]" placeholder="text">
-                                            <label id="request-form">Description<span class="text-danger">*</span></label>
+                                            <label id="request-form">Description</label>
 
                                         </div>
                                         <div class="d-flex justify-content-end">
@@ -227,26 +228,16 @@ $closedtotal = count($closed);
                                 <div class="gatepass">
                                     <div class="d-flex gap-3">
                                         <div>
-                                            <input type="radio" name="gp_type" value="1" id="delivery" checked>
-                                            <label for="delivery" class="label-switch">Delivery</label>
-                                        </div>
-                                        <div>
-                                            <input type="radio" name="gp_type" value="2" id="pullout">
-                                            <label for="pullout" class="label-switch">Pull Out</label>
+                                            <input type="radio" name="gp_type" value="3" id="delivery" checked>
+                                            <label for="delivery" class="label-switch">Service</label>
                                         </div>
                                     </div>
                                     <div class="mt-3">
                                         <div class="row">
                                             <div class="col-6 mb-3">
                                                 <div class="form-group w-100 ">
-                                                    <input name="gp_date" id="request-form" placeholder="Enter here" type="date" class="form-control  w-100 ">
-                                                    <label id="request-form" for="delivery_date">Delivery Date<b class="text-danger">*</b></label>
-                                                </div>
-                                            </div>
-                                            <div class="col-6 mb-3">
-                                                <div class="form-group w-100 ">
                                                     <input name="gp_time" id="request-form" placeholder="Enter here" type="time" class="form-control  w-100 ">
-                                                    <label id="request-form" for="request-form">Delivery Time<b class="text-danger">*</b></label>
+                                                    <label id="request-form" for="request-form">Time<b class="text-danger">*</b></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -290,101 +281,271 @@ $closedtotal = count($closed);
 
 
             <div class="history-container submitted">
-                <?php
-                $limit = 4; // Set the initial limit here
-                $totalItems = count($open);
-                $showItems = min($limit, $totalItems);
+            <?php
+                $count = 0;
+                foreach ($allsr as $key => $sr): ?>
+                <?php if ($sr->type === "Work Permit"): ?>
+                    <?php
+                        $result =  apiSend('tenant', 'get-listnew', ['table' => $sr->table, 'condition' => 'id="' . $sr->id . '"and status = "Open" ']);
+                        $data = json_decode($result)[0];
+                    if ($data->status == "Open") {
+                    $count += 1;
+                    if ($count > 5){
+                        break;
+                    }
+                    }
+                    if ($data) {
+                        $result =  apiSend('tenant', 'get-listnew', ['table' => 'work_details', 'condition' => 'id="' .  $data->work_details_id . '"']);
+                        $work = json_decode($result);
+                        $result =  apiSend('tenant', 'get-listnew', ['table' => "comments", 'condition' => 'reference_id="' . $sr->id . '" and reference_table="' . $sr->main_table . '"', 'orderby' => 'id DESC', 'limit' => '1']);
+                        $comment = json_decode($result);
+                    ?>
+                            <div class="p-2">
+                                        <div class="requests-card w-100">
+                                            <div class="d-flex justify-content-between gap-2 flex-column w-100">
 
-                for ($i = 0; $i < $showItems; $i++) {
-                    $item = $open[$i];
+                                                <div class="d-flex justify-content-between border-sr">
+                                                    <div class="d-flex  gap-1">
+                                                        <b class="id">#<?= $data->id ?></b>
+                                                        <p class="status  m-0
+                                                <?php if ($data->status === "Open") {
+                                                    echo "closed-status";
+                                                } elseif ($data->status === "Closed") {
+                                                    echo "open-status";
+                                                } else {
+                                                    echo "open-status acknowledged-btn";
+                                                } ?>"><?= $data->status ?>
+                                                        </p>
+                                                    </div>
+                                                    <div class="date">
+                                                        <label><?= $data->date_upload ?></label>
+                                                    </div>
+                                                </div>
 
-                    $result = apiSend('module', 'get-listnew', ['table' => 'work_details', 'condition' => 'id="' . $item->work_details_id . '"']);
-                    $work = json_decode($result);
-                ?>
-                    <div class="card-history">
-                        <div class="w-100">
-                            <div class="head w-100">
-                                <div class="d-flex gap-2">
-                                    <span>#<?= $item->id ?></span>
-                                    <div><?= $item->status ?></div>
-                                </div>
-                                <label><?= $item->date_upload ?></label>
+
+
+                                                <div class="w-100 mt-3">
+                                                    <div class="row">
+                                                        <label class="fw-bold  col-6 label m-0 fs-6"><?= $sr->type ?></label><br>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="fw-bold col-6 label m-0">Category:</label><br>
+                                                        <label class="col-6 label m-0 "><?= $data->category_name ?> </label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="fw-bold col-6 label m-0">Name Contractor :</label><br>
+                                                        <label class="col-6 label m-0 "><?= $work[0]->name_contractor ?></label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="fw-bold col-6 label m-0">Scope of work :</label><br>
+                                                        <label class="col-6 label m-0 "><?= $work[0]->scope_work ?> </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between mt-auto">
+                                                    <div class="w-100">
+                                                        <?php if ($comment[0]->comment) : ?>
+                                                            <label class="label m-0" for="">Updates:</label>
+                                                            <div class="comment">
+                                                                <div>
+                                                                    <span class="date-comment">Date & Time: <?= formatDateTime($comment[0]->created_on) ?> </span>
+                                                                    <div>
+                                                                        <span class="from-comment">-from admin-</span>
+                                                                        <p class="text-comment"><?= $comment[0]->comment ?></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <?php endif ?>
+                                                        <div class="text-end mt-2">
+                                                            <a href="myrequests-view.php?id=<?= $data->enc_id ?>&loc=<?= $sr->table ?>">View all</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                             </div>
-                            <div>
-                                <p>Nature Of Work: <?= $item->category_name ?></p>
-
-                                <p>Name Contractor :<?= $work[0]->name_contractor ?></label><br>
-                                <p>Scope of work :<?= $work[0]->scope_work ?></label>
-                                <p>Start Date: <?= $item->start_date ?></p>
-                                <p>End Date: <?= $item->end_date ?></p>
-                            </div>
-                        </div>
-                    </div>
-                <?php
-                }
-                ?>
+                    <?php } ?>
+            <?php endif ?>
+          <?php endforeach; ?>
             </div>
             <div class="history-container acknowledged">
-                <?php
-                $limit = 4; // Set the initial limit here
-                $totalItems = count($ongoing);
-                $showItems = min($limit, $totalItems);
+            <?php
+                $count = 0;
+                foreach ($allsr as $key => $sr): ?>
+                <?php if ($sr->type === "Work Permit"): ?>
+                    <?php
+                        $result =  apiSend('tenant', 'get-listnew', ['table' => $sr->table, 'condition' => 'id="' . $sr->id . '"and status = "Ongoing" ']);
+                        $data = json_decode($result)[0];
+                    if ($data->status == "Ongoing") {
+                    $count += 1;
+                    if ($count > 5){
+                        break;
+                    }
+                    }
+                    if ($data) {
+                        $result =  apiSend('tenant', 'get-listnew', ['table' => 'work_details', 'condition' => 'id="' .  $data->work_details_id . '"']);
+                        $work = json_decode($result);
+                        $result =  apiSend('tenant', 'get-listnew', ['table' => "comments", 'condition' => 'reference_id="' . $sr->id . '" and reference_table="' . $sr->main_table . '"', 'orderby' => 'id DESC', 'limit' => '1']);
+                        $comment = json_decode($result);
+                    ?>
+                            <div class="p-2">
+                                        <div class="requests-card w-100">
+                                            <div class="d-flex justify-content-between gap-2 flex-column w-100">
 
-                for ($i = 0; $i < $showItems; $i++) {
-                    $item = $ongoing[$i];
-                ?>
-                    <div class="card-history">
-                        <div class="w-100">
-                            <div class="head w-100">
-                                <div class="d-flex gap-2">
-                                    <span>#<?= $item->id ?></span>
-                                    <div><?= $item->status ?></div>
-                                </div>
-                                <label><?= $item->date_upload ?></label>
-                            </div>
-                            <div>
-                                <p>Nature Of Work: <?= $item->category_name ?></p>
+                                                <div class="d-flex justify-content-between border-sr">
+                                                    <div class="d-flex  gap-1">
+                                                        <b class="id">#<?= $data->id ?></b>
+                                                        <p class="status  m-0
+                                                <?php if ($data->status === "Open") {
+                                                    echo "closed-status";
+                                                } elseif ($data->status === "Closed") {
+                                                    echo "open-status";
+                                                } else {
+                                                    echo "open-status acknowledged-btn";
+                                                } ?>"><?= $data->status ?>
+                                                        </p>
+                                                    </div>
+                                                    <div class="date">
+                                                        <label><?= $data->date_upload ?></label>
+                                                    </div>
+                                                </div>
 
-                                <p>Contact Number: <?= $item->contact_no ?></p>
-                                <p>Start Date: <?= $item->start_date ?></p>
-                                <p>End Date: <?= $item->end_date ?></p>
+
+
+                                                <div class="w-100 mt-3">
+                                                    <div class="row">
+                                                        <label class="fw-bold  col-6 label m-0 fs-6"><?= $sr->type ?></label><br>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="fw-bold col-6 label m-0">Category:</label><br>
+                                                        <label class="col-6 label m-0 "><?= $data->category_name ?> </label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="fw-bold col-6 label m-0">Name Contractor :</label><br>
+                                                        <label class="col-6 label m-0 "><?= $work[0]->name_contractor ?></label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="fw-bold col-6 label m-0">Scope of work :</label><br>
+                                                        <label class="col-6 label m-0 "><?= $work[0]->scope_work ?> </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between mt-auto">
+                                                    <div class="w-100">
+                                                        <?php if ($comment[0]->comment) : ?>
+                                                            <label class="label m-0" for="">Updates:</label>
+                                                            <div class="comment">
+                                                                <div>
+                                                                    <span class="date-comment">Date & Time: <?= formatDateTime($comment[0]->created_on) ?> </span>
+                                                                    <div>
+                                                                        <span class="from-comment">-from admin-</span>
+                                                                        <p class="text-comment"><?= $comment[0]->comment ?></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <?php endif ?>
+                                                        <div class="text-end mt-2">
+                                                            <a href="myrequests-view.php?id=<?= $data->enc_id ?>&loc=<?= $sr->table ?>">View all</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                             </div>
-                        </div>
-                    </div>
-                <?php
-                }
-                ?>
+                    <?php } ?>
+            <?php endif ?>
+          <?php endforeach; ?>
             </div>
             <div class="history-container finishedwork">
-                <?php
-                $limit = 4; // Set the initial limit here
-                $totalItems = count($closed);
-                $showItems = min($limit, $totalItems);
+            <?php
+                $count = 0;
+                foreach ($allsr as $key => $sr): ?>
+                <?php if ($sr->type === "Work Permit"): ?>
+                    <?php
+                        $result =  apiSend('tenant', 'get-listnew', ['table' => $sr->table, 'condition' => 'id="' . $sr->id . '"and status = "Closed" ']);
+                        $data = json_decode($result)[0];
+                    if ($data->status == "Closed") {
+                    $count += 1;
+                    if ($count > 5){
+                        break;
+                    }
+                    }
+                    if ($data) {
+                        $result =  apiSend('tenant', 'get-listnew', ['table' => 'work_details', 'condition' => 'id="' .  $data->work_details_id . '"']);
+                        $work = json_decode($result);
+                        $result =  apiSend('tenant', 'get-listnew', ['table' => "comments", 'condition' => 'reference_id="' . $sr->id . '" and reference_table="' . $sr->main_table . '"', 'orderby' => 'id DESC', 'limit' => '1']);
+                        $comment = json_decode($result);
+                    ?>
+                            <div class="p-2">
+                                        <div class="requests-card w-100">
+                                            <div class="d-flex justify-content-between gap-2 flex-column w-100">
 
-                for ($i = 0; $i < $showItems; $i++) {
-                    $item = $closed[$i];
-                ?>
-                    <div class="card-history">
-                        <div class="w-100">
-                            <div class="head w-100">
-                                <div class="d-flex gap-2">
-                                    <span>#<?= $item->id ?></span>
-                                    <div><?= $item->status ?></div>
-                                </div>
-                                <label><?= $item->date_upload ?></label>
-                            </div>
-                            <div>
-                                <p>Nature Of Work: <?= $item->category_name ?></p>
+                                                <div class="d-flex justify-content-between border-sr">
+                                                    <div class="d-flex  gap-1">
+                                                        <b class="id">#<?= $data->id ?></b>
+                                                        <p class="status  m-0
+                                                <?php if ($data->status === "Open") {
+                                                    echo "closed-status";
+                                                } elseif ($data->status === "Closed") {
+                                                    echo "open-status";
+                                                } else {
+                                                    echo "open-status acknowledged-btn";
+                                                } ?>"><?= $data->status ?>
+                                                        </p>
+                                                    </div>
+                                                    <div class="date">
+                                                        <label><?= $data->date_upload ?></label>
+                                                    </div>
+                                                </div>
 
-                                <p>Contact Number: <?= $item->contact_no ?></p>
-                                <p>Start Date: <?= $item->start_date ?></p>
-                                <p>End Date: <?= $item->end_date ?></p>
+
+
+                                                <div class="w-100 mt-3">
+                                                    <div class="row">
+                                                        <label class="fw-bold  col-6 label m-0 fs-6"><?= $sr->type ?></label><br>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="fw-bold col-6 label m-0">Category:</label><br>
+                                                        <label class="col-6 label m-0 "><?= $data->category_name ?> </label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="fw-bold col-6 label m-0">Name Contractor :</label><br>
+                                                        <label class="col-6 label m-0 "><?= $work[0]->name_contractor ?></label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="fw-bold col-6 label m-0">Scope of work :</label><br>
+                                                        <label class="col-6 label m-0 "><?= $work[0]->scope_work ?> </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex justify-content-between mt-auto">
+                                                    <div class="w-100">
+                                                        <?php if ($comment[0]->comment) : ?>
+                                                            <label class="label m-0" for="">Updates:</label>
+                                                            <div class="comment">
+                                                                <div>
+                                                                    <span class="date-comment">Date & Time: <?= formatDateTime($comment[0]->created_on) ?> </span>
+                                                                    <div>
+                                                                        <span class="from-comment">-from admin-</span>
+                                                                        <p class="text-comment"><?= $comment[0]->comment ?></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <?php endif ?>
+                                                        <div class="text-end mt-2">
+                                                            <a href="myrequests-view.php?id=<?= $data->enc_id ?>&loc=<?= $sr->table ?>">View all</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                             </div>
-                        </div>
-                    </div>
-                <?php
-                }
-                ?>
+                    <?php } ?>
+            <?php endif ?>
+          <?php endforeach; ?>
             </div>
         </div>
 
@@ -397,6 +558,32 @@ $closedtotal = count($closed);
 
 </html>
 <script>
+		$("input[name=end_date]").change(function() {
+			if ($("input[name=start_date]").val() === "") {
+				popup({
+					title: "Please enter start date first.",
+					data: {
+						success: 0
+					},
+					reload_time: 3000,
+					
+				});
+				$("input[name=start_date]").focus();
+				$(this).val('');
+			} else if ($("input[name=end_date]").val() < $("input[name=start_date]").val()) {
+				popup({
+					title: "End date cannot be before start date. Please change.",
+					data: {
+						success: 0
+					},
+					reload_time: 3000,
+					
+				});
+				$("input[name=end_date]").val(''); 
+				$("input[name=end_date]").focus();
+			}
+		});
+
     $('.acknowledged').hide();
     $('.finishedwork').hide();
     $("#btnSubmit").on('click', function() {
@@ -739,24 +926,20 @@ $closedtotal = count($closed);
             });
         });
     };
-    let selectedID = "1"
-    $('input[name="gp_type"]').change(function() {
-        var selectedValue = $(this);
-        if (selectedValue.attr('id') === 'pullout') {
-            selectedID = "2";
+    let selectedID = "5"
+    // $('input[name="gp_type"]').change(function() {
+    //     var selectedValue = $(this);
+    //     if (selectedValue.attr('id') === 'pullout') {
+    //         selectedID = "2";
 
-        } else {
-            selectedID = "1";
-        }
-
-        // Log the ID of the selected radio button to the console
-
-
-    });
+    //     } else {
+    //         selectedID = "1";
+    //     }
+    // });
 
     const send_gatepass = () => {
 
-        const gp_date = $('input[name="gp_date"]').val();
+        const gp_date = $('input[name="start_date"]').val();
         const gp_time = $('input[name="gp_time"]').val();
         const unit_id = $('input[name="unit_id"]').val();
         const name_id = $('input[name="name_id"]').val();

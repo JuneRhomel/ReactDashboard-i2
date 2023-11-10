@@ -20,6 +20,13 @@
 .switch {
   position: relative;
 }
+.remove-btn {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  border: none;
+  background-color: transparent;
+}
 
 .switch label {
   cursor: pointer;
@@ -73,6 +80,11 @@
 .switch label:active:after {
   width: 30px;
 }
+.notif-icon img {
+  height: 58px;
+  width: 60px;
+  object-fit: contain;
+}
 
 /* neutral */
 .switch-neutral input[type=checkbox] {
@@ -84,7 +96,9 @@
 .switch-neutral {
   position: relative;
 }
-
+.card-box {
+  cursor: pointer;
+}
 .switch-neutral label {
   cursor: pointer;
   text-indent: -9999px;
@@ -328,30 +342,35 @@ body {
 }
 
 .acknowledged-status {
-  background-color: #ff9839;
+  background-color: #FFEECC;
   color: #ffffff;
   border-radius: 3px;
+  border-radius: 40px;
   inline-size: fit-content;
 }
 
 .closed-status {
-  background-color: #2ecc71;
-  color: #ffffff;
+  background-color: #E6FAF4;
+  color: #10513F;
   border-radius: 3px;
+  border-radius: 40px;
   inline-size: fit-content;
 }
 
 .open-status {
-  background-color: #c0392b;
+  background-color: #FDDDD3;
   color: #ffffff;
   border-radius: 3px;
+  border-radius: 40px;
   inline-size: fit-content;
+  color: #61220F;
 }
 
 .follow-up-concern-status {
   background-color: #c0392b;
   color: #ffffff;
   border-radius: 3px;
+  border-radius: 40px;
   inline-size: fit-content;
 }
 
@@ -1702,12 +1721,13 @@ height: 44px;
   border-radius: 5px;
   font-size: 8px;
   font-weight: 700;
-  color: #ffffff;
+  /* color: #ffffff; */
   text-transform: uppercase;
 }
 
 .acknowledged-btn {
-  background-color: #ff9839;
+  background-color: #FFEECC;
+  color: #663000;
 }
 
 .approved-btn {
@@ -1761,7 +1781,7 @@ height: 44px;
 }
 
 .notif {
-  gap: 24px !important;
+  gap: 10px !important;
 
 }
 
@@ -1784,8 +1804,11 @@ height: 44px;
 }
 
 .notif p {
-  font-size: 14px !important;
+  font-size: 12px !important;
   text-transform: capitalize;
+}
+.notif .diff {
+  font-size: 10px !important;
 }
 
 .notif>div {
@@ -1819,11 +1842,11 @@ height: 44px;
   background-color: #FFFFFF;
   overflow-x: hidden;
   transition: 0.6s;
-  padding-top: 50px;
+  padding-top: 20px;
 }
 
 .show-notf {
-  width: 80%;
+  width: 85%
 }
 
 .sidenav .notif-heading {
@@ -2031,14 +2054,27 @@ height: 44px;
   border-radius: 5px;
   object-fit: contain;
 }
+.border-sr {
+  border-bottom: 1px solid #A8B5C2;
+  padding-bottom: 12px;
+}
 
 .object-fit {
   object-fit: cover;
 }
 
 .news-img {
-  height: 150px;
-  object-fit: cover;
+  height: auto;
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+}
+.table-text-limit {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  /* Specify the number of characters */
+  max-width: 200px;
 }
 
 
@@ -2079,26 +2115,44 @@ height: 44px;
 .error-input~label {
   color: red !important;
 }
-
-.card-sr label {
-  position: absolute;
-  z-index: 2;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 16px;
-  bottom: 10px;
-  left: 10px;
+.card-sr {
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  position: relative;
+height: 175px;
 }
 
+.card-sr label {
+  /* position: absolute; */
+  z-index: 2;
+  margin: 0;
+  color: #1C5196;
+  font-weight: 700;
+  font-size: 16px;
+  /* left: 50%;
+  top: 90%;
+  transform: translate(-50%,-50%); */
+  
+}
 .card-sr a {
   width: 100%;
   height: 100%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 15px;
+
 }
 
 .card-sr img {
-  width: 100%;
+  width: 75px;
+  height: 75px;
   object-fit: cover;
-  height: 100%;
 }
 
 
@@ -2114,6 +2168,7 @@ height: 44px;
   .card-sr a {
     height: 200px;
   }
+
 }
 
 
@@ -2423,4 +2478,28 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm:focus {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+/* banner */
+.banner {
+  height: 220px;
+  position: relative;
+}
+.banner img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+
+}
+.banner h1 {
+  position: absolute;
+  left: 26px;
+  top: 30px;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+}
+.banner span {
+  font-size: 18px;
 }

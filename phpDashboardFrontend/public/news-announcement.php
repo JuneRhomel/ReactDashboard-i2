@@ -5,20 +5,10 @@ include("footerheader.php");
 $location_menu = "news&announcement";
 
 
-$result = apiSend('news', 'getlist', ['table' => 'news','condition' => 'status="Publish"']);
+$result = apiSend('news', 'getlist', ['table' => 'news','condition' => 'status="Published"']);
 $news = json_decode($result);
 ?>
 <div class="d-flex">
-
-    <!-- <div class="header py-3">
-        <div class="bg-white pt-2 rounded-sm" >
-            <div class="d-flex align-items-center px-3">
-                <button class="back-button-sr" ><i class="fa-solid fa-chevron-left"></i></button>
-                <label class="heading-page px-2 m-0" >News And Announcements</label>
-            </div>
-        </div>
-    </div> -->
-
     <div class="main">
         <?php include("navigation.php") ?>
         <div style="background-color: #F0F2F5;padding: 10px 20px 0px 25px">

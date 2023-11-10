@@ -19,16 +19,16 @@ $val = json_decode($api, true);
         <label class="heading-page px-2 m-0" style="font-weight: 600; font-size: 22px; color: #1C5196;">Back</label>
       </div>
       <div class=" mt-4">
-        <div class="p-2 bg-white">
+        <div class="px-3 py-3 bg-white" style="border-radius: 20px;">
           <?php if ($val['thumbnail']) { ?>
             <img class="card-img-top news-img rounded" src="<?= $val['thumbnail'] ?>" alt="News">
           <?php } ?>
-          <div class="mt-2">
+          <div class="mt-5">
             <div>
               <label class="card-title font-18"><b><?= $val['title'] ?></b></label><br>
               <label><?= formatDateUnix($val['created_on']) ?></label>
             </div>
-            <p class="mt-2 font-14">
+            <p class="mt-3 font-14">
               <?= $val['content'] ?>
             </p>
           </div>

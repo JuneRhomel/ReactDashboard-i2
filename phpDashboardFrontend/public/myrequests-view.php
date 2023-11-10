@@ -1,171 +1,429 @@
 <?php
+require_once("header.php");
+$location_menu = "my-request";
 include("footerheader.php");
-fHeader();
-global $scriptname;
-
-/*ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
-
-$arr = array(
-    'Unit Repair'=>array('unitrepair','get-unitrepair','get-updates-unitrepair','unitrepairid'),
-    'Gate Pass'=>array('gatepass','get-gatepass','gatepassid'),
-    'Visitor Pass'=>array('visitorpass','get-visitorpass','vpid'),
-    'Reservation'=>array('reservation','get-reservation','get-updates-reservation','reservation_id'),
-    'Move In'=>array('movein','get-movein','get-updates-movement','miid'),
-    'Move Out'=>array('moveout','get-moveout','get-updates-movement','moid'),
-    'Work Permit'=>array('workpermit','get-workpermit','get-updates-punchlist','wpid'),
-);
 
 $id = initObj('id');
-$form = (initObj('form')=="") ? "Gate Pass" : initObj('form');
+$table = initObj('loc');
+$module = str_replace("vw_", "", $table);
+$module = str_replace("_", "", $module);
+$result = apiSend('module', 'get-record', ['id' => decryptData($id), 'view' => $table]);
+$record = json_decode($result);
+if($module == "reportissue") $module = "report_issue";
 
-$module = $arr[$form][0];
-$command = $arr[$form][1];
-$updcommand = $arr[$form][2];
-$fldid = $arr[$form][3];
 
-// CREATE NEW REQUEST
-$api = apiSend($module,$command,[ "$fldid"=>$id ]);
-$val = json_decode($api,true);
-
-// CREATE NEW REQUEST UPDATE
-$api = apiSend($module,$updcommand,[ "$fldid"=>$id ]);
-$updates = json_decode($api,true);
-
-//vdump($form." | ".$module." | ".$command." | ".$fldid);
-//vdump($api);
-//vdump($val);
-//vdumpx($updates);
-
-$status = ($val['approve'] == 0) ? 'Pending':'Approved';
-if ($form=="Gate Pass") {
-    $type = $val['gp_type'];    
-    $details = $val['courier'];
-    $date = $val['gp_date'];
-} elseif ($form=="Unit Repair") {
-    $type = $val['unit'];
-    $details = $val['description'];
-    $date = formatDateUnix($val['created_on']);
-}   elseif ($form=="Visitor Pass") {
-    $type = $val['unit'];
-    $details = $val['purpose'];
-    $date = formatDateUnix($val['created_on']);
-}  elseif ($form=="Reservation") {
-    $type = $val['amenity'];
-    $details = $val['purpose'];
-    $date = formatDateUnix($val['created_on']);
-} elseif ($form=="Move In") {
-    $type = $val['unit'];
-    $details = $val['resident_type'];
-    $date = $val['date'];
-}  elseif ($form=="Move Out") {
-    $type = $val['unit'];
-    $details = $val['resident_type'];
-    $date = $val['date'];        
-}  elseif ($form=="Work Permit") {
-    $type = $val['contractor_name'];
-    $details = $val['scope_work'];
-    $date = $val['start_date'];        
-} else {
-    $type = ($form=="Turnover") ? "" : $val['sr_type'];
-    $details = ($form=="Turnover" || $form=="Service Request") ? $val['details'] : $val['description'];
-    $date = ($form=="Turnover") ? $val['created_date'] : $val['date'];
-}
-$attachment = (isset($val['attachments'][0]['attachment_url'])) ? $val['attachments'][0]['attachment_url'] : "";
+$result =  apiSend('tenant', 'get-listnew', ['table' => "comments", 'condition' => 'reference_id="' . $record->id . '" and reference_table="' . $module . '"']);
+$comment = json_decode($result);
 ?>
-<div class="col-12 d-flex align-items-center justify-content-start mt-4">
-    <div class="">
-        <a href="myrequests.php"><i class="fas fa-arrow-left circle"></i></a>
-    </div>
-    <div class="font-18 ml-2"><a href="myrequests.php">Back to My Request</a></div>
-</div>
-<div class="col-12 d-flex align-items-center justify-content-between mt-3 mb-3">
-    <div class="title">Request Status</div>
-</div>
-<div class="container mb-3">
-    <div class="bg-white p-4 rounded">
-        <div class="row">
-            <div class="col-2 d-flex align-items-center justify-content-center"><i class="fa fa-check circle-inverse" style="padding:15px; font-size:18px;"></i></div>
-            <div class="col-3 d-flex align-items-center justify-content-center"><img src="resources/images/onepix.gif" style="border:solid 1px #cecece;" width="80" height="1"></div>
-            <div class="col-2 d-flex align-items-center justify-content-center"><i class="fa fa-check circle-inverse" style="padding:15px; font-size:18px; background-color:<?=($status=="New") ? "gray" : "orange" ?>;"></i></div>
-            <div class="col-3 d-flex align-items-center"><img src="resources/images/onepix.gif" style="border:solid 1px #cecece;" width="80" height="1"></div>
-            <div class="col-2 d-flex align-items-center justify-content-center"><i class="fa fa-check circle-inverse" style="padding:15px; font-size:18px; background-color:<?=($status=="Closed" || $status=="Approved" || $status=="Disapproved") ? "green" : "gray"?>;"></i></div>
-        </div>
-        <div class="row">
-            <div class="col-2 d-flex align-items-center justify-content-center">New</div>
-            <div class="col-8 d-flex align-items-center justify-content-center">In Progress</div>
-            <div class="col-2 d-flex align-items-center justify-content-center">Closed</div>
-        </div>
-    </div>
-</div>
-<div class="col-12 d-flex align-items-center justify-content-between mt-4 mb-3">
-    <div class="title">Request Detail</div>
-</div>
-<div class="container mb-3">
-    <form name="frm" action="myrequests-save.php" method="post">
-    <div class="bg-white rounded p-3">
-        <div class="row px-3">
-            <div class="col-4 p-1">Request</div>
-            <div class="col-8 p-1"><b><?=$form?></b></div>
-            <div class="col-4 p-1"><?=($form=="Reservation") ? "Amenity" : "Category"?></div>
-            <div class="col-8 p-1"><b><?=$type?></b></div>
-            <div class="col-4 p-1">Description</div>
-            <div class="col-8 p-1"><b><?=$details?></b></div>
-            <div class="col-4 p-1">Status</div>
-            <div class="col-8 p-1"><b><?=$status?></b></div>
-            <?php if ($attachment!="") { ?>
-            <div class="col-4 p-1">Attachment</div>
-            <div class="col-8 p-1"><img src="<?=$attachment?>"></div>
-        <?php } ?>
-            <div class="col-4 p-1">Feedback</div>
-            <div class="col-8 p-1">
-                <textarea name="description" rows="3" class="form-control"></textarea>
-                <input name="id" type="hidden" value="<?=$id?>">
-                <input name="form" type="hidden" value="<?=$form?>">
-                <input name="status" type="hidden" value="<?=$status?>">
-            </div>
-            <div class="col-12"><button type="submit" class="btn btn-primary form-control pt-1 my-2" value="Submit">Submit</button></div>
-        </div>
-    </div>
-    </form>
-</div>
-<div class="col-12 d-flex align-items-center justify-content-between mt-4 mb-3">
-    <div class="title">Updates</div>
-</div>
-<?php 
-if ($updates) {
-    foreach($updates as $key=>$update) {
-?>
-<div class="container mb-3">
-    <div class="bg-white rounded p-3">
+<div class="d-flex">
+  <div class="main">
+    <?php include("navigation.php") ?>
+    <div style="background-color: #F0F2F5;padding: 10px 20px 100px 25px">
+      <div class="d-flex align-items-center px-3 mt-3">
+        <button class="back-button-sr" style="width: 30px; height: 29px; background-color: transparent; border-radius: 10px; border: 1px solid #1C5196;color: #1C5196;font-size: 10px; "><i class="fa-solid fa-chevron-left"></i></button>
+        <label class="heading-page px-2 m-0" style="font-weight: 600; font-size: 22px; color: #1C5196;">Back</label>
+      </div>
+      <div class=" mt-4">
         <div class="">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class=""><?=date("m/d/Y h:m A",$update['created_on'])?></div>
-                <div class="badge badge-pill badge-secondary pull-right badge-label"><?=$update['status']?></div>
+          <div class="requests-card flex-column gap-2 w-100 mt-3 ">
+            <div class="d-flex justify-content-between border-sr">
+              <div>
+                <p class="status  m-0
+                      <?php if ($record->status === "Open" || $record->status === "Approved") {
+                        echo "closed-status";
+                      } elseif ($record->status === "Closed" || $record->status === "Denied") {
+                        echo "open-status";
+                      } else {
+                        echo "open-status acknowledged-btn";
+                      } ?>"><?= $record->status ?>
+                </p>
+              </div>
+              <div class="date">
+                <label><?= $record->date_upload ?></label>
+              </div>
             </div>
+            <?php if ($module === "report_issue") : ?>
+              <div class="d-flex justify-content-between">
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class="fw-bold col-6 label mb-2 fs-5">Report Issue</label><br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Unit :</label><br>
+                    <label class="col-6 label m-0 "><?= $record->location_name ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Category :</label><br>
+                    <label class="col-6 label m-0 "><?= $record->issue_name ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Issue:</label><br>
+                    <label class="col-6 label m-0 "><?= $record->description ?></label></br>
+                  </div>
+                  <div class="">
+                    <label class="fw-bold col-6 label m-0 p-0">Attachment:</label><br>
+                    <?php if ($record->attachments) : ?>
+                      <img src="<?= $record->attachments ?>" class="v-img" style="border-radius: 5px;">
+                    <?php endif ?>
+                  </div>
+                </div>
+              </div>
+              <?php if ($comment) : ?>
+                <div class="d-flex flex-column gap-2">
+                  <label class="label m-0 mt-3" for="">Updates:</label>
+                  <?php foreach ($comment as $item) : ?>
+                    <div class="comment">
+                      <div>
+                        <span class="date-comment">Date & Time: <?= formatDateTime($item->created_on) ?> </span>
+                        <div>
+                          <span class="from-comment">-from admin-</span>
+                          <p class="text-comment"><?= $item->comment ?></p>
+                        </div>
+                      </div>
+                    </div>
+                  <?php endforeach ?>
+                </div>
+              <?php endif ?>
+
+            <?php elseif ($module === "visitorpass") : ?>
+              <?php
+              $result =  apiSend('tenant', 'get-listnew', ['table' => "vp_guest", 'condition' => 'guest_id="' . $record->id . '"']);
+              $guest = json_decode($result);
+              ?>
+              <div class="">
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class="fw-bold col-6 label mb-2 fs-5">Visitor Pass</label><br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Contact Number :</label><br>
+                    <label class="col-6 label m-0 "><?= $record->contact_no ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Visit Purpose :</label><br>
+                    <label class="col-6 label m-0 "><?= $record->visit_purpose ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Arrival Date :</label><br>
+                    <label class="col-6 label m-0 "><?= formatDate($record->arrival_date) ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Arrival Time:</label><br>
+                    <label class="col-6 label m-0 "><?= $record->arrival_time ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Departure Date:</label><br>
+                    <label class="col-6 label m-0 "><?= formatDate($record->departure_date) ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Departure Time :</label><br>
+                    <label class="col-6 label m-0 "><?= $record->departure_time ?> </label></br>
+                  </div>
+                </div>
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class=" col-6 label m-0 ">Guest</label><br>
+                  </div>
+
+                </div>
+              </div>
+              <table class="table-sr">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Contact Number</th>
+                    
+                  </tr>
+                </thead>
+                <?php foreach ($guest as $item) : ?>
+                  <tbody>
+                    <tr>
+                      <td><?= $item->guest_name ?></td>
+                      <td><?= $item->guest_no ?></td>
+                      
+                    </tr>
+                  </tbody>
+                <?php endforeach ?>
+              </table>
+              <?php if ($comment) : ?>
+                <div class="d-flex flex-column gap-2">
+                  <label class="label m-0 mt-3" for="">Updates:</label>
+                  <?php foreach ($comment as $item) : ?>
+                    <div class="comment">
+                      <div>
+                        <span class="date-comment">Date & Time: <?= formatDateTime($item->created_on) ?> </span>
+                        <div>
+                          <span class="from-comment">-from admin-</span>
+                          <p class="text-comment"><?= $item->comment ?></p>
+                        </div>
+                      </div>
+                    </div>
+                  <?php endforeach ?>
+                </div>
+                <div>
+
+                </div>
+              <?php endif ?>
+            <?php elseif ($module === "gatepass") : ?>
+              <?php
+              $result =  apiSend('tenant', 'get-listnew', ['table' => "gatepass_items", 'condition' => 'gatepass_id="' . $record->id . '"']);
+              $items = json_decode($result);
+              $result =  apiSend('tenant', 'get-listnew', ['table' => "gatepass_personnel", 'condition' => 'gatepass_id="' . $record->id . '"']);
+              $personnel = json_decode($result)[0];
+              ?>
+              <div class="">
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class="fw-bold col-6 label mb-2 fs-5">Gate pass</label><br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Unit :</label><br>
+                    <label class="col-6 label m-0 "><?= $record->unit ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Contact Number :</label><br>
+                    <label class="col-6 label m-0 "><?= $record->contact_no ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0"> Type :</label><br>
+                    <label class="col-6 label m-0 "><?= $record->type ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Date :</label><br>
+                    <label class="col-6 label m-0 "><?= formatDate($record->gp_date) ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Time :</label><br>
+                    <label class="col-6 label m-0 "><?= $record->gp_time ?> </label></br>
+                  </div>
+                </div>
+
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0 ">Personnel</label><br>
+                  </div>
+                  <?php if ($personnel) : ?>
+                    <div class="row">
+                      <label class="fw-bold col-6 label m-0">Personnel Name :</label><br>
+                      <label class="col-6 label m-0 "><?= $personnel->personnel_name ?> </label></br>
+                    </div>
+                    <div class="row">
+                      <label class="fw-bold col-6 label m-0"> Company Name :</label><br>
+                      <label class="col-6 label m-0 "><?= $personnel->company_name ?> </label></br>
+                    </div>
+                    <div class="row">
+                      <label class="fw-bold col-6 label m-0"> Contact Number :</label><br>
+                      <label class="col-6 label m-0 "><?= $personnel->personnel_no ?> </label></br>
+                    </div>
+                  <?php endif ?>
+
+
+
+                </div>
+
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0 ">Items</label><br>
+                  </div>
+
+                  <table class="table-sr">
+                    <thead>
+                      <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <?php foreach ($items as $item) : ?>
+                      <tbody>
+                        <tr>
+                          <td><?= $item->item_name ?></td>
+                          <td><?= $item->item_qty ?></td>
+                          <td><?= $item->description ?></td>
+                        </tr>
+                      </tbody>
+                    <?php endforeach ?>
+                  </table>
+
+                </div>
+              </div>
+              <?php if ($comment) : ?>
+                <div class="d-flex flex-column gap-2">
+                  <label class="label m-0 mt-3" for="">Updates:</label>
+                  <?php foreach ($comment as $item) : ?>
+                    <div class="comment">
+                      <div>
+                        <span class="date-comment">Date & Time: <?= formatDateTime($item->created_on) ?> </span>
+                        <div>
+                          <span class="from-comment">-from admin-</span>
+                          <p class="text-comment"><?= $item->comment ?></p>
+                        </div>
+                      </div>
+                    </div>
+                  <?php endforeach ?>
+                </div>
+              <?php endif ?>
+            <?php elseif ($module === "workpermit") : ?>
+              <?php
+              $result =  apiSend('tenant', 'get-listnew', ['table' => "work_details", 'condition' => 'id="' . $record->work_details_id . '"']);
+              $work_details = json_decode($result)[0];
+              $result =  apiSend('tenant', 'get-listnew', ['table' => "workers", 'condition' => 'workpermit_id="' . $record->id . '"']);
+              $personel = json_decode($result);
+              $result =  apiSend('tenant', 'get-listnew', ['table' => "work_materials", 'condition' => 'workpermit_id="' . $record->id . '"']);
+              $work_materials = json_decode($result);
+              $result =  apiSend('tenant', 'get-listnew', ['table' => 'work_tools', 'condition' => 'workpermit_id="' . $record->id . '"']);
+              $work_tools = json_decode($result);
+              ?>
+              <div>
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class="fw-bold col-6 label mb-2 fs-5">Work Permit</label><br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Nature of Work:</label><br>
+                    <label class="col-6 label m-0 "><?= $record->category_name ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Contact Number:</label><br>
+                    <label class="col-6 label m-0 "><?= $record->contact_no ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Unit:</label><br>
+                    <label class="col-6 label m-0 "><?= $record->location_name ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Start Date: </label><br>
+                    <label class="col-6 label m-0 "><?= formatDate($record->start_date) ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">End Date: </label><br>
+                    <label class="col-6 label m-0 "><?= formatDate($record->end_date) ?> </label></br>
+                  </div>
+                </div>
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class="fw-bold col-6 label mb-2 fs-6">Work Details</label><br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Name of Contractor:</label><br>
+                    <label class="col-6 label m-0 "><?= $work_details->name_contractor ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0"> Scope of Work:</label><br>
+                    <label class="col-6 label m-0 "><?= $work_details->scope_work ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0"> Name of Person-In-Charge</label><br>
+                    <label class="col-6 label m-0 "><?= $work_details->person_charge ?> </label></br>
+                  </div>
+                  <div class="row">
+                    <label class="fw-bold col-6 label m-0">Contact Number:</label><br>
+                    <label class="col-6 label m-0 "><?= $work_details->contact_number ?> </label></br>
+                  </div>
+                </div>
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class="fw-bold col-6 label mb-2 fs-6">List of Workers/Personnel</label><br>
+                  </div>
+                  <table class="table-sr">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <?php foreach ($personel as $item) : ?>
+                      <tbody>
+                        <tr>
+                          <td><?= $item->personnel_name ?></td>
+                          <td><?= $item->personnel_description ?></td>
+                        </tr>
+                      </tbody>
+                    <?php endforeach ?>
+                  </table>
+
+                </div>
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class="fw-bold col-6 label mb-2 fs-6">List of Tools</label><br>
+                  </div>
+
+                  <table class="table-sr">
+                    <thead>
+                      <tr>
+                        <th>Tool Name</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <?php foreach ($work_tools as $item) : ?>
+                      <tbody>
+                        <tr>
+                          <td><?= $item->tools_name ?></td>
+                          <td><?= $item->quantity_tools ?></td>
+                          <td><?= $item->description_tools ?></td>
+                        </tr>
+                      </tbody>
+                    <?php endforeach ?>
+                  </table>
+                </div>
+                <div class="w-100 mt-3">
+                  <div class="row">
+                    <label class="fw-bold col-6 label mb-2 fs-6">List of Materials</label><br>
+                  </div>
+
+                  <table class="table-sr">
+                    <thead>
+                      <tr>
+                        <th>Materials Name</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <?php foreach ($work_materials as $item) : ?>
+                      <tbody>
+                        <tr>
+                          <td><?= $item->materials_name ?></td>
+                          <td><?= $item->quantity_materials ?></td>
+                          <td><?= $item->description_materials ?></td>
+                        </tr>
+                      </tbody>
+                    <?php endforeach ?>
+                  </table>
+                </div>
+              </div>
+
+              <?php if ($comment) : ?>
+                <div class="d-flex flex-column gap-2">
+                  <label class="label m-0 mt-3" for="">Updates:</label>
+                  <?php foreach ($comment as $item) : ?>
+                    <div class="comment">
+                      <div>
+                        <span class="date-comment">Date & Time: <?= formatDateTime($item->created_on) ?> </span>
+                        <div>
+                          <span class="from-comment">-from admin-</span>
+                          <p class="text-comment"><?= $item->comment ?></p>
+                        </div>
+                      </div>
+                    </div>
+                  <?php endforeach ?>
+                </div>
+              <?php endif ?>
+
+            <?php endif ?>
+          </div>
         </div>
-        <div class="mb-2 mt-2">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class=""><?=$update['description']?></div>
-            </div>
-        </div>
-        <div class="d-flex mt-2 align-items-center">
-            <div><i class="fa fa-user icon-inverse"></i></div>
-            <div class="ml-2"><?=$update['first_name']." ".$update['last_name']?></div>
-        </div>
+      </div>
     </div>
+  </div>
+  <?php include('menu.php') ?>
 </div>
-<?php 
-    } // foreach
-} else {
-    echo '
-    <div class="container mb-3">
-        <div class="d-flex align-items-center justify-content-between bg-white rounded p-3">
-            No record found.
-        </div>
-    </div>';
-} // if update
-?>
-<div class="mt-4">&nbsp;</div>
-<?=fFooter();?>
+</div>
+</div>
+
+
+<script>
+  $('.back-button-sr').click(function() {
+    window.location = 'my-requests_new.php'
+  })
+</script>

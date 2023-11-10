@@ -356,6 +356,9 @@ font-size: 14px;
     display: none !important;
 }
 @media only screen and (min-width: 1000px) {
+    .card-sr { 
+        grid-template-columns: repeat(4, 1fr) !important;
+      }
     .menu-bottom {
         display: none;
     }
@@ -365,7 +368,9 @@ font-size: 14px;
         width: 100%;
     }
 
-
+    .show-notf {
+        width: 30% !important; 
+      }
     .menu-side-bar {
         order: 1;
         display: block;

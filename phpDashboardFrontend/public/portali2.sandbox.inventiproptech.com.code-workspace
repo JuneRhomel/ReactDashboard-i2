@@ -10,5 +10,10 @@
 			"path": "../../i2-sandbox.inventiproptech.com"
 		}
 	],
-	"settings": {}
+	"settings": {},
+	"extensions": {
+		"recommendations": [
+			"sophisticode.php-formatter"
+		]
+	}
 }

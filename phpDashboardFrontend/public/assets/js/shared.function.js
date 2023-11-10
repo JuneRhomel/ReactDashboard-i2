@@ -250,3 +250,37 @@ function compressImage(file, maxSize, callback) {
     };
     reader.readAsDataURL(file);
 }
+
+function remove_notif(id, WEB_ROOT) {
+    $.ajax({
+        url: WEB_ROOT + "/save.php",
+        type: 'POST',
+        data: {
+            table: 'notif',
+            id: id,
+            post_portal: 1,
+        },
+        dataType: 'JSON',
+        success: function (data) {
+            $('#notif-'+ id).remove()
+        },
+    });
+}
+
+
+function redirect(event,id,enc_ref_id,reference_table,WEB_ROOT){
+    const clickedElement = event.target;
+    if (clickedElement.tagName === "BUTTON") {
+        return
+    }
+    if(reference_table === 'workpermit') {
+        location.href = `${WEB_ROOT}/myrequests-view.php?id=${enc_ref_id}&loc=vw_workpermit`
+    } else if (reference_table === 'report_issue') {
+        location.href = `${WEB_ROOT}/myrequests-view.php?id=${enc_ref_id}&loc=vw_report_issue`
+    } else if (reference_table === 'visitorpass') {
+        location.href = `${WEB_ROOT}/myrequests-view.php?id=${enc_ref_id}&loc=vw_visitor_pass`
+    } else if (reference_table === 'gatepass') {
+        location.href = `${WEB_ROOT}/myrequests-view.php?id=${enc_ref_id}&loc=vw_gatepass`
+    } 
+  
+}

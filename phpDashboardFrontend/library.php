@@ -131,7 +131,9 @@ function formatDateUnix($val) {
 function formatNumber($val, $digit = 2) {
     return ($val == "") ? "" : number_format($val, $digit, ".", "");
 }
-
+function formatDateTime($inputDateTime) {
+    return date('F j, Y, g:i A', strtotime($inputDateTime));
+}
 function formatPrice($val, $ynSign = 0) {
     //$sign = ($ynSign == 1) ? "<span style=''>&#8369;</span> " : "";
     $sign = ($ynSign == 1) ? "<span style=''>PhP</span> " : "";
@@ -193,3 +195,17 @@ function genQRcode($link)
     echo '<br><a class="btn btn-dark btn-primary settings-save d-block px-5 py-2 " style="width: 300px;" href="' . $outputFile . '" download>Download QR Code</a>';
 }
 
+
+// 23-1026 ATR: GET DATE/TIME DIFFERENCE IN HOURS
+function getDTDiff($datefrom,$dateto)
+{
+	$date1 = new DateTime($datefrom);
+	$date2 = $date1->diff($dateto);
+	$result = "";
+	$result.= ($date2->y==0) ? "" : $date2->y.' yrs ';
+	$result.= ($date2->m==0) ? "" : $date2->m.' mos ';
+	$result.= ($date2->d==0) ? "" : $date2->d.' days ';
+	$result.= ($date2->h==0) ? "" : $date2->h.' hrs ';
+	$result.= ($date2->i==0) ? "0 min" : $date2->i.' mins';
+	return $result;
+}

@@ -50,11 +50,11 @@ $email = ($_GET['email']) ?? "";
 							<label id="request-form">Email Address</label>
 						</div>
 						<div class="form-group">
-							<input id="request-form" name="password" type="password" required placeholder="text" >
+							<input id="request-form" name="password" type="password" required placeholder="text">
 							<label id="request-form">Password</label>
 						</div>
 						<div class="form-group">
-							<input id="request-form" name="confirm-password" type="password" required placeholder="text" >
+							<input id="request-form" name="confirm-password" type="password" required placeholder="text">
 							<label id="request-form">Confirm Password</label>
 						</div>
 						<?php if ($info[0]['ownership'] === 'SO') { ?>
@@ -93,12 +93,11 @@ $email = ($_GET['email']) ?? "";
 				<label style="font-weight: 100; font-size: 14px;" class="mb-4">For your login, ensure to follow this specific link</label>
 				<div class="d-flex gap-4 justify-content-center">
 					<div class="form-group w-75 m-0 ">
-						<input id="request-form" class="copy_text_input" value="<?=WEB_ROOT ?>?acctcode=<?= $acctcode ?>" readonly disabled required placeholder="text">
+						<input id="request-form" class="copy_text_input" value="<?= WEB_ROOT ?>?acctcode=<?= $acctcode ?>" readonly disabled required placeholder="text">
 						<label id="request-form">URL</label>
 					</div>
-					<a class="copy_text align-items-center copy_text d-flex justify-content-center" style="color: #1c5196;" data-toggle="tooltip" style="font-size: 12px; " title="Copy to Clipboard" href="<?=WEB_ROOT ?>?acctcode=<?= $acctcode ?>"><span class="material-icons">
-							file_copy
-						</span></a>
+					<a id="copyButton" class="copy_text align-items-center copy_text d-flex justify-content-center" style="color: #1c5196;" data-toggle="tooltip" style="font-size: 12px; " title="Copy to Clipboard" href="<?= WEB_ROOT ?>?acctcode=<?= $acctcode ?>"><span class="material-icons">file_copy</span></a>
+
 
 				</div>
 				<div class="col-12 py-3">
@@ -156,8 +155,8 @@ $email = ($_GET['email']) ?? "";
 			});
 		});
 		$('.success').click(function() {
-			window.location = '<?=WEB_ROOT ?>?acctcode=<?= $acctcode ?>'
-			
+			window.location = '<?= WEB_ROOT ?>?acctcode=<?= $acctcode ?>'
+
 		})
 		$('.btn-close-verification').on('click', function() {
 			$('#verify-email').modal('hide');
@@ -179,15 +178,19 @@ $email = ($_GET['email']) ?? "";
 			$('#registered').modal('hide');
 		});
 
-		$('.copy_text').click(function(e) {
-			e.preventDefault();
-			var copyText = $(this).attr('href');
-			document.addEventListener('copy', function(e) {
-				e.clipboardData.setData('text/plain', copyText);
-				e.preventDefault();
-			}, true);
-			document.execCommand('copy');
 
+		var copiedHref = ""; // Variable to store the copied href value
+
+		// Add click event handler to the element with id "copyButton"
+		$("#copyButton").on("click", function(event) {
+			// Prevent the default behavior of the anchor tag
+			event.preventDefault();
+
+			// Get the href attribute of the anchor tag
+			copiedHref = $(this).attr("href");
+
+			// Optional: Provide user feedback that the link has been copied
+			alert("Link copied: " + copiedHref);
 		});
 	});
 </script>
