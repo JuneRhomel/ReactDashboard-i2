@@ -1,6 +1,7 @@
 import { ParamGetSoaType } from "@/types/apiRequestParams";
 import { SoaType } from "@/types/models";
 import { ApiResponse } from "@/types/responseWrapper";
+import encryptData from "@/utils/encryptData";
 import parseObject from "@/utils/parseObject";
 
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
@@ -42,12 +43,17 @@ export async function getSoa(params: ParamGetSoaType, token: string = "c8c69a475
             throw new Error(`HTTP error! Status: ${response.status}, Response: ${JSON.stringify(await fetchResponse.json())}`);
         }
         const responseBody = await fetchResponse.json();
-        console.log(responseBody)
         if (responseBody.success == 0) {
             throw new Error(`400 Bad Request! ${responseBody.description}`);
         }
         response.success = true;
-        response.data = parseObject(responseBody) as SoaType[];
+        const soas = parseObject(responseBody) as SoaType[];
+        soas.forEach((soa) => {
+            //creating an encId with my own encryption because I don't know the php encryption
+            soa.encId = encryptData(soa.id);
+        });
+        response.data = soas;
+        console.log(response.data)
         return response;
         
     } catch (error: any) {

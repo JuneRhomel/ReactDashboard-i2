@@ -52,14 +52,14 @@ const LoginForm = () => {
             label: 'Email Address',
             type: 'email',
             value: formData.email,
-            // required: true,
+            required: true,
         },
         passwordInput: {
             name: 'password',
             label: 'Password',
             type: 'password',
             value: formData.password,
-            // required: true,
+            required: true,
         }
     };
 

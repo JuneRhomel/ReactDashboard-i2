@@ -26,7 +26,7 @@ function ServiceRequestCard({ request, variant = undefined }: { request: Service
         ]
     )
 
-    const componentToRender = type && cardDetailsComponent.get(type) || <p>No Component to Render</p>;
+    const componentToRender = type ? cardDetailsComponent.get(type) : <p>No Component to Render</p>;
     return (
         <div className={style.card}>
             <div className={style.head}>

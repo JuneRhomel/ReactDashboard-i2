@@ -24,7 +24,7 @@ export async function getServerSideProps(context: any){
   const getServiceRequestProps: ParamGetServiceRequestType = {
     accountcode: accountCode,
     userId: user.id,
-    limit: 50,
+    limit: 10,
   }
 
   const props: MyRequestProps = {
@@ -33,66 +33,11 @@ export async function getServerSideProps(context: any){
     errors: null,
   }
 
-  const serviceRequestPromise = api.requests.getServiceRequests(getServiceRequestProps, token);
-  const gatepassPromise = api.requests.getGatepasses(getServiceRequestProps, token, context);
-  const workPermitPromise = api.requests.getWorkPermits(getServiceRequestProps, token, context);
-  const visitorPassPromise = api.requests.getVisitorPasses(getServiceRequestProps, token, context);
-  const serviceIssuePromise = api.requests.getIssues(getServiceRequestProps, token, context);
-  const [
-    serviceRequestResponse,
-    gatepassResponse,
-    workPermitResponse,
-    visitorPassResponse,
-    serviceIssueResponse,
-  ] = await Promise.all([
-      serviceRequestPromise,
-      gatepassPromise,
-      workPermitPromise,
-      visitorPassPromise,
-      serviceIssuePromise
-  ]);
+  const serviceRequestResponse = await api.requests.getServiceRequests(getServiceRequestProps, token, context);
 
-  const responses = [serviceRequestResponse, gatepassResponse, workPermitResponse, visitorPassResponse, serviceIssueResponse]
-  const errors: (ErrorType | string)[] = [];
-
-  responses.forEach((apiResponse) => {
-    if (!apiResponse.success) {
-      const error = apiResponse.error as (ErrorType | string)[];
-      error && errors.push(...error);
-    }
-  })
-
-  if (errors.length == 0) {
-    // no errors
-    const serviceRequests = parseObject(responses?.shift()?.data as ServiceRequestType[]) as ServiceRequestType[];
-    const gatepasses = parseObject(responses?.shift()?.data as GatepassType[]) as GatepassType[];
-    const workPermits = parseObject(responses?.shift()?.data as WorkPermitType[]) as WorkPermitType[];
-    const visitorPasses = parseObject(responses?.shift()?.data as VisitorsPassType[]) as VisitorsPassType[];
-    const serviceIssues = parseObject(responses?.shift()?.data as ServiceIssueType[]) as ServiceIssueType[];
-    serviceRequests.sort((a, b) => {
-      const aDate: Date = new Date(a.dateUpload);
-      const bDate: Date = new Date(b.dateUpload);
-      return bDate.getTime() - aDate.getTime();
-    });
-    serviceRequests.splice(10);
-    const requestDetails = new Map<string, ServiceRequestDataType[]>([
-      ['Gate Pass', gatepasses],
-      ['Work Permit', workPermits],
-      ['Visitor Pass', visitorPasses],
-      ['Report Issue', serviceIssues]
-    ]);
-    serviceRequests?.forEach((request: ServiceRequestType) => {
-      console.log(request);
-      const type = request.type;
-      const details = requestDetails.get(type);
-      const requestData = details?.find((detail: ServiceRequestDataType) => detail?.id === request.id);
-      request.data = requestData || null;
-    })
-    props.serviceRequests = serviceRequests;
-  } else {
-    // error case
-    props.errors = errors;
-  }
+  serviceRequestResponse.success ?
+      props.serviceRequests = serviceRequestResponse.data as ServiceRequestType[] :
+        props.errors = serviceRequestResponse.error as (string|ErrorType)[];
 
   return {
     props: props

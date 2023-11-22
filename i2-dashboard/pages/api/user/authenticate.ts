@@ -15,6 +15,7 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
     const headers: HeadersInit = copyHeaders(req);
 
     try {
+        //authenticate the user
         const response = await fetch(url, {
             method: req.method,
             body: body,
@@ -30,6 +31,7 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
                 view: 'users',
             }
             headers.Authorization = `Bearer ${user.token}:tenant`;
+            //fetch the user using their authorization token
             const response = await fetch(`${baseURL}/tenant/get-user`, {
                 method: req.method,
                 body: JSON.stringify(body),
@@ -39,6 +41,7 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
             if (response.ok) {
                 const responseBody = await response.json();
                 const rawUser = parseObject(responseBody) as any;
+                //create this new User object with only relevant fields needed
                 const payload: UserType = {
                     id: rawUser.id,
                     token: user.token,
@@ -58,6 +61,7 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
                 }
                 const token: string = jwt.sign(payload, jwtSecret, {expiresIn: '1d'})
                 const cookie: string = getCookieString(token);
+                //respond with 200 status and with the jwt set as a cookie
                 res.status(200)
                     .setHeader("Set-Cookie", cookie)
                     .json(payload);

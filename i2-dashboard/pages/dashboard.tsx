@@ -8,7 +8,6 @@ import Dashboard from "@/components/pages/dashboard/Dashboard";
 import encryptData from "@/utils/encryptData";
 
 export async function getServerSideProps(context: any) {
-  // Do the stuff to check if user is authenticated
   const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
   const jwt = context.req.cookies.token;
   const user = authorizeUser(jwt);
@@ -24,7 +23,6 @@ export async function getServerSideProps(context: any) {
   const getSoaResponse = await api.soa.getSoa(soaParams, token);
   const soas = getSoaResponse.success ? getSoaResponse.data as SoaType[]: undefined;
   const currentSoa = soas?.shift() as SoaType;
-  currentSoa.encId = encryptData(currentSoa.id); // This needs to be moved to the api call somehow.
   const soaDetailsParams: ParamGetSoaDetailsType = {
     accountcode: accountCode,
     soaId: parseInt(currentSoa.id),

@@ -32,5 +32,6 @@ export async function getVisitorPasses(params: ParamGetServiceRequestType, token
         getVisitorPassResponse.error ? response.error = [...getVisitorPassResponse.error as string[]] : null;
         getGuestListResponse.error ? !response.error ? response.error = [...getGuestListResponse.error as string[]] : response.error = [...response.error as string[], ...getGuestListResponse.error as string[]] : null;
     }
+    response.success = !response.error;
     return response;
 }
