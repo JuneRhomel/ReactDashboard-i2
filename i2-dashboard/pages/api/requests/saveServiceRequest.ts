@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { ApiResponse } from "@/types/responseWrapper";
 import authorizeUser from "@/utils/authorizeUser";
 
-const baseURL: string = "http://apii2-sandbox.inventiproptech.com";
+const baseURL: string = "https://apii2-sandbox.inventiproptech.com";
 const accountCode = process.env.TEST_ACCOUNT_CODE;
 // const accountCode = 'fee';
 

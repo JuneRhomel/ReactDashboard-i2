@@ -6,7 +6,7 @@ import copyHeaders from "@/utils/copyHeaders";
 import getCookieString from "@/utils/getCookieString";
 import parseObject from "@/utils/parseObject";
 
-const baseURL: string = "http://apii2-sandbox.inventiproptech.com";
+const baseURL: string = "https://apii2-sandbox.inventiproptech.com";
 const url: string = `${baseURL}/tenant/authenticate`;
 const jwtSecret : Secret = process.env.JWT_SECRET as Secret;
 

@@ -59,7 +59,6 @@ export async function getServiceRequests(params: ParamGetServiceRequestType, tok
         ]);
 
         const serviceRequestResponseBody = await serviceRequestResponse.json();
-
         if (!serviceRequestResponse.ok) {
             //Need to fix this error handling here so that I can pass the error message to the screen instead of just here
             throw new Error(`HTTP error! Status: ${serviceRequestResponse.status}, Response: ${JSON.stringify(serviceRequestResponseBody)}`);
