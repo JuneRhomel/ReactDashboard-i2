@@ -53,7 +53,6 @@ export async function getSoa(params: ParamGetSoaType, token: string = "c8c69a475
             soa.encId = encryptData(soa.id);
         });
         response.data = soas;
-        console.log(response.data)
         return response;
         
     } catch (error: any) {
