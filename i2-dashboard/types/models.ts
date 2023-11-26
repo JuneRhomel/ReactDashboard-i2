@@ -1,6 +1,3 @@
-import { z } from "zod";
-import { ApiResponse } from "./responseWrapper";
-
 export type UserType = {
     id: number,
     token: string;
