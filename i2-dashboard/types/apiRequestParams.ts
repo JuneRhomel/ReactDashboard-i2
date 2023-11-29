@@ -10,6 +10,16 @@ export type ParamGetSoaDetailsType = {
     soaId?: number,
     limit?: number,
 }
+export type ParamGetSystemInfoType = {
+    accountcode: string,
+    soaId?: number,
+    limit?: number,
+}
+export type ParamGetNews = {
+    accountcode: string,
+    soaId?: number,
+    limit?: number,
+}
 
 export interface ParamGetServiceRequestType {
     accountcode: string,

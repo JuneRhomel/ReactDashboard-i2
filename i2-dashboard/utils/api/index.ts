@@ -18,7 +18,8 @@ import saveReportIssue from "./requests/saveReportIssue";
 import { getWorkPermits } from "./requests/getWorkPermits";
 import { getWorkPermitTypes } from "./requests/getWorkPermitTypes";
 import saveWorkPermit from "./requests/saveWorkPermit";
-
+import { getSysteminfo } from './systeminfo/getSysteminfo';
+import { getNews } from './newsannouncements/getNews';
 /**
 * This object contains all the API functions for the client to make user related requests
 */
@@ -49,11 +50,17 @@ const requests = {
     saveReportIssue: saveReportIssue,
     saveWorkPermit: saveWorkPermit,
 }
+const systeminfo = {
+    getSysteminfo: getSysteminfo
+}
+
+
 
 const api = {
     user,
     soa,
     requests,
+    systeminfo
 }
 
 export default api;

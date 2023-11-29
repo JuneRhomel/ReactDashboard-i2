@@ -1,0 +1,22 @@
+.banner {
+    height: 220px;
+    position: relative;
+}
+.banner img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+/* img {
+    vertical-align: middle;
+    border-style: none;
+} */
+.banner h1 {
+    position: absolute;
+    left: 26px;
+    top: 30px;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+}

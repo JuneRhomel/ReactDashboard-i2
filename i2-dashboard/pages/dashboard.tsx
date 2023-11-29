@@ -1,6 +1,6 @@
 import Layout from "@/components/layouts/layout";
-import { SoaPaymentsType, SoaType,  } from "@/types/models";
-import { ParamGetSoaType, ParamGetSoaDetailsType } from "@/types/apiRequestParams";
+import { SoaPaymentsType, SoaType, SystemType } from "@/types/models";
+import { ParamGetSoaType, ParamGetSoaDetailsType,ParamGetSystemInfoType } from "@/types/apiRequestParams";
 import authorizeUser from "@/utils/authorizeUser";
 import Section from "@/components/general/section/Section";
 import api from "@/utils/api";
@@ -20,6 +20,9 @@ export async function getServerSideProps(context: any) {
     userId: user?.id,
     limit: 1,
   }
+  const systeminfoParams: ParamGetSystemInfoType = {
+    accountcode: accountCode
+  }
   const getSoaResponse = await api.soa.getSoa(soaParams, token);
   const soas = getSoaResponse.success ? getSoaResponse.data as SoaType[]: undefined;
   const currentSoa = soas?.shift() as SoaType;
@@ -27,9 +30,15 @@ export async function getServerSideProps(context: any) {
     accountcode: accountCode,
     soaId: parseInt(currentSoa.id),
   }
+
+  const getSystemInfo = await api.systeminfo.getSysteminfo(systeminfoParams,token)
+  const systemInfo = getSystemInfo.success ? getSystemInfo.data as unknown as SystemType[] : undefined;
+  
+
+
   const getSoaPaymentsResponse = await api.soa.getSoaPayments(soaDetailsParams, token);  // get soa details (transactions for this soa)
   const soaDetails = getSoaPaymentsResponse.success ? getSoaPaymentsResponse.data as SoaPaymentsType[] : null;
-  return {props: {authorizedUser: user, currentSoa, soaDetails}};
+  return {props: {authorizedUser: user, currentSoa, soaDetails, systemInfo}};
 }
 
 export default Dashboard
