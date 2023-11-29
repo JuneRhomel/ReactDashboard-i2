@@ -1,8 +1,8 @@
 import styles from "./Banner.module.css";
-import { SystemType, UserType } from "@/types/models";
-const Banner = ({ systemInfo, user }: { systemInfo: SystemType[]; user: UserType;}) => {
-  const property = systemInfo[0].propertyType ?? "";
-  const banner = systemInfo[0].banner ?? "/banner.png";
+import { SystemInfoType, UserType } from "@/types/models";
+const Banner = ({ systemInfo, user }: { systemInfo: SystemInfoType; user: UserType;}) => {
+  const property = systemInfo.propertyType ?? "";
+  const banner = systemInfo.banner ?? "/banner.png";
   let displayName = property === "Commercial" ? user.companyName : `${user.firstName} ${user.lastName}`;
   return (
     <div className={styles.banner}>

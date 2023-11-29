@@ -54,13 +54,16 @@ const systeminfo = {
     getSysteminfo: getSysteminfo
 }
 
-
+const news = {
+    getNews: getNews
+}
 
 const api = {
     user,
     soa,
     requests,
-    systeminfo
+    systeminfo,
+    news
 }
 
 export default api;

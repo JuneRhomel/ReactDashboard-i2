@@ -1,10 +1,10 @@
 import Section from "@/components/general/section/Section";
 import Layout from "@/components/layouts/layout";
 import { useUserContext } from "@/context/userContext";
-import { SoaPaymentsType, SoaType, UserType, SystemType } from "@/types/models";
+import { SoaPaymentsType, SoaType, UserType, SystemType, NewsType } from "@/types/models";
 import { useEffect } from "react";
 
-export default function Dashboard({authorizedUser, currentSoa, soaDetails, systemInfo}: {authorizedUser: UserType, currentSoa: SoaType, soaDetails: SoaPaymentsType[], systemInfo:SystemType}) {
+export default function Dashboard({authorizedUser, currentSoa, soaDetails, systemInfo, news}: {authorizedUser: UserType, currentSoa: SoaType, soaDetails: SoaPaymentsType[], systemInfo:SystemType[], news: NewsType[]}) {
     const first4SoaDetails = soaDetails !== null ? soaDetails.slice(0,4) : null;
     const {user, setUser} = useUserContext();
 
@@ -32,7 +32,11 @@ export default function Dashboard({authorizedUser, currentSoa, soaDetails, syste
         title: 'Service Requests',
         headerAction: null,
     }
-    
+    const newsAnnouncementsProps = {
+        title: 'News',
+        headerAction: null,
+        data: news
+    }
     return (
     <Layout title="Dashboard" >
         <Section props={systemInfoProps}></Section>

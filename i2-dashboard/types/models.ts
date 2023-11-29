@@ -44,18 +44,32 @@ interface ChangeHistory {
 }
 
 export interface SystemType extends ChangeHistory {
-    propertyType: string;
     id: string,
     ownership: string,
-    user_role: string,
+    userRole: string,
     subscription: string,
-    property_name: string,
-    property_address: string | null,
-    property_size: number | string,
-    property_type: number | string,
+    propertyName: string,
+    propertyAddress: string | null,
+    propertySize: number | string,
+    propertyType: number | string,
     logo: string | null ,
     banner: string| null,
-    sidebar_img: string | null,
+    sidebarImg: string | null,
+}
+export interface SystemInfoType extends ChangeHistory {
+    accountcode: any;
+    id: string,
+    ownership: string,
+    userRole: string,
+    subscription: string,
+    propertyName: string,
+    propertyAddress: string | null,
+    propertySize: number | string,
+    propertyType: number | string,
+    logo: string | null ,
+    banner: string| null,
+    sidebarImg: string | null,
+    xendit: string | null
 }
 export interface SoaType extends ChangeHistory {
     id: string,
@@ -94,20 +108,7 @@ export interface SoaPaymentsType extends ChangeHistory {
     status: string,
     transactionDate: string,
 }
-export interface SystemInfoType extends ChangeHistory {
-    accountcode: any;
-    id: string,
-    ownership: string,
-    user_role: string,
-    subscription: string,
-    property_name: string,
-    property_address: string | null,
-    property_size: number | string,
-    property_type: number | string,
-    logo: string | null ,
-    banner: string| null,
-    sidebar_img: string | null,
-}
+
 export interface NewsType extends ChangeHistory {
     id: string,
     title: string,
