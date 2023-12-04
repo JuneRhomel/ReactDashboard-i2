@@ -1,4 +1,5 @@
 // This will be our api object that can make requests to the backend server
+
 import { authenticate } from "./user/authenticate";
 import { getSoa } from "./soa/getSoa";
 import { getSoaPayments } from "./soa/getSoaPayments";
@@ -19,7 +20,7 @@ import { getWorkPermits } from "./requests/getWorkPermits";
 import { getWorkPermitTypes } from "./requests/getWorkPermitTypes";
 import saveWorkPermit from "./requests/saveWorkPermit";
 import { getSysteminfo } from './systeminfo/getSysteminfo';
-import { getNews } from './newsannouncements/getNews';
+import { getNewsAnnouncements } from './newsannouncements/getNewsAnnouncements';
 /**
 * This object contains all the API functions for the client to make user related requests
 */
@@ -54,8 +55,8 @@ const systeminfo = {
     getSysteminfo: getSysteminfo
 }
 
-const news = {
-    getNews: getNews
+const newsAnnouncements = {
+    getNewsAnnouncements: getNewsAnnouncements
 }
 
 const api = {
@@ -63,7 +64,7 @@ const api = {
     soa,
     requests,
     systeminfo,
-    news
+    newsAnnouncements
 }
 
 export default api;

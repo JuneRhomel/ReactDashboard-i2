@@ -1,0 +1,8 @@
+.displayArea {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    height:190px;
+    padding-bottom: 10px;
+    overflow-x: auto; /* Add this line to enable horizontal scrolling */
+}

@@ -5,18 +5,20 @@ import styles from './Section.module.css';
 import ServiceRequests from './serviceRequests/ServiceRequests';
 import Banner from '../banner/Banner'
 import ServiceRequestThumbnails from './serviceRequestThumbnails/ServiceRequestThumbnails';
-import { SoaPaymentsType, SoaType, SystemType, UserType } from '@/types/models';
+import { SoaPaymentsType, SoaType, SystemInfoType, UserType, NewsAnnouncementsType } from '@/types/models';
 import SoaButtons from '../button/SoaButtons';
+import NewsAnnouncements from './newsAnnouncements/NewsAnnouncements';
 
 const Section = ({props}: {props: any}) => {
     const title = props?.title.toLowerCase();
     const cardMap: Record<string, ReactNode> = {
-        'banner': <Banner systemInfo={props.data?.systemInfo as SystemType[]} user={props.data?.authorizedUser as UserType}/>,
+        'banner': <Banner systemInfo={props.data?.systemInfo as SystemInfoType} user={props.data?.authorizedUser as UserType}/>,
         'soa': <SoaCard currentSoa={props.data?.currentSoa as SoaType} currentSoaPayments={props.data?.soaDetails as SoaPaymentsType[]}><SoaButtons payAction={()=>{}}/></SoaCard>,
         'payment transactions': <PaymentTransactions transactions={props.data}/>,
         'my requests': <ServiceRequests serviceRequests={props.data}/>,
         'select service request': <ServiceRequestThumbnails/>,
-        'service requests': <ServiceRequestThumbnails/>
+        'service requests': <ServiceRequestThumbnails/>,
+        'news announcements': <NewsAnnouncements newsAnnouncements={props.data as NewsAnnouncementsType[]} />
     }
     const componentToRender: ReactNode = cardMap[title];
     return (

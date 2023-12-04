@@ -1,15 +1,15 @@
 import { ParamGetNews } from "@/types/apiRequestParams";
-import { NewsType } from "@/types/models";
+import { NewsAnnouncementsType } from "@/types/models";
 import { ApiResponse } from "@/types/responseWrapper";
 import parseObject from "@/utils/parseObject";
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 
 /** 
-* Fetches the payment details of the a specific soa or all the soas.
+* Fetches the all News Announcements 
 * @param {ParamGetNews} params - This is a json object that has accountCode, dbTable, queryCondition, and resultLimit
 * @return {Promise<Response>} Returns a promise of a Response object.
 */
-export async function getNews(params: ParamGetNews, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<ApiResponse<NewsType[]>>{
+export async function getNewsAnnouncements(params: ParamGetNews, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<ApiResponse<NewsAnnouncementsType[]>>{
     const url: string = `${process.env.API_URL}/tenant/get-list`;
     const method: string = 'POST';
     const body: string = JSON.stringify({
@@ -20,7 +20,7 @@ export async function getNews(params: ParamGetNews, token: string = "c8c69a475a9
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
     };
-    const response: ApiResponse<NewsType[]> = {
+    const response: ApiResponse<NewsAnnouncementsType[]> = {
         success: false,
         data: undefined,
         error: undefined,
@@ -41,7 +41,7 @@ export async function getNews(params: ParamGetNews, token: string = "c8c69a475a9
             if (responseBody.success == 0) {
                 throw new Error(`400 Bad Request! ${responseBody.description}`);
             }
-            response.data = parseObject(responseBody) as NewsType[];
+            response.data = parseObject(responseBody) as NewsAnnouncementsType[];
         } else {
             response.data = null;
         }

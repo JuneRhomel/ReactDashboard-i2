@@ -43,19 +43,7 @@ interface ChangeHistory {
     encId: string,
 }
 
-export interface SystemType extends ChangeHistory {
-    id: string,
-    ownership: string,
-    userRole: string,
-    subscription: string,
-    propertyName: string,
-    propertyAddress: string | null,
-    propertySize: number | string,
-    propertyType: number | string,
-    logo: string | null ,
-    banner: string| null,
-    sidebarImg: string | null,
-}
+
 export interface SystemInfoType extends ChangeHistory {
     accountcode: any;
     id: string,
@@ -109,14 +97,14 @@ export interface SoaPaymentsType extends ChangeHistory {
     transactionDate: string,
 }
 
-export interface NewsType extends ChangeHistory {
+export interface NewsAnnouncementsType extends ChangeHistory {
     id: string,
     title: string,
     content: string,
     thumbnail: string,
     subtitle: string,
     status: string,
-    date: Date,
+    date: string,
 }
 
 export interface SoaDetailsType extends ChangeHistory {
