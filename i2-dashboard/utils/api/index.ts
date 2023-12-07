@@ -21,6 +21,7 @@ import { getWorkPermitTypes } from "./requests/getWorkPermitTypes";
 import saveWorkPermit from "./requests/saveWorkPermit";
 import { getSysteminfo } from './systeminfo/getSysteminfo';
 import { getNewsAnnouncements } from './newsannouncements/getNewsAnnouncements';
+import { getServiceRequestComments } from './requests/getServiceRequestComments';
 /**
 * This object contains all the API functions for the client to make user related requests
 */
@@ -46,6 +47,7 @@ const requests = {
     getIssueCategories: getIssueCategories,
     getWorkPermits: getWorkPermits,
     getWorkPermitTypes: getWorkPermitTypes,
+    getServiceRequestComments : getServiceRequestComments,
     saveGatepass: saveGatepass,
     saveVisitorPass: saveVisitorPass,
     saveReportIssue: saveReportIssue,

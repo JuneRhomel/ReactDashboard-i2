@@ -12,7 +12,6 @@ export default function Dashboard({authorizedUser, currentSoa, soaDetails, syste
         setUser(authorizedUser);
     }, [])
 
-    console.log(serviceRequests)
     const soaProps = {
         title: 'SOA',
         headerAction: null,

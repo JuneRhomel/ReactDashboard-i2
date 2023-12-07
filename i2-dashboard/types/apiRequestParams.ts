@@ -20,6 +20,12 @@ export type ParamGetNews = {
     soaId?: number,
     limit?: number,
 }
+export type ParamGetServiceRequestComments = {
+    accountcode: string,
+    soaId?: number,
+    limit?: number,
+    
+}
 
 export interface ParamGetServiceRequestType {
     accountcode: string,
@@ -34,7 +40,7 @@ export interface ParamGetServiceRequestsParamsType {
     id?: number,
 }
 
-export type ServiceRequestTable = 'personnel' | 'vp_guest' | 'work_details' | 'gatepass' | 'visitor_pass' | 'report_issue' | 'workpermit'
+export type ServiceRequestTable = 'personnel' | 'vp_guest' | 'work_details' | 'gatepass' | 'visitor_pass' | 'report_issue' | 'workpermit' | 'comments'
 
 export type ModuleType = 'gatepass' | 'visitorpass' | 'soa_payment' | 'reportissue' | 'workpermit'
 export type VisitorPassTables = 'visitorpass' | 'vp_guest';

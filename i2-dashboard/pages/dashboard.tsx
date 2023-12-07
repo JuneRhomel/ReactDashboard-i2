@@ -1,11 +1,12 @@
 import Layout from "@/components/layouts/layout";
-import { SoaPaymentsType, SoaType, SystemInfoType, NewsAnnouncementsType, ServiceRequestType } from "@/types/models";
-import { ParamGetSoaType, ParamGetSoaDetailsType,ParamGetSystemInfoType,ParamGetServiceRequestsParamsType } from "@/types/apiRequestParams";
+import { SoaPaymentsType, SoaType, SystemInfoType, NewsAnnouncementsType, ServiceRequestType, MyRequestProps } from "@/types/models";
+import { ParamGetSoaType, ParamGetSoaDetailsType,ParamGetSystemInfoType,ParamGetServiceRequestType } from "@/types/apiRequestParams";
 import authorizeUser from "@/utils/authorizeUser";
 import Section from "@/components/general/section/Section";
 import api from "@/utils/api";
 import Dashboard from "@/components/pages/dashboard/Dashboard";
 import encryptData from "@/utils/encryptData";
+import { ErrorType } from "@/types/responseWrapper";
 
 export async function getServerSideProps(context: any) {
   const accountCode: string = process.env.TEST_ACCOUNT_CODE as string;
@@ -24,9 +25,10 @@ export async function getServerSideProps(context: any) {
     accountcode: accountCode
   }
 
-  const serviceRequestsParams: ParamGetServiceRequestsParamsType = {
+  const getServiceRequestProps: ParamGetServiceRequestType = {
     accountcode: accountCode,
-    userId: 1,
+    userId: user.id,
+    limit: 5,
   }
   
   const getSoaResponse = await api.soa.getSoa(soaParams, token);
@@ -43,14 +45,24 @@ export async function getServerSideProps(context: any) {
   const getSystemInfoResponse = await api.systeminfo.getSysteminfo(systeminfoParams,token)
   const systemInfo = getSystemInfoResponse.success ? getSystemInfoResponse.data as SystemInfoType : undefined;
 
-  const getServiceRequestResponse = await api.requests.getServiceRequests(serviceRequestsParams, token, context);
-  const serviceRequests = getServiceRequestResponse.success ? getServiceRequestResponse.data as ServiceRequestType[] : null;
 
-  console.log(serviceRequests)
+  const serviceRequestResponse = await api.requests.getServiceRequests(getServiceRequestProps, token, context);
+
+  const sr: MyRequestProps = {
+    authorizedUser: user,
+    serviceRequests: null,
+    errors: null,
+  }
+  serviceRequestResponse.success ?
+      sr.serviceRequests = serviceRequestResponse.data as ServiceRequestType[] :
+        sr.errors = serviceRequestResponse.error as (string|ErrorType)[];
+
+
+  console.log(sr)
 
   const getSoaPaymentsResponse = await api.soa.getSoaPayments(soaDetailsParams, token);  // get soa details (transactions for this soa)
   const soaDetails = getSoaPaymentsResponse.success ? getSoaPaymentsResponse.data as SoaPaymentsType[] : null;
-  return {props: {authorizedUser: user, currentSoa, soaDetails, systemInfo, newsAnnouncements, serviceRequests}};
+  return {props: {authorizedUser: user, currentSoa, soaDetails, systemInfo, newsAnnouncements}};
 }
 
 export default Dashboard

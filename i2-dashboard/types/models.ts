@@ -54,8 +54,8 @@ export interface SystemInfoType extends ChangeHistory {
     propertyAddress: string | null,
     propertySize: number | string,
     propertyType: number | string,
-    logo: string | null ,
-    banner: string| null,
+    logo: string | null,
+    banner: string | null,
     sidebarImg: string | null,
     xendit: string | null
 }
@@ -105,6 +105,10 @@ export interface NewsAnnouncementsType extends ChangeHistory {
     subtitle: string,
     status: string,
     date: string,
+}
+export interface ServiceRequestCommentsType extends ChangeHistory {
+    id: string,
+    comment: string,
 }
 
 export interface SoaDetailsType extends ChangeHistory {
@@ -235,9 +239,9 @@ export interface MyRequestDataType {
     workDetails?: WorkDetailType[] | string,
     visitorPasses?: VisitorsPassType[] | string,
     guests?: GuestType[] | string,
-  }
+}
 
-  export interface RequestType extends ChangeHistory {
+export interface RequestType extends ChangeHistory {
     id: string,
     date_upload: string,
     type: string,
@@ -250,6 +254,12 @@ export interface ServiceRequestsThumbnailData {
 }
 
 export type TypeOfInput = 'text' | 'password' | 'email' | 'date' | 'select' | 'number' | 'time' | 'textArea' | 'file'
+
+export type MyRequestProps = {
+    authorizedUser: UserType,
+    serviceRequests: ServiceRequestType[] | null,
+    errors: any[] | null,
+}
 
 export interface InputProps {
     name: string,

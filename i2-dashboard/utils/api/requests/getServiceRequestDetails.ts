@@ -20,6 +20,7 @@ export async function getServiceRequestDetails(params: ParamGetServiceRequestTyp
         table: table === 'personnel' ? 'gatepass_personnel'
                 : table === 'vp_guest' ? 'vp_guest'
                 : table === 'work_details' ? 'work_details'
+                : table === 'comments' ? 'comments'
                 : `vw_${table}`,
         condition: table === 'personnel' || table === 'vp_guest' || table === 'work_details' ? null : condition,
         limit: params.limit,

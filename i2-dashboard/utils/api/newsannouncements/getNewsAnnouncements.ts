@@ -25,6 +25,7 @@ export async function getNewsAnnouncements(params: ParamGetNews, token: string =
         data: undefined,
         error: undefined,
     }
+  
     try {
         const fetchResponse: Response = await fetch(url, {
             method: method,
