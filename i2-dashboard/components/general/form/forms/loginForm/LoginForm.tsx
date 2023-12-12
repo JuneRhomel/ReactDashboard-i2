@@ -28,6 +28,7 @@ const LoginForm = () => {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
     
+        console.log('asd')
         const password = (document.getElementById("password") as HTMLInputElement).value;
         const email = (document.getElementById("email") as HTMLInputElement).value;
     

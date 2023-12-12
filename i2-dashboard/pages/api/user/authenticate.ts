@@ -5,59 +5,44 @@ import jwt, { Secret } from 'jsonwebtoken';
 import copyHeaders from "@/utils/copyHeaders";
 import getCookieString from "@/utils/getCookieString";
 import parseObject from "@/utils/parseObject";
+import { fetch, setGlobalDispatcher, Agent } from 'undici'
 
 const baseURL: string = "https://apii2-sandbox.inventiproptech.com";
-const authenticateURL: string = `${baseURL}/tenant/authenticate`;
-const getUserURL: string = `${baseURL}/tenant/get-user`;
+const url: string = `${baseURL}/tenant/authenticate`;
 const jwtSecret: Secret = process.env.JWT_SECRET as Secret;
 
-const fetchWithTimeout = async (url: string, options: RequestInit, timeout: number): Promise<Response> => {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-    try {
-        const response = await fetch(url, { ...options, signal: controller.signal });
-        return response;
-    } finally {
-        clearTimeout(timeoutId);
-    }
-};
+setGlobalDispatcher(new Agent({ connect: { timeout: 90_000 } }) )
 
 const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
     const body = JSON.stringify(req.body);
     const headers: HeadersInit = copyHeaders(req);
+
     try {
-        // Authenticate the user
-        const response = await fetchWithTimeout(authenticateURL, {
+        //authenticate the user
+        const response = await fetch(url, {
             method: req.method,
             body: body,
             headers: headers,
-            referrerPolicy: "unsafe-url",
-        }, 15000);
-
-        const jsonResponse: ApiResponse<UserType> = await response.json();
-
+        })
+        const jsonResponse: ApiResponse<UserType> = await response.json()
         if (jsonResponse.success) {
             // Create a jwt with the user info
             const user: UserType = jsonResponse?.data as UserType;
             const body = {
                 accountcode: req.body.accountcode,
                 view: 'users',
-            };
-
+            }
             headers.Authorization = `Bearer ${user.token}:tenant`;
-            // Fetch the user using their authorization token
-            const userResponse = await fetchWithTimeout(getUserURL, {
+            //fetch the user using their authorization token
+            const response = await fetch(`${baseURL}/tenant/get-user`, {
                 method: req.method,
                 body: JSON.stringify(body),
                 headers: headers,
                 referrerPolicy: 'unsafe-url',
-            }, 15000);
-
-            if (userResponse.ok) {
-                const responseBody = await userResponse.json();
+            })
+            if (response.ok) {
+                const responseBody = await response.json();
                 const rawUser = parseObject(responseBody) as any;
-
                 //create this new User object with only relevant fields needed
                 const payload: UserType = {
                     id: rawUser.id,
@@ -76,20 +61,12 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
                     tmp: user.tmp,
                     isAuthorized: true,
                 }
-                const token: string = jwt.sign(payload, jwtSecret, { expiresIn: '1d' });
+                const token: string = jwt.sign(payload, jwtSecret, {expiresIn: '1d'})
                 const cookie: string = getCookieString(token);
-
-                // Respond with 200 status and with the jwt set as a cookie
-                res.status(200).setHeader("Set-Cookie", cookie).json(payload);
-            } else {
-                // If success==0 or response.success does not exist
-                const errorMessage = jsonResponse.status ? "Invalid account code" : "Invalid username and/or password";
-                const error = {
-                    "error": "Unauthorized",
-                    "message": errorMessage,
-                };
-
-                res.status(401).setHeader("Set-Cookie", getCookieString("Invalid", -1)).json(error);
+                //respond with 200 status and with the jwt set as a cookie
+                res.status(200)
+                    .setHeader("Set-Cookie", cookie)
+                    .json(payload);
             }
         } else {
             // If success==0 or response.success does not exist
@@ -104,10 +81,10 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal Server Error -- " + error });
+        console.error(error)
+        res.status(500).json({ error: "Internal Server Error"});
     }
     return;
-};
+}
 
 export default authenticate;

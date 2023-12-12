@@ -20,6 +20,7 @@ import { getWorkPermitTypes } from "./requests/getWorkPermitTypes";
 import saveWorkPermit from "./requests/saveWorkPermit";
 import { getSysteminfo } from './systeminfo/getSysteminfo';
 import { getNews } from './newsannouncements/getNews';
+
 /**
 * This object contains all the API functions for the client to make user related requests
 */

@@ -22,7 +22,6 @@ export async function authenticate(params?: LoginSchema): Promise<Response>{//<A
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
     };
-
     try {
         const response: Response = await fetch(url, {
             method: method,

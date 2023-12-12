@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import copyHeaders from "@/utils/copyHeaders";
 import { ApiResponse } from "@/types/responseWrapper";
 import { SelectDataType } from "@/types/models";
-
+import { fetch, setGlobalDispatcher, Agent } from 'undici'
+setGlobalDispatcher(new Agent({ connect: { timeout: 90_000 } }) )
 const baseURL: string = "http://apii2-sandbox.inventiproptech.com";
 const url: string = `${baseURL}/tenant/get-listnew`;
 const accountCode = process.env.TEST_ACCOUNT_CODE;
