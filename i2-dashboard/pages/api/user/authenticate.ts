@@ -6,12 +6,11 @@ import copyHeaders from "@/utils/copyHeaders";
 import getCookieString from "@/utils/getCookieString";
 import parseObject from "@/utils/parseObject";
 import { fetch, setGlobalDispatcher, Agent } from 'undici'
-
+setGlobalDispatcher(new Agent({ connect: { timeout: 90_000 } }) )
 const baseURL: string = "https://apii2-sandbox.inventiproptech.com";
 const url: string = `${baseURL}/tenant/authenticate`;
 const jwtSecret: Secret = process.env.JWT_SECRET as Secret;
 
-setGlobalDispatcher(new Agent({ connect: { timeout: 90_000 } }) )
 
 const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
     const body = JSON.stringify(req.body);

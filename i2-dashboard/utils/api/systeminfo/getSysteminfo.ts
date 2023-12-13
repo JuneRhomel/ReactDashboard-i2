@@ -2,8 +2,6 @@ import { ParamGetSystemInfoType } from "@/types/apiRequestParams";
 import { SystemInfoType } from "@/types/models";
 import { ApiResponse } from "@/types/responseWrapper";
 import parseObject from "@/utils/parseObject";
-// import { fetch , setGlobalDispatcher, Agent, RequestInfo, RequestInit } from 'undici';
-// setGlobalDispatcher(new Agent({ connect: { timeout: 90_000 } }));
 const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 
 /** 
