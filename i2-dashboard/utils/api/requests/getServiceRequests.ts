@@ -12,8 +12,6 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 * @param {ParamGetServiceRequestType} params - This is a json object that has accountCode, queryCondition, and resultLimit
 * @return {Promise<ApiResponse<ServiceRequestType[]>>} Returns a promise of an API response with either ServiceRequest data or errors.
 */
-const maxRetries = 1000;
-let retries = 0;
 export async function getServiceRequests(params: ParamGetServiceRequestType, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant", context: any): Promise<ApiResponse<ServiceRequestType[]>>{
     const url: string = `${process.env.API_URL}/tenant/get-allsr`;
     const method: string = 'POST';

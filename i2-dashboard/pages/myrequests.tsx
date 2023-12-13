@@ -34,6 +34,8 @@ export async function getServerSideProps(context: any){
   serviceRequestResponse.success ?
       props.serviceRequests = serviceRequestResponse.data as ServiceRequestType[] :
         props.errors = serviceRequestResponse.error as (string|ErrorType)[];
+
+  // console.log(props)
   return {
     props: props
   }
