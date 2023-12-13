@@ -30,16 +30,20 @@ const LoginForm = () => {
     
         const password = (document.getElementById("password") as HTMLInputElement).value;
         const email = (document.getElementById("email") as HTMLInputElement).value;
-    
+        const submitButton = (document.getElementById("submitButton") as HTMLInputElement);
+        submitButton.textContent = "Authenticating...";
         const params = {
             email: email,
             password: password,
             accountcode: "adminmailinatorcom",
             // accountcode: "UDEya0JuMWcyQjhKOHc3WVNwMWNQT1Rja2ozdkVyNWdjYWwxV21vNzNyWT0.7b6f916e21476e8c401e23b41150cf45",
         }
-    
-        const response: Response | string = await api.user.authenticate(params);
+        let response: Response | string = await api.user.authenticate(params);
+        if(response) {
+            submitButton.textContent = "Submit";
+        }
         if (response.ok) {
+            submitButton.textContent = "Submit";
             router.push('/dashboard');
         } else {
             setError(response as unknown as string)
@@ -80,7 +84,7 @@ const LoginForm = () => {
             {error !== "" ? (<div>{error}</div>): null }
             <InputGroup props={props.emailInput} onChange={handleInput}/>
             <InputGroup props={props.passwordInput} onChange={handleInput}/>
-            <button className={styles.submitButton} type="submit">Submit</button>
+            <button className={styles.submitButton} id='submitButton' type="submit">Submit</button>
         </form>
     )
 }

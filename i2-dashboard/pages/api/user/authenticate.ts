@@ -20,8 +20,8 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
             headers: requestHeaders,
         });
         const jsonResponse: ApiResponse<UserType> = authenticationResponse.data;
-
         if (jsonResponse.success) {
+           
             const user: UserType = jsonResponse?.data as UserType;
             const getUserRequestBody = {
                 accountcode: req.body.accountcode,
@@ -31,6 +31,7 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
 
             const getUserResponse = await axios.post(`${baseURL}/tenant/get-user`, getUserRequestBody, {
                 headers: requestHeaders,
+                timeout: 10000,
             });
 
             if (getUserResponse.status === 200) {
@@ -57,7 +58,7 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 const token: string = jwt.sign(payload, jwtSecret, { expiresIn: '1d' });
                 const cookie: string = getCookieString(token);
-
+                console.log(payload)
                 res.status(200)
                     .setHeader("Set-Cookie", cookie)
                     .json(payload);
