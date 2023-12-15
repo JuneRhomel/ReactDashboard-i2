@@ -22,7 +22,6 @@ import saveWorkPermit from "./requests/saveWorkPermit";
 import { getSysteminfo } from './systeminfo/getSysteminfo';
 import { getNewsAnnouncements } from './newsannouncements/getNewsAnnouncements';
 import { getServiceRequestComments } from './requests/getServiceRequestComments';
-import { getData } from './requests/getData';
 /**
 * This object contains all the API functions for the client to make user related requests
 */
