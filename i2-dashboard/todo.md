@@ -42,3 +42,14 @@ https://stackoverflow.com/questions/76755913/increase-timeout-in-nodejs-built-in
 https://github.com/nodejs/undici/issues/1531
 2. Implement News and Announcements Page
 3. Implement recent requests on dashboard
+
+### December 15:
+## SOA Card
+1. Remove view details link
+2. Change pay now button to View Details Button
+## My Requests
+3. Update the Service Request Card
+## News and Announcements
+4. Implement this page*
+## Layout
+5. Implement the Menu side nav bar
