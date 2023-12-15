@@ -20,7 +20,7 @@ export async function getSoaPayments(params: ParamGetSoaDetailsType, token: stri
 
   const body = {
     accountcode: params.accountcode,
-    table: 'soa_payment',
+    table: 'vw_payment',
     condition: params.soaId ? `soa_id=${params.soaId}` : undefined,
     limit: params.limit,
   };
@@ -35,7 +35,7 @@ export async function getSoaPayments(params: ParamGetSoaDetailsType, token: stri
     const axiosResponse: AxiosResponse = await axios.post(url, body, {
       headers,
     });
-
+   
     if (!axiosResponse) {
       throw new Error(`HTTP error! Status: ${axiosResponse}, Response: ${JSON.stringify(axiosResponse.data)}`);
     }
@@ -50,7 +50,6 @@ export async function getSoaPayments(params: ParamGetSoaDetailsType, token: stri
     }
 
     response.success = true;
-
     return response;
   } catch (error: any) {
     response.success = false;

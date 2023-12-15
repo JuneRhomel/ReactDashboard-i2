@@ -16,8 +16,8 @@ export type ParamGetSystemInfoType = {
     limit?: number,
 }
 export type ParamGetNews = {
+    table?: any | null,
     accountcode: string,
-    soaId?: number,
     limit?: number,
 }
 export type ParamGetServiceRequestComments = {

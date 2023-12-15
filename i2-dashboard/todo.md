@@ -4,6 +4,7 @@
 1. ~~Add welcome banner~~
 2. Add recent requests*
 3. ~~Add news and announcements~~
+4. ~~Update Payment Transactions~~
 
 ## SOA Card
 1. Remove view details link

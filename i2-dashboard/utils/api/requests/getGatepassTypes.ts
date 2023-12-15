@@ -8,10 +8,9 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 */
 export async function getGatepassTypes(token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant", context: any = undefined): Promise<SelectDataType[] | string>{
     const host = context?.req?.headers?.host || 'localhost:3000';
-    console.log(host)
     const protocol = host === 'localhost:3000' ? 'http' : 'https';
     const apiUrl = '/api/requests/getGatepassTypes';
-    const url = context ? `${protocol}://${host}${apiUrl}` : apiUrl;
+    const url: string = `${process.env.API_URL}/tenant/get-list`;
     const method: string = 'POST';
     const body: string = JSON.stringify({
         table: 'list_gatepasscategory',
@@ -42,7 +41,7 @@ export async function getGatepassTypes(token: string = "c8c69a475a9715c2f2c6194b
             }
             gatepassTypes.push(gatepassType);
         });
-        console.log(gatepassTypes)
+
         return gatepassTypes;
         
     } catch (error: any) {

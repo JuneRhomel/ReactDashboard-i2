@@ -12,7 +12,7 @@ export async function getIssueCategories(token: string = "c8c69a475a9715c2f2c619
     const host = context?.req?.headers?.host || 'localhost:3000';
     const protocol = host === 'localhost:3000' ? 'http' : 'https';
     const apiUrl = '/api/requests/getGatepassTypes';
-    const url = context ? `${protocol}://${host}${apiUrl}` : apiUrl;
+    const url: string = `${process.env.API_URL}/tenant/get-list`;
     const method: string = 'POST';
     const body: string = JSON.stringify({
         table: 'list_issuecategory',

@@ -10,7 +10,7 @@ const SoaCard = ({ currentSoa, currentSoaPayments, children }: { currentSoa: Soa
     const dueDate = getDateString(currentSoa?.dueDate);
     const statementAmount = parseFloat(currentSoa.amountDue);
     const credits = currentSoaPayments !== null ? currentSoaPayments
-        .filter((detail) => detail.particular.includes('SOA Payment') && detail.status !== 'Invalid')
+        .filter((detail) => detail.amount.includes('SOA Payment') && detail.status !== 'Invalid')
         .map((detail) => detail.amount) : null;
     const totalCredits = credits !== null ? credits.reduce((total, amount) => total + parseFloat(amount), 0) : 0;
     const amountDue = formatCurrency(statementAmount - totalCredits);

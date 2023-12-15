@@ -40,7 +40,7 @@ export async function getSoa(
       const axiosResponse: AxiosResponse = await axios.post(url, body, {
         headers,
       });
-  
+      
       if (axiosResponse.status !== 200) {
         throw new Error(
           `HTTP error! Status: ${axiosResponse.status}, Response: ${JSON.stringify(

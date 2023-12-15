@@ -24,27 +24,22 @@ export async function getServerSideProps(context: any) {
   const systeminfoParams: ParamGetSystemInfoType = {
     accountcode: accountCode
   }
-
   const getServiceRequestProps: ParamGetServiceRequestType = {
     accountcode: accountCode,
     userId: user.id,
     limit: 5,
   }
-  
-
   const getNewsAnnouncementsResponse = await api.newsAnnouncements.getNewsAnnouncements(systeminfoParams, token);
   const newsAnnouncements = getNewsAnnouncementsResponse.success ? getNewsAnnouncementsResponse.data as NewsAnnouncementsType[] : undefined;
 
   const getSystemInfoResponse = await api.systeminfo.getSysteminfo(systeminfoParams,token)
   const systemInfo = getSystemInfoResponse.success ? getSystemInfoResponse.data as unknown as SystemInfoType : undefined;
 
-  const getIssueCategories = await api.requests.getIssues(getServiceRequestProps, token);
-  const issueCategories = getIssueCategories.success ? getIssueCategories.data as unknown as SelectDataType[] : undefined;
-  console.log(issueCategories);
-  
+
   const getSoaResponse = await api.soa.getSoa(soaParams, token);
   const soas = getSoaResponse.success ? getSoaResponse.data as SoaType[]: undefined;
   const currentSoa = soas?.shift() as SoaType;
+  
   const soaDetailsParams: ParamGetSoaDetailsType = {
     accountcode: accountCode,
     soaId: parseInt(currentSoa.id),
@@ -52,6 +47,10 @@ export async function getServerSideProps(context: any) {
 
   const getSoaPaymentsResponse = await api.soa.getSoaPayments(soaDetailsParams, token);  
   const soaDetails = getSoaPaymentsResponse.success ? getSoaPaymentsResponse.data as SoaPaymentsType[] : null;
+  
+  const getserviceRequestResponse = await api.requests.getServiceRequests(getServiceRequestProps, token, context);
+  console.log(getserviceRequestResponse.error)
+  const serviceRequest = getserviceRequestResponse.success ? getserviceRequestResponse.data as ServiceRequestType[] : null;
   return {props: {authorizedUser: user, currentSoa, soaDetails, systemInfo, newsAnnouncements}};
 }
 
