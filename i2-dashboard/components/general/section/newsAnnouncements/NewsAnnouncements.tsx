@@ -1,5 +1,5 @@
 import { NewsAnnouncementsType } from '@/types/models';
-import { NewsAnnouncementsCard } from '../../cards/newsAnnouncementsCard/newsAnnouncementsCard'
+import { NewsAnnouncementsCard } from '../../cards/newsAnnouncementsCard/NewsAnnouncementsCard'
 import style from './NewsAnnouncements.module.css'
 const newsAnnouncements = ({newsAnnouncements}: {newsAnnouncements: NewsAnnouncementsType[]}) => {
     return (

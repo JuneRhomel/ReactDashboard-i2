@@ -35,8 +35,9 @@ export async function getServiceRequests(params: ParamGetServiceRequestType, tok
     try {
         const serviceRequestResponse = await axios.post(url, body, {
             headers: headers,
-            timeout: 90000,
+            timeout: 50000,
         });
+        
         const serviceRequestDetailsBody = { ...params, limit: 30 };
         const gatepassPromise = api.requests.getGatepasses(serviceRequestDetailsBody, token, context);
         const workPermitPromise = api.requests.getWorkPermits(serviceRequestDetailsBody, token, context);

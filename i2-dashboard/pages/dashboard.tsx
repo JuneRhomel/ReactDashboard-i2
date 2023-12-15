@@ -33,7 +33,7 @@ export async function getServerSideProps(context: any) {
   const newsAnnouncements = getNewsAnnouncementsResponse.success ? getNewsAnnouncementsResponse.data as NewsAnnouncementsType[] : undefined;
 
   const getSystemInfoResponse = await api.systeminfo.getSysteminfo(systeminfoParams,token)
-  const systemInfo = getSystemInfoResponse.success ? getSystemInfoResponse.data as unknown as SystemInfoType : undefined;
+  const systemInfo = getSystemInfoResponse.success ? getSystemInfoResponse.data as SystemInfoType[] : undefined;
 
 
   const getSoaResponse = await api.soa.getSoa(soaParams, token);
@@ -47,11 +47,11 @@ export async function getServerSideProps(context: any) {
 
   const getSoaPaymentsResponse = await api.soa.getSoaPayments(soaDetailsParams, token);  
   const soaDetails = getSoaPaymentsResponse.success ? getSoaPaymentsResponse.data as SoaPaymentsType[] : null;
-  
   const getserviceRequestResponse = await api.requests.getServiceRequests(getServiceRequestProps, token, context);
-  console.log(getserviceRequestResponse.error)
-  const serviceRequest = getserviceRequestResponse.success ? getserviceRequestResponse.data as ServiceRequestType[] : null;
-  return {props: {authorizedUser: user, currentSoa, soaDetails, systemInfo, newsAnnouncements}};
+  console.log(getserviceRequestResponse)
+ const serviceRequest = getserviceRequestResponse.success ? getserviceRequestResponse.data as ServiceRequestType[] : "error";
+  console.log(serviceRequest)
+  return {props: {authorizedUser: user, currentSoa, soaDetails, systemInfo, newsAnnouncements, serviceRequest}};
 }
 
 export default Dashboard

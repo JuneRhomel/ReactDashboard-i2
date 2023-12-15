@@ -31,7 +31,7 @@ export async function getSysteminfo(
         }, {
             headers,
         });
-        if (!axiosResponse.status === 200) {
+        if (axiosResponse.status !== 200) {
             throw new Error(`HTTP error! Status: ${axiosResponse.status}, Response: ${JSON.stringify(axiosResponse.data)}`);
         }
         const responseBody = axiosResponse.data;

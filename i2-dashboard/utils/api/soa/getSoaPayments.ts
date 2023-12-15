@@ -37,7 +37,7 @@ export async function getSoaPayments(params: ParamGetSoaDetailsType, token: stri
     });
    
     if (!axiosResponse) {
-      throw new Error(`HTTP error! Status: ${axiosResponse}, Response: ${JSON.stringify(axiosResponse.data)}`);
+      throw new Error(`HTTP error! Status: ${axiosResponse}, Response: ${JSON.stringify(axiosResponse)}`);
     }
 
     if (axiosResponse.data) {

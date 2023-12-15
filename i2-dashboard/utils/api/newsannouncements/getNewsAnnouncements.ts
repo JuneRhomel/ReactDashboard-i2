@@ -18,6 +18,7 @@ export async function getNewsAnnouncements(params: ParamGetNews, token: string =
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     },
+    timeout: 50000
   };
   const response: ApiResponse<NewsAnnouncementsType[]> = {
     success: false,
