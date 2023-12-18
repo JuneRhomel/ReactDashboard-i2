@@ -18,7 +18,6 @@ export default function Header() {
         <div>
           <img className={styles.logo} src="/logo.png" alt="" />
         </div>
-        <button onClick={handleLogout}>Logout</button>
         <div className={styles.icon_container} >
           <Link href={'/servicerequest'}>
             {<MdAddCircle className={styles.icon} />}

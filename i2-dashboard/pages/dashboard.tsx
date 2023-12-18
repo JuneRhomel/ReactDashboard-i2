@@ -48,9 +48,7 @@ export async function getServerSideProps(context: any) {
   const getSoaPaymentsResponse = await api.soa.getSoaPayments(soaDetailsParams, token);  
   const soaDetails = getSoaPaymentsResponse.success ? getSoaPaymentsResponse.data as SoaPaymentsType[] : null;
   const getserviceRequestResponse = await api.requests.getServiceRequests(getServiceRequestProps, token, context);
-  console.log(getserviceRequestResponse)
- const serviceRequest = getserviceRequestResponse.success ? getserviceRequestResponse.data as ServiceRequestType[] : "error";
-  console.log(serviceRequest)
+ const serviceRequest = getserviceRequestResponse.success ? getserviceRequestResponse.data as ServiceRequestType[] : [];
   return {props: {authorizedUser: user, currentSoa, soaDetails, systemInfo, newsAnnouncements, serviceRequest}};
 }
 

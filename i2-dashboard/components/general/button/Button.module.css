@@ -44,3 +44,14 @@
 .cancel:hover {
     border: solid 1px black
 }
+
+.logout {
+    height: 50px;
+    border: 1px solid var(--inventi-blue);
+    background-color: transparent;
+    border-radius: 5px;
+    color: var(--inventi-blue);
+    width: 100%;
+    font-weight: 600;
+    font-size: 15px;
+}

@@ -58,7 +58,6 @@ const authenticate = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 const token: string = jwt.sign(payload, jwtSecret, { expiresIn: '1d' });
                 const cookie: string = getCookieString(token);
-                console.log(payload)
                 res.status(200)
                     .setHeader("Set-Cookie", cookie)
                     .json(payload);

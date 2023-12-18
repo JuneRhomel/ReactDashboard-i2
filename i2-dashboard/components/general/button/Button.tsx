@@ -12,6 +12,7 @@ export default function Button({type, onClick}: {type: string, onClick: any}) {
         ['List of Tools', '+ Add Tools'],
         ['submit', 'Submit'],
         ['cancel', 'Cancel'],
+        ['logout', 'Logout'],
     ])
 
     // const inputType = new Map<string, JSX.Element>([['pass', <PasswordInput props={props}/> ], ['2', <PasswordInput props={props}/>]])

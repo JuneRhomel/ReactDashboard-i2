@@ -17,14 +17,13 @@ export default function Dashboard({
   soaDetails,
   systemInfo,
   newsAnnouncements,
-  serviceRequests,
-}: {
+  serviceRequest}: {
   authorizedUser: UserType;
   currentSoa: SoaType;
   soaDetails: SoaPaymentsType[];
   systemInfo: SystemInfoType;
   newsAnnouncements: NewsAnnouncementsType[];
-  serviceRequests: any;
+  serviceRequest: ServiceRequestType[];
 }) {
   const first4SoaDetails = soaDetails !== null ? soaDetails.slice(0, 4) : null;
   const { user, setUser } = useUserContext();
@@ -32,7 +31,7 @@ export default function Dashboard({
   useEffect(() => {
     setUser(authorizedUser);
   }, []);
-  console.log(serviceRequests)
+
   const soaProps = {
     title: "SOA",
     headerAction: null,
@@ -58,6 +57,11 @@ export default function Dashboard({
     headerAction: null,
     data: newsAnnouncements,
   };
+//   const recentserviceRequestProp = {
+//     title: "Recent Requests",
+//     headerAction: null,
+//     data: serviceRequest,
+//   };
 
   return (
     <Layout title="Dashboard">
@@ -65,6 +69,7 @@ export default function Dashboard({
       <Section props={soaProps}></Section>
       <Section props={paymentTransactionsProps} />
       <Section props={serviceRequestProps} />
+      {/* <Section props={recentserviceRequestProp} /> */}
       <Section props={newsAnnouncementsProps} />
     </Layout>
   );

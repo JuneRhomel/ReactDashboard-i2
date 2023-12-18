@@ -261,6 +261,11 @@ export type MyRequestProps = {
     serviceRequests: ServiceRequestType[] | null,
     errors: any[] | null,
 }
+export type MyNewsAnnouncementsProps = {
+    authorizedUser: UserType,
+    newsAnnouncements: NewsAnnouncementsType[] | null,
+    errors: any[] | null,
+}
 
 export interface InputProps {
     name: string,
