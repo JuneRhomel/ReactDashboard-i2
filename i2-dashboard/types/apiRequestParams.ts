@@ -1,13 +1,13 @@
 export type ParamGetSoaType = {
     accountcode: string,
     userId?: number,
-    soaId?: string,
+    soaId?: number,
     limit?: number,
 }
 
 export type ParamGetSoaDetailsType = {
     accountcode: string,
-    soaId?: number,
+    userId?: number,
     limit?: number,
 }
 export type ParamGetSystemInfoType = {

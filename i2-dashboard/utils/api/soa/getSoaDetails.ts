@@ -1,4 +1,4 @@
-import { ParamGetSoaDetailsType } from "@/types/apiRequestParams";
+import { ParamGetSoaDetailsType, ParamGetSoaType } from "@/types/apiRequestParams";
 import { SoaDetailsType } from "@/types/models";
 import { ApiResponse } from "@/types/responseWrapper";
 import parseObject from "@/utils/parseObject";
@@ -7,12 +7,12 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 
 /**
  * Fetches the payment details of a specific SOA or all the SOAs.
- * @param {ParamGetSoaDetailsType} params - The parameters containing account code, database table, query condition, and result limit.
+ * @param {ParamGetSoaType} params - The parameters containing account code, database table, query condition, and result limit.
  * @param {string} token - The token used for authorization. Default value is "c8c69a475a9715c2f2c6194bc1974fae:tenant".
  * @return {Promise<ApiResponse<SoaDetailsType[]>>} - Returns a promise of a response object.
  */
 export async function getSoaDetails(
-    params: ParamGetSoaDetailsType,
+    params: ParamGetSoaType,
     token = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 ): Promise<ApiResponse<SoaDetailsType[]>> {
     const url = `${process.env.API_URL}/tenant/get-list`;

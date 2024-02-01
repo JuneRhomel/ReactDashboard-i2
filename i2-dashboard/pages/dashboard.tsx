@@ -42,10 +42,10 @@ export async function getServerSideProps(context: any) {
   
   const soaDetailsParams: ParamGetSoaDetailsType = {
     accountcode: accountCode,
-    soaId: parseInt(currentSoa.id),
+    userId : user.id,
   }
 
-  const getSoaPaymentsResponse = await api.soa.getSoaPayments(soaDetailsParams, token);  
+  const getSoaPaymentsResponse = await api.soa.getPayments(soaDetailsParams, token);  
   const soaDetails = getSoaPaymentsResponse.success ? getSoaPaymentsResponse.data as SoaPaymentsType[] : null;
   const getserviceRequestResponse = await api.requests.getServiceRequests(getServiceRequestProps, token, context);
  const serviceRequest = getserviceRequestResponse.success ? getserviceRequestResponse.data as ServiceRequestType[] : [];

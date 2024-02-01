@@ -18,20 +18,21 @@ export async function getServerSideProps(context: any) {
     }
     const soaId = decryptData(soaEncryptedId);
 
-    const getParams: ParamGetSoaType | ParamGetSoaDetailsType = {
+    const getParams: ParamGetSoaType  = {
         accountcode: accountCode,
         soaId: soaId
     }
     const getSoaPromise = api.soa.getSoa(getParams)
-    const getSoaDetailsPromise = api.soa.getSoaDetails(getParams as ParamGetSoaDetailsType);
-    const getSoaPaymentsPromise = api.soa.getSoaPayments(getParams as ParamGetSoaDetailsType);
+    const getSoaDetailsPromise = api.soa.getSoaDetails(getParams as ParamGetSoaType);
+    const getSoaPaymentsPromise = api.soa.getSoaPayments(getParams as ParamGetSoaType);
     const [getSoaResponse, getSoaDetailsResponse, getSoaPaymentsResponse] = await Promise.all([getSoaPromise, getSoaDetailsPromise, getSoaPaymentsPromise]);
+
     const soa = getSoaResponse.success ? getSoaResponse.data?.pop() as SoaType : undefined
     const soaDetails = getSoaDetailsResponse.success ? getSoaDetailsResponse.data as SoaDetailsType[] : undefined
     const unfilteredSoaPayments = getSoaPaymentsResponse.success ? getSoaPaymentsResponse.data as SoaPaymentsType[] : undefined
     soaDetails?.sort((a, b) => parseInt(a.id) - parseInt(b.id));
     const soaPayments = unfilteredSoaPayments?.filter((payment) => {
-        return !(payment.particular.includes("SOA Payment") && ['Successful', 'Invalid'].includes(payment.status)) && !payment.particular.includes("Balance");
+        return !(payment.description.includes("SOA Payment") && ['Successful', 'Invalid'].includes(payment.status)) && !payment.description.includes("Balance");
     }) || null;
     if (soa && soaDetails) {
         return {

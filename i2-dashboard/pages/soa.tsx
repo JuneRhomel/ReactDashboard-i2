@@ -22,17 +22,16 @@ export async function getServerSideProps(context: any) {
   }
   const paymentTransactionsParams: ParamGetSoaDetailsType = {
     accountcode: accountCode,
-    limit: 20,
+    userId: user.id,
+    limit: 7,
   }
   const getSoaPromise = api.soa.getSoa(soaParams, token);  // get all soas
-  const getSoaPaymentsPromise = api.soa.getSoaPayments(paymentTransactionsParams, token);
+  const getSoaPaymentsPromise = api.soa.getPayments(paymentTransactionsParams, token);
   const [soaResponse, paymentTransactionsResponse] = await Promise.all([getSoaPromise, getSoaPaymentsPromise]);
   const soas = soaResponse.success ? soaResponse.data as SoaType[] : undefined;
   const allSoaPayments = paymentTransactionsResponse.success ? paymentTransactionsResponse.data as SoaPaymentsType[] : undefined;
-  const soaIds = soas?.map((soa) => soa.id)
-  const userSoaPayments = allSoaPayments?.filter((soaDetail) => soaIds?.includes(soaDetail.soaId));
-  const filteredSoaPayments = userSoaPayments?.filter((detail: SoaPaymentsType) => {
-    return !(detail.particular.includes("SOA Payment") && detail.status === "Successful") && !detail.particular.includes("Balance");
+  const filteredSoaPayments = allSoaPayments?.filter((detail: SoaPaymentsType) => {
+    return !(detail.description.includes("SOA Payment") && detail.status === "Successful") && !detail.description.includes("Balance");
   });
 
   const currentSoa = soas?.shift() as SoaType;

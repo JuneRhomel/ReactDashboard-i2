@@ -99,6 +99,5 @@ export async function getServiceRequests(params: ParamGetServiceRequestType, tok
     }
     response.error = errors;
     response.success = response.error.length == 0;
-    console.log(response);
     return response;
 }

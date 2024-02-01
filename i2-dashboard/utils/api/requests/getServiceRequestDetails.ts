@@ -40,7 +40,6 @@ export async function getServiceRequestDetails(requestParams: ParamGetServiceReq
             headers,
             timeout: 30000,
         });
-        console.log(fetchResponse)
         if (fetchResponse.status !== 200) {
             throw new Error(`HTTP error! Status: ${fetchResponse.status}, Response: ${JSON.stringify(fetchResponse.data)}`);
         }

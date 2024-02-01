@@ -1,4 +1,4 @@
-import { ParamGetSoaType } from "@/types/apiRequestParams";
+import { ParamGetSoaDetailsType } from "@/types/apiRequestParams";
 import { SoaPaymentsType } from "@/types/models";
 import { ApiResponse } from "@/types/responseWrapper";
 import parseObject from "@/utils/parseObject";
@@ -7,11 +7,11 @@ const userToken: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"
 
 /** 
  * Fetches the payment details of a specific SOA or all the SOAs.
- * @param {ParamGetSoaType} params - This is a JSON object that has accountCode, dbTable, queryCondition, and resultLimit.
+ * @param {ParamGetSoaDetailsType} params - This is a JSON object that has accountCode, dbTable, queryCondition, and resultLimit.
  * @param {string} token - The token used for authorization. Default value is "c8c69a475a9715c2f2c6194bc1974fae:tenant".
  * @return {Promise<ApiResponse<SoaPaymentsType[]>>} Returns a promise of a ApiResponse object.
  */
-export async function getSoaPayments(params: ParamGetSoaType, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<ApiResponse<SoaPaymentsType[]>> {
+export async function getPayments(params: ParamGetSoaDetailsType, token: string = "c8c69a475a9715c2f2c6194bc1974fae:tenant"): Promise<ApiResponse<SoaPaymentsType[]>> {
   const url = `${process.env.API_URL}/tenant/get-list`;
   const headers = {
     'Content-Type': 'application/json',
@@ -20,8 +20,8 @@ export async function getSoaPayments(params: ParamGetSoaType, token: string = "c
 
   const body = {
     accountcode: params.accountcode,
-    table: 'soa_payment',
-    condition: params.soaId ? `soa_id=${params.soaId}` : undefined,
+    table: 'vw_payment',
+    condition: params.userId ? `resident_id=${params.userId}` : undefined,
     limit: params.limit,
   };
 

@@ -85,11 +85,10 @@ export interface SoaType extends ChangeHistory {
 }
 
 export interface SoaPaymentsType extends ChangeHistory {
-    description: string | null,
     id: string,
+    description: string ,
     soaId: string,
     paymentType: string,
-    particular: string,
     amount: string,
     checkNo: number | string | null,
     checkDate: string | null,

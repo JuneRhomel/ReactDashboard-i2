@@ -8,6 +8,7 @@ import ServiceRequestThumbnails from './serviceRequestThumbnails/ServiceRequestT
 import { SoaPaymentsType, SoaType, SystemInfoType, UserType, NewsAnnouncementsType } from '@/types/models';
 import SoaButtons from '../button/SoaButtons';
 import NewsAnnouncements from './newsAnnouncements/NewsAnnouncements';
+import Link from 'next/link';
 
 const Section = ({props}: {props: any}) => {
     const title = props?.title.toLowerCase();
@@ -26,7 +27,7 @@ const Section = ({props}: {props: any}) => {
             { title !== 'select service request' && title !== 'banner'? 
                 <div className={styles.header}>
                     <h1 className={styles.title}>{props.title}</h1>
-                    {props.headerAction ? <h2 className={styles.action}>{props.headerAction}</h2> : <></>}
+                    {props.headerAction ? <Link className={styles.action} href={''}>{props.headerAction}</Link> : <></>}
                 </div>
                 :
                 <></>
